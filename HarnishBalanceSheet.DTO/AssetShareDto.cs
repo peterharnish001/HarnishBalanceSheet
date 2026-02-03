@@ -6,11 +6,14 @@ using System.Text;
 namespace HarnishBalanceSheet.DTO
 {
     [DataContract]
-    public class TargetDto
+    public class AssetShareDto
     {
         [DataMember]
-        public int TargetId { get; set; }
+        public string Name {  get; set; }
         [DataMember]
-        public decimal Percentage { get; set; }
+        public decimal Total {  get; set; }
+        [DataMember]
+        public List<AssetDto> Assets { get; set; }
+
     }
 }

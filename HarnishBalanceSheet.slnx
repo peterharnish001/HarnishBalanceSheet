@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="HarnishBalanceSheet.BusinessLogic/HarnishBalanceSheet.BusinessLogic.csproj" Id="886800ca-0dca-4ab1-9623-ac6e4a7851d2" />
   <Project Path="HarnishBalanceSheet.DTO/HarnishBalanceSheet.DTO.csproj" Id="6971315a-ff4d-4e14-b9fc-783498d685ee" />
   <Project Path="HarnishBalanceSheet.Models/HarnishBalanceSheet.Models.csproj" />
   <Project Path="HarnishBalanceSheet.MVC/HarnishBalanceSheet.MVC.csproj" />
