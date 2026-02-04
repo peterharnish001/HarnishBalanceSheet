@@ -6,15 +6,15 @@ namespace HarnishBalanceSheet.BusinessLogic
 {
     public interface IBalanceSheetBL
     {
-        List<BalanceSheetDto> GetBalanceSheets(int userId, int num);
-        List<LiabilityChartDto> GetLiabilityChart(int userId, int num);
-        List<NetWorthChartDto> GetNetWorthChart(int userId, int num);
-        bool HasTargets(int userId);
-        bool SetTargets(int userId, List<TargetDto> targets);
-        DetailsDto GetDetails(int userId, int balanceSheetId);
-        BalanceSheetDto GetBalanceSheetForEditing (int userId, int? balanceSheetId);
-        bool CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheet);
-        bool EditBalanceSheet(int userId, BalanceSheetEditDto balanceSheet);
+        Task<List<BalanceSheetDto>> GetBalanceSheets(int userId, int count);
+        Task<List<LiabilityChartDto>> GetLiabilityChart(int userId, int count);
+        Task<List<NetWorthChartDto>> GetNetWorthChart(int userId, int count);
+        Task<bool> HasTargets(int userId);
+        Task<bool> SetTargets(int userId, List<TargetDto> targets);
+        Task<DetailsDto> GetDetails(int userId, int balanceSheetId);
+        Task<BalanceSheetDto> GetBalanceSheetForEditing (int userId, int balanceSheetId);
+        Task<bool> CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheet);
+        Task<bool> EditBalanceSheet(int userId, BalanceSheetEditDto balanceSheet);
 
     }
 }

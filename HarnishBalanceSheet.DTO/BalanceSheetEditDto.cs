@@ -14,5 +14,7 @@ namespace HarnishBalanceSheet.DTO
         public List<AssetEditDto> Assets { get; set; }
         [DataMember]
         public List<LiabilityDto> Liabilities { get; set; }
+        [DataMember]
+        public List<CoinDto> Coins { get; set; }
     }
 }

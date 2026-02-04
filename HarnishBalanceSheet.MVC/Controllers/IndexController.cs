@@ -5,7 +5,7 @@ using HarnishBalanceSheet.DTO;
 namespace HarnishBalanceSheet.MVC.Controllers
 {   
     [ApiController]
-    [Route("api[controller]")]
+    [Route("api/[controller]")]
     public class IndexController : ControllerBase
     {
         private IBalanceSheetBL _balanceSheetBL;
@@ -16,34 +16,34 @@ namespace HarnishBalanceSheet.MVC.Controllers
             _balanceSheetBL = balanceSheetBL;
         }
 
-        [HttpGet("[balancesheets/{num:int}]")]
-        public ActionResult<List<BalanceSheetDto>> BalanceSheets(int num)
+        [HttpGet("[balancesheets/{count:int}]")]
+        public async Task<ActionResult<List<BalanceSheetDto>>> BalanceSheets(int count)
         {
-            return _balanceSheetBL.GetBalanceSheets(_userId, num);
+            return await _balanceSheetBL.GetBalanceSheets(_userId, count);
         }
 
-        [HttpGet("[liabilities/{num:int}]")]
-        public ActionResult<List<LiabilityChartDto>> LiabilitiesChart(int num)
+        [HttpGet("[liabilities/{count:int}]")]
+        public async Task<ActionResult<List<LiabilityChartDto>>> LiabilitiesChart(int count)
         {
-            return _balanceSheetBL.GetLiabilityChart(_userId, num);
+            return await _balanceSheetBL.GetLiabilityChart(_userId, count);
         }
 
-        [HttpGet("[networth/{num:int}]")]
-        public ActionResult<List<NetWorthChartDto>> NetWorthChart(int num)
+        [HttpGet("[networth/{count:int}]")]
+        public async Task<ActionResult<List<NetWorthChartDto>>> NetWorthChart(int count)
         {
-            return _balanceSheetBL.GetNetWorthChart(_userId, num);
+            return await _balanceSheetBL.GetNetWorthChart(_userId, count);
         }
 
         [HttpGet("[hastargets]")]
-        public ActionResult<bool> HasTargets()
+        public async Task<ActionResult<bool>> HasTargets()
         {
-            return _balanceSheetBL.HasTargets(_userId);
+            return await _balanceSheetBL.HasTargets(_userId);
         }
 
         [HttpPost("[targets]")]
-        public ActionResult<bool> Targets(List<TargetDto> targets)
+        public async Task<ActionResult<bool>> Targets(List<TargetDto> targets)
         {
-            return _balanceSheetBL.SetTargets(_userId, targets);
+            return await _balanceSheetBL.SetTargets(_userId, targets);
         }
     }
 }

@@ -5,7 +5,7 @@ using HarnishBalanceSheet.DTO;
 namespace HarnishBalanceSheet.MVC.Controllers
 {   
     [ApiController]
-    [Route("api[controller]")]
+    [Route("api/[controller]")]
     public class BalanceSheetController : ControllerBase
     {
         private IBalanceSheetBL _balanceSheetBL;
@@ -17,27 +17,27 @@ namespace HarnishBalanceSheet.MVC.Controllers
         }
 
         [HttpGet("[details/{balanceSheetId:int}]")]
-        public ActionResult<BalanceSheetDto> Details(int balanceSheetId)
+        public async Task<ActionResult<BalanceSheetDto>> Details(int balanceSheetId)
         {
-            return new JsonResult(_balanceSheetBL.GetDetails(_userId, balanceSheetId));
+            return new JsonResult(await _balanceSheetBL.GetDetails(_userId, balanceSheetId));
         }
 
-        [HttpGet("[edit/{balanceSheetId?:int}]")]
-        public ActionResult<List<LiabilityChartDto>> GetDetailsForEditing(int? balanceSheetId)
+        [HttpGet("[edit/{balanceSheetId:int}]")]
+        public async Task<ActionResult<List<LiabilityChartDto>>> GetDetailsForEditing(int balanceSheetId)
         {
-            return new JsonResult(_balanceSheetBL.GetBalanceSheetForEditing(_userId, balanceSheetId));
+            return new JsonResult(await _balanceSheetBL.GetBalanceSheetForEditing(_userId, balanceSheetId));
         }
 
         [HttpPost("[create]")]
-        public ActionResult<List<NetWorthChartDto>> Create(BalanceSheetEditDto balanceSheet)
+        public async Task<ActionResult<List<NetWorthChartDto>>> Create(BalanceSheetEditDto balanceSheet)
         {
-            return new JsonResult(_balanceSheetBL.CreateBalanceSheet(_userId, balanceSheet));
+            return new JsonResult(await _balanceSheetBL.CreateBalanceSheet(_userId, balanceSheet));
         }
 
         [HttpPut("[edit]")]
-        public ActionResult<bool> Edit(BalanceSheetEditDto balanceSheet)
+        public async Task<ActionResult<bool>> Edit(BalanceSheetEditDto balanceSheet)
         {
-            return new JsonResult(_balanceSheetBL.EditBalanceSheet(_userId, balanceSheet));
+            return new JsonResult(await _balanceSheetBL.EditBalanceSheet(_userId, balanceSheet));
         }
     }
 }

@@ -7,7 +7,9 @@ namespace HarnishBalanceSheet.Models
     public class Target
     {
         public int TargetId { get; set; }
+        public int UserId { get; set; }
         public int AssetCategoryId { get; set; }
         public decimal Percentage { get; set; }
+        public User User { get; set; }
     }
 }
