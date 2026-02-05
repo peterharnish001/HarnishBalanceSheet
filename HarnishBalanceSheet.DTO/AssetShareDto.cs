@@ -13,7 +13,7 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public decimal Total {  get; set; }
         [DataMember]
-        public List<AssetDto> Assets { get; set; }
+        public List<AssetComponentDto> AssetComponents { get; set; }
 
     }
 }

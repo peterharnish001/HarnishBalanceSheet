@@ -11,9 +11,9 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public List<AssetDto> Assets { get; set; }
         [DataMember]
-        public List<LiabilityDto> Liabilities { get; set; }
+        public IEnumerable<LiabilityDto> Liabilities { get; set; }
         [DataMember]
-        public List<AssetShareDto> AssetShares { get; set; }
+        public IEnumerable<AssetShareDto> AssetShares { get; set; }
         [DataMember]
         public CoinSummaryDto Coins { get; set; }
         [DataMember]
@@ -24,5 +24,9 @@ namespace HarnishBalanceSheet.DTO
         public decimal TotalLiabilities { get; set; }
         [DataMember]
         public decimal NetWorth {  get; set; }
+        [DataMember]
+        public IEnumerable<string> AssetTypes { get; set; }
+        [DataMember]
+        public IEnumerable<TargetDto> Targets { get; set; }
     }
 }

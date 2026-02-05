@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HarnishBalanceSheet.DTO;
 using HarnishBalanceSheet.Models;
+using System.Xml.Serialization;
 
 namespace HarnishBalanceSheet.BusinessLogic
 {
@@ -15,8 +16,7 @@ namespace HarnishBalanceSheet.BusinessLogic
             CreateMap<IEnumerable<Asset>, IEnumerable<AssetDto>>();
             CreateMap<Coins, CoinDto>();
             CreateMap<IEnumerable<Coins>, IEnumerable<CoinDto>>();
-            CreateMap<BalanceSheet, BalanceSheetDto>();
-            CreateMap<IEnumerable<BalanceSheet>, IEnumerable<BalanceSheetDto>>();
+            CreateMap<BalanceSheet, BalanceSheetEditDto>();
             CreateMap<Liability,  LiabilityDto>();
             CreateMap<IEnumerable<Liability>, IEnumerable<LiabilityDto>>();
             CreateMap<BalanceSheet, DetailsDto>()
@@ -24,8 +24,16 @@ namespace HarnishBalanceSheet.BusinessLogic
                 .ForMember(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
                 .ForMember(dest => dest.Coins, opt => opt.MapFrom(src => src.Coins));
             CreateMap<IEnumerable<BalanceSheet>, IEnumerable<DetailsDto>>();
-            CreateMap<Target, TargetDto>();
+            CreateMap<Target, TargetDto>()
+                .ForMember(dest => dest.TargetName, opt => opt.MapFrom(src => src.AssetCategory.Name));
             CreateMap<IEnumerable<Target>, IEnumerable<TargetDto>>();
+            CreateMap<BalanceSheetLinkItem, BalanceSheetDto>();
+            CreateMap<IEnumerable<BalanceSheetLinkItem>, IEnumerable<BalanceSheetDto>>();
+            CreateMap<DetailsDto, Details>()
+                .ForMember(dest => dest.BalanceSheet.Assets, opt => opt.MapFrom(src => src.Assets))
+                .ForMember(dest => dest.BalanceSheet.Coins, opt => opt.MapFrom(src => src.Coins))
+                .ForMember(dest => dest.BalanceSheet.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
+                .ForMember(dest => dest.AssetTypes, opt => opt.MapFrom(src => src.AssetTypes));
 
             CreateMap<TargetDto, Target>();
             CreateMap<IEnumerable<TargetDto>, IEnumerable<Target>>();

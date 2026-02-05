@@ -11,5 +11,6 @@ namespace HarnishBalanceSheet.Models
         public int AssetCategoryId { get; set; }
         public decimal Percentage { get; set; }
         public User User { get; set; }
+        public AssetCategory AssetCategory { get; set; }
     }
 }

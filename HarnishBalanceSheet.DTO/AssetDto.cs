@@ -10,6 +10,8 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public string Name { get; set; }
         [DataMember]
+        public decimal Value { get; set; }
+        [DataMember]
         public bool IsPercent { get; set; }
         [DataMember]
         public IEnumerable<AssetComponentDto> AssetComponents { get; set; }
