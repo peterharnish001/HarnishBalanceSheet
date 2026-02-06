@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HarnishBalanceSheet.DataAccess\HarnishBalanceSheet.DataAccess.csproj" />
     <ProjectReference Include="..\HarnishBalanceSheet.DTO\HarnishBalanceSheet.DTO.csproj" />
+    <ProjectReference Include="..\HarnishBalanceSheet.PreciousMetalsService\HarnishBalanceSheet.PreciousMetalsService.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ namespace HarnishBalanceSheet.DTO
     public class CoinSummaryDto
     {
         [DataMember]
-        public List<CoinDto> Coins { get; set; }
+        public List<BullionDto> Metals { get; set; }
         [DataMember]
         public decimal Total { get; set; }
     }

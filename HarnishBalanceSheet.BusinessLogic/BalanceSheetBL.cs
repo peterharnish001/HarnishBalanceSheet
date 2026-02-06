@@ -2,6 +2,7 @@
 using HarnishBalanceSheet.DataAccess;
 using HarnishBalanceSheet.DTO;
 using HarnishBalanceSheet.Models;
+using HarnishBalanceSheet.PreciousMetalsService;
 
 namespace HarnishBalanceSheet.BusinessLogic
 {
@@ -9,10 +10,12 @@ namespace HarnishBalanceSheet.BusinessLogic
     {
         private IBalanceSheetContext _balanceSheetContext;
         private IMapper _mapper;
-        public BalanceSheetBL(IBalanceSheetContext context, IMapper mapper)
+        private IPreciousMetalsService _preciousMetalsService;
+        public BalanceSheetBL(IBalanceSheetContext context, IMapper mapper, IPreciousMetalsService preciousMetalService)
         { 
             _balanceSheetContext = context;
             _mapper = mapper;
+            _preciousMetalsService = preciousMetalService;
         }
 
         public async Task<bool> CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
@@ -27,6 +30,15 @@ namespace HarnishBalanceSheet.BusinessLogic
             BalanceSheet balanceSheet = _mapper.Map<BalanceSheet>(balanceSheetDto);
             balanceSheet.UserId = userId;
             return await _balanceSheetContext.EditBalanceSheetAsync(balanceSheet);
+        }
+
+        public async Task<BalanceSheetEditDto> GetBalanceSheetForCreating(int userId)
+        {
+            BalanceSheet balanceSheet = await _balanceSheetContext.GetLatestAsync(userId);
+            BalanceSheetEditDto result = _mapper.Map<BalanceSheetEditDto>(balanceSheet);
+            var prices = await _preciousMetalsService.GetPreciousMetalPricesAsync();
+            result.Bullion.ForEach(x => x.PricePerOunce = prices.Where(y => y.Metal == x.Name).First().Price);
+            return result;
         }
 
         public async Task<BalanceSheetEditDto> GetBalanceSheetForEditing(int userId, int balanceSheetId)
@@ -46,18 +58,18 @@ namespace HarnishBalanceSheet.BusinessLogic
             BalanceSheet balanceSheet = await _balanceSheetContext.GetDetailsAsync(userId, balanceSheetId);
             DetailsDto details = _mapper.Map<DetailsDto>(balanceSheet);
             details.Assets.ForEach(x => x.Value = x.AssetComponents.Select(y => y.Value).Sum());
-            details.Coins.Coins.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
-            details.Coins.Total = details.Coins.Coins.Select(x => x.TotalPrice).Sum();
+            details.Bullion.Metals.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
+            details.Bullion.Total = details.Bullion.Metals.Select(x => x.TotalPrice).Sum();
             details.Assets.Add(new AssetDto() 
             { 
                 Name = "Coins",
-                Value = details.Coins.Total,
+                Value = details.Bullion.Total,
                 AssetComponents = new List<AssetComponentDto>()
                 {
-                    new AssetComponentDto() { AssetType = "Precious Metals", Value = details.Coins.Total }
+                    new AssetComponentDto() { AssetType = "Precious Metals", Value = details.Bullion.Total }
                 }
             });
-            details.TotalAssets = details.Assets.Select(x => x.Value).Sum() + details.Coins.Total;
+            details.TotalAssets = details.Assets.Select(x => x.Value).Sum();
             details.TotalLiabilities = details.Liabilities.Select(x => x.Value).Sum();
             details.NetWorth = details.TotalAssets - details.TotalLiabilities;
             details.AssetShares = details.AssetTypes.Select(x => new AssetShareDto()
@@ -77,24 +89,51 @@ namespace HarnishBalanceSheet.BusinessLogic
             return details;
         }
 
-        public Task<IEnumerable<LiabilityChartDto>> GetLiabilityChart(int userId, int count)
+        public async Task<IEnumerable<LiabilityChartDto>> GetLiabilityChart(int userId, int count)
         {
-            throw new NotImplementedException();
+            var liabilityTotals = await _balanceSheetContext.GetLiabilitiesAsync(userId, count);
+            return _mapper.Map<IEnumerable<LiabilityChartDto>>(liabilityTotals);
         }
 
-        public Task<IEnumerable<NetWorthChartDto>> GetNetWorthChart(int userId, int count)
+        public async Task<IEnumerable<NetWorthChartDto>> GetNetWorthChart(int userId, int count)
         {
-            throw new NotImplementedException();
+            var balanceSheets = await _balanceSheetContext.GetBalanceSheetsAsync(userId, count);
+            var detailsList = _mapper.Map<IEnumerable<DetailsDto>>(balanceSheets);
+            return detailsList.Select(x => new NetWorthChartDto()
+            {
+                Date = x.Date,
+                Value = CalculateNetWorth(x)
+            }).ToList();
+        }        
+
+        public async Task<bool> HasTargets(int userId)
+        {
+            return await _balanceSheetContext.HasTargetsAsync(userId);
         }
 
-        public Task<bool> HasTargets(int userId)
+        public async Task<bool> SetTargets(int userId, IEnumerable<TargetDto> targets)
         {
-            throw new NotImplementedException();
+            var targetModels = _mapper.Map<IEnumerable<Target>>(targets);
+            return await _balanceSheetContext.SetTargetsAsync(userId, targetModels);
         }
 
-        public Task<bool> SetTargets(int userId, IEnumerable<TargetDto> targets)
-        {
-            throw new NotImplementedException();
+        private decimal CalculateNetWorth(DetailsDto details)
+        {            
+            details.Assets.ForEach(x => x.Value = x.AssetComponents.Select(y => y.Value).Sum());
+            details.Bullion.Metals.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
+            details.Bullion.Total = details.Bullion.Metals.Select(x => x.TotalPrice).Sum();
+            details.Assets.Add(new AssetDto()
+            {
+                Name = "Coins",
+                Value = details.Bullion.Total,
+                AssetComponents = new List<AssetComponentDto>()
+                {
+                    new AssetComponentDto() { AssetType = "Precious Metals", Value = details.Bullion.Total }
+                }
+            });
+            details.TotalAssets = details.Assets.Select(x => x.Value).Sum();
+            details.TotalLiabilities = details.Liabilities.Select(x => x.Value).Sum();
+            return details.TotalAssets - details.TotalLiabilities;
         }
     }
 }

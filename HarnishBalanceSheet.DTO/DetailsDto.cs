@@ -9,13 +9,15 @@ namespace HarnishBalanceSheet.DTO
     public class DetailsDto
     {
         [DataMember]
+        public DateTime Date { get; set; }
+        [DataMember]
         public List<AssetDto> Assets { get; set; }
         [DataMember]
         public IEnumerable<LiabilityDto> Liabilities { get; set; }
         [DataMember]
         public IEnumerable<AssetShareDto> AssetShares { get; set; }
         [DataMember]
-        public CoinSummaryDto Coins { get; set; }
+        public CoinSummaryDto Bullion { get; set; }
         [DataMember]
         public List<TargetComparisonDto> TargetComparisons { get; set; }
         [DataMember]
