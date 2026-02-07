@@ -11,6 +11,14 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public DateTime Date {  get; set; }
         [DataMember]
-        public decimal Value { get; set; }
+        public decimal TotalLiabilities { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as LiabilityChartDto;
+
+            if (item == null) return false;
+            return this.Date.Equals(item.Date) && this.TotalLiabilities.Equals(item.TotalLiabilities);
+        }
     }
 }

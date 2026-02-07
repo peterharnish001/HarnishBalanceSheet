@@ -50,7 +50,7 @@ namespace HarnishBalanceSheet.BusinessLogic
         public async Task<IEnumerable<BalanceSheetDto>> GetBalanceSheets(int userId, int count)
         {
             IEnumerable<BalanceSheetLinkItem> balanceSheetLinkItems = await _balanceSheetContext.GetBalanceSheetDatesAsync(userId, count);
-            return _mapper.Map<IEnumerable<BalanceSheetDto>>(balanceSheetLinkItems);
+            return _mapper.Map<IEnumerable<BalanceSheetLinkItem>, IEnumerable<BalanceSheetDto>>(balanceSheetLinkItems);
         }
 
         public async Task<DetailsDto> GetDetails(int userId, int balanceSheetId)

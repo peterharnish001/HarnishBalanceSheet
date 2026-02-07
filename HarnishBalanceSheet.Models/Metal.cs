@@ -4,9 +4,9 @@ using System.Text;
 
 namespace HarnishBalanceSheet.Models
 {
-    public class Coins
+    public class Metal
     {
-        public int CoinId { get; set; }
+        public int MetalId { get; set; }
         public int BalanceSheetId { get; set; }
         public int PreciousMetalId { get; set; }
         public decimal NumOunces { get; set; }
