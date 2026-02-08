@@ -8,6 +8,8 @@ namespace HarnishBalanceSheet.DTO
     public class AssetDto
     {
         [DataMember]
+        public int? AssetId { get; set; }
+        [DataMember]
         public string Name { get; set; }
         [DataMember]
         public decimal Value { get; set; }
@@ -15,5 +17,16 @@ namespace HarnishBalanceSheet.DTO
         public bool IsPercent { get; set; }
         [DataMember]
         public IEnumerable<AssetComponentDto> AssetComponents { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as AssetDto;
+
+            if (item == null) return false;
+            return this.Name.Equals(item.Name) 
+                && this.AssetComponents.SequenceEqual(item.AssetComponents)
+                && this.AssetId.Equals(item.AssetId)
+                ;
+        }
     }
 }

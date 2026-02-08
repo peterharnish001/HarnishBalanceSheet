@@ -9,15 +9,11 @@ namespace HarnishBalanceSheet.BusinessLogic
         public MappingProfile()
         {
             CreateMap<AssetPortion, AssetComponentDto>();
-            CreateMap<IEnumerable<AssetPortion>, IEnumerable<AssetComponentDto>>();
             CreateMap<Asset, AssetDto>()
                .ForMember(dest => dest.AssetComponents, opt => opt.MapFrom(src => src.AssetPortions));
-            CreateMap<ICollection<Asset>, List<AssetDto>>();
             CreateMap<Metal, MetalDto>();
-            CreateMap<ICollection<Metal>, List<MetalDto>>();
-            CreateMap<BalanceSheet, BalanceSheetEditDto>();
-            CreateMap<Liability,  LiabilityDto>();
-            CreateMap<ICollection<Liability>, List<LiabilityDto>>();
+            CreateMap<Liability, LiabilityDto>();
+            CreateMap<BalanceSheet, BalanceSheetEditDto>();            
             CreateMap<BalanceSheet, DetailsDto>()
                 .ForPath(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
                 .ForPath(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))

@@ -11,12 +11,23 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public int PreciousMetalId { get; set; }
         [DataMember]
-        public string Name { get; set; }
+        public string MetalName { get; set; }
         [DataMember]
-        public decimal Ounces { get; set; }
+        public decimal NumOunces { get; set; }
         [DataMember]
         public decimal PricePerOunce { get; set; }
         [DataMember]
         public decimal TotalPrice { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as MetalDto;
+
+            if (item == null) return false;
+            return this.MetalName.Equals(item.MetalName) 
+                && this.NumOunces.Equals(item.NumOunces)
+                && this.PricePerOunce.Equals(item.PricePerOunce)
+                ;
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace HarnishBalanceSheet.BusinessLogic
             BalanceSheet balanceSheet = await _balanceSheetContext.GetLatestAsync(userId);
             BalanceSheetEditDto result = _mapper.Map<BalanceSheetEditDto>(balanceSheet);
             var prices = await _preciousMetalsService.GetPreciousMetalPricesAsync();
-            result.Bullion.ForEach(x => x.PricePerOunce = prices.Where(y => y.Metal == x.Name).First().Price);
+            result.Bullion.ForEach(x => x.PricePerOunce = prices.Where(y => y.Metal == x.MetalName).First().Price);
             return result;
         }
 
@@ -58,7 +58,7 @@ namespace HarnishBalanceSheet.BusinessLogic
             BalanceSheet balanceSheet = await _balanceSheetContext.GetDetailsAsync(userId, balanceSheetId);
             DetailsDto details = _mapper.Map<DetailsDto>(balanceSheet);
             details.Assets.ForEach(x => x.Value = x.AssetComponents.Select(y => y.Value).Sum());
-            details.BullionSummary.Bullion.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
+            details.BullionSummary.Bullion.ForEach(x => x.TotalPrice = x.NumOunces * x.PricePerOunce);
             details.BullionSummary.Total = details.BullionSummary.Bullion.Select(x => x.TotalPrice).Sum();
             details.Assets.Add(new AssetDto() 
             { 
@@ -124,7 +124,7 @@ namespace HarnishBalanceSheet.BusinessLogic
         private decimal CalculateNetWorth(DetailsDto details)
         {            
             details.Assets.ForEach(x => x.Value = x.AssetComponents.Select(y => y.Value).Sum());
-            details.BullionSummary.Bullion.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
+            details.BullionSummary.Bullion.ForEach(x => x.TotalPrice = x.NumOunces * x.PricePerOunce);
             details.BullionSummary.Total = details.BullionSummary.Bullion.Select(x => x.TotalPrice).Sum();
             details.Assets.Add(new AssetDto()
             {
