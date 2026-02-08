@@ -17,7 +17,7 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public IEnumerable<AssetShareDto> AssetShares { get; set; }
         [DataMember]
-        public CoinSummaryDto Bullion { get; set; }
+        public BullionSummaryDto BullionSummary { get; set; }
         [DataMember]
         public List<TargetComparisonDto> TargetComparisons { get; set; }
         [DataMember]
@@ -30,5 +30,6 @@ namespace HarnishBalanceSheet.DTO
         public IEnumerable<string> AssetTypes { get; set; }
         [DataMember]
         public IEnumerable<TargetDto> Targets { get; set; }
+       
     }
 }

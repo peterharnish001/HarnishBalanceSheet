@@ -58,15 +58,15 @@ namespace HarnishBalanceSheet.BusinessLogic
             BalanceSheet balanceSheet = await _balanceSheetContext.GetDetailsAsync(userId, balanceSheetId);
             DetailsDto details = _mapper.Map<DetailsDto>(balanceSheet);
             details.Assets.ForEach(x => x.Value = x.AssetComponents.Select(y => y.Value).Sum());
-            details.Bullion.Metals.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
-            details.Bullion.Total = details.Bullion.Metals.Select(x => x.TotalPrice).Sum();
+            details.BullionSummary.Bullion.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
+            details.BullionSummary.Total = details.BullionSummary.Bullion.Select(x => x.TotalPrice).Sum();
             details.Assets.Add(new AssetDto() 
             { 
                 Name = "Coins",
-                Value = details.Bullion.Total,
+                Value = details.BullionSummary.Total,
                 AssetComponents = new List<AssetComponentDto>()
                 {
-                    new AssetComponentDto() { AssetType = "Precious Metals", Value = details.Bullion.Total }
+                    new AssetComponentDto() { AssetCategory = "Precious Metals", Value = details.BullionSummary.Total }
                 }
             });
             details.TotalAssets = details.Assets.Select(x => x.Value).Sum();
@@ -75,8 +75,8 @@ namespace HarnishBalanceSheet.BusinessLogic
             details.AssetShares = details.AssetTypes.Select(x => new AssetShareDto()
             {
                 Name = x,
-                AssetComponents = details.Assets.SelectMany(y => y.AssetComponents.Where(z => z.AssetType == x)).ToList(),
-                Total = details.Assets.SelectMany(y => y.AssetComponents.Where(z => z.AssetType == x)).Select(a => a.Value).Sum()
+                AssetComponents = details.Assets.SelectMany(y => y.AssetComponents.Where(z => z.AssetCategory == x)).ToList(),
+                Total = details.Assets.SelectMany(y => y.AssetComponents.Where(z => z.AssetCategory == x)).Select(a => a.Value).Sum()
             });
             details.TargetComparisons = details.Targets.Select(x => new TargetComparisonDto()
             {
@@ -98,11 +98,15 @@ namespace HarnishBalanceSheet.BusinessLogic
         public async Task<IEnumerable<NetWorthChartDto>> GetNetWorthChart(int userId, int count)
         {
             var balanceSheets = await _balanceSheetContext.GetBalanceSheetsAsync(userId, count);
-            var detailsList = _mapper.Map<IEnumerable<DetailsDto>>(balanceSheets);
+            var detailsList = new List<DetailsDto>();
+            foreach (var balanceSheet in balanceSheets)
+            {
+                detailsList.Add(_mapper.Map<DetailsDto>(balanceSheet));
+            }
             return detailsList.Select(x => new NetWorthChartDto()
             {
                 Date = x.Date,
-                Value = CalculateNetWorth(x)
+                NetWorth = CalculateNetWorth(x)
             }).ToList();
         }        
 
@@ -120,15 +124,15 @@ namespace HarnishBalanceSheet.BusinessLogic
         private decimal CalculateNetWorth(DetailsDto details)
         {            
             details.Assets.ForEach(x => x.Value = x.AssetComponents.Select(y => y.Value).Sum());
-            details.Bullion.Metals.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
-            details.Bullion.Total = details.Bullion.Metals.Select(x => x.TotalPrice).Sum();
+            details.BullionSummary.Bullion.ForEach(x => x.TotalPrice = x.Ounces * x.PricePerOunce);
+            details.BullionSummary.Total = details.BullionSummary.Bullion.Select(x => x.TotalPrice).Sum();
             details.Assets.Add(new AssetDto()
             {
                 Name = "Coins",
-                Value = details.Bullion.Total,
+                Value = details.BullionSummary.Total,
                 AssetComponents = new List<AssetComponentDto>()
                 {
-                    new AssetComponentDto() { AssetType = "Precious Metals", Value = details.Bullion.Total }
+                    new AssetComponentDto() { AssetCategory = "Precious Metals", Value = details.BullionSummary.Total }
                 }
             });
             details.TotalAssets = details.Assets.Select(x => x.Value).Sum();

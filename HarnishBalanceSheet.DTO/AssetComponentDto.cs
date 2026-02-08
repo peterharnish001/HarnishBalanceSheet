@@ -11,12 +11,20 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public int? AssetComponentId { get; set; }
         [DataMember]
-        public string AssetType { get; set; }
+        public string AssetCategory { get; set; }
         [DataMember]
         public int AssetTypeId { get; set; }
         [DataMember]
         public decimal Fraction {  get; set; }
         [DataMember]
         public decimal Value { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as AssetComponentDto;
+
+            if (item == null) return false;
+            return this.AssetCategory.Equals(item.AssetCategory) && this.Value.Equals(item.Value);
+        }
     }
 }

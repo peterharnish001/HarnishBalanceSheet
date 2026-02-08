@@ -12,26 +12,26 @@ namespace HarnishBalanceSheet.BusinessLogic
             CreateMap<IEnumerable<AssetPortion>, IEnumerable<AssetComponentDto>>();
             CreateMap<Asset, AssetDto>()
                .ForMember(dest => dest.AssetComponents, opt => opt.MapFrom(src => src.AssetPortions));
-            CreateMap<IEnumerable<Asset>, IEnumerable<AssetDto>>();
-            CreateMap<Metal, BullionDto>();
-            CreateMap<IEnumerable<Metal>, IEnumerable<BullionDto>>();
+            CreateMap<ICollection<Asset>, List<AssetDto>>();
+            CreateMap<Metal, MetalDto>();
+            CreateMap<ICollection<Metal>, List<MetalDto>>();
             CreateMap<BalanceSheet, BalanceSheetEditDto>();
             CreateMap<Liability,  LiabilityDto>();
-            CreateMap<IEnumerable<Liability>, IEnumerable<LiabilityDto>>();
+            CreateMap<ICollection<Liability>, List<LiabilityDto>>();
             CreateMap<BalanceSheet, DetailsDto>()
-                .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
-                .ForMember(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
-                .ForMember(dest => dest.Bullion, opt => opt.MapFrom(src => src.Bullion));
-            CreateMap<IEnumerable<BalanceSheet>, IEnumerable<DetailsDto>>();
+                .ForPath(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
+                .ForPath(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
+                .ForPath(dest => dest.BullionSummary.Bullion, opt => opt.MapFrom(src => src.Bullion));
+            //CreateMap<IEnumerable<BalanceSheet>, List<DetailsDto>>();
             CreateMap<Target, TargetDto>()
                 .ForPath(dest => dest.TargetName, opt => opt.MapFrom(src => src.AssetCategory.Name));
             CreateMap<IEnumerable<Target>, IEnumerable<TargetDto>>();
             CreateMap<BalanceSheetLinkItem, BalanceSheetDto>();
             CreateMap<IEnumerable<BalanceSheetLinkItem>, List<BalanceSheetDto>>();
-            CreateMap<DetailsDto, Details>()
-                .ForPath(dest => dest.BalanceSheet.Assets, opt => opt.MapFrom(src => src.Assets))
-                .ForPath(dest => dest.BalanceSheet.Bullion, opt => opt.MapFrom(src => src.Bullion))
-                .ForPath(dest => dest.BalanceSheet.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
+            CreateMap<Details, DetailsDto>()
+                .ForPath(dest => dest.Assets, opt => opt.MapFrom(src => src.BalanceSheet.Assets))
+                .ForPath(dest => dest.BullionSummary, opt => opt.MapFrom(src => src.BalanceSheet.Bullion))
+                .ForPath(dest => dest.Liabilities, opt => opt.MapFrom(src => src.BalanceSheet.Liabilities))
                 .ForPath(dest => dest.AssetTypes, opt => opt.MapFrom(src => src.AssetTypes));
             CreateMap<LiabilityChartItem, LiabilityChartDto>();
             CreateMap<IEnumerable<LiabilityChartItem>, List<LiabilityChartDto>>();
@@ -43,8 +43,8 @@ namespace HarnishBalanceSheet.BusinessLogic
             CreateMap<AssetDto, Asset>()
                 .ForMember(dest => dest.AssetPortions, opt => opt.MapFrom(src => src.AssetComponents));
             CreateMap<IEnumerable<AssetDto>, IEnumerable<Asset>>();
-            CreateMap<BullionDto, Metal>();
-            CreateMap<IEnumerable<BullionDto>, IEnumerable<Metal>>();
+            CreateMap<BullionSummaryDto, Metal>();
+            CreateMap<IEnumerable<BullionSummaryDto>, IEnumerable<Metal>>();
             CreateMap<BalanceSheetEditDto, BalanceSheet>()
                 .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
                 .ForMember(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))

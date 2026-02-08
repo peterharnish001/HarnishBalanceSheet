@@ -9,8 +9,9 @@ namespace HarnishBalanceSheet.Models
         public int MetalId { get; set; }
         public int BalanceSheetId { get; set; }
         public int PreciousMetalId { get; set; }
+        public string MetalName { get; set; }
         public decimal NumOunces { get; set; }
-        public decimal Value { get; set; }
+        public decimal PricePerOunce { get; set; }
         public BalanceSheet BalanceSheet { get; set; }
     }
 }

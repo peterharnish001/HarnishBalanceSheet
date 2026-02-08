@@ -11,6 +11,15 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public DateTime Date { get; set; }
         [DataMember]
-        public decimal Value { get; set; }
+        public decimal NetWorth { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as NetWorthChartDto;
+
+            if (item == null) return false;
+
+            return this.Date.Equals(item.Date) && this.NetWorth.Equals(item.NetWorth);
+        }
     }
 }

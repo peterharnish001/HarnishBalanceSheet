@@ -6,10 +6,10 @@ using System.Text;
 namespace HarnishBalanceSheet.DTO
 {
     [DataContract]
-    public class CoinSummaryDto
+    public class BullionSummaryDto
     {
         [DataMember]
-        public List<BullionDto> Metals { get; set; }
+        public List<MetalDto> Bullion { get; set; }
         [DataMember]
         public decimal Total { get; set; }
     }

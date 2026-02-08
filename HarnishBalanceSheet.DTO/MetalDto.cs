@@ -6,7 +6,7 @@ using System.Text;
 namespace HarnishBalanceSheet.DTO
 {
     [DataContract]
-    public class BullionDto
+    public class MetalDto
     {
         [DataMember]
         public int PreciousMetalId { get; set; }
