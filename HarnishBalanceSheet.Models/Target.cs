@@ -12,5 +12,16 @@ namespace HarnishBalanceSheet.Models
         public decimal Percentage { get; set; }
         public User User { get; set; }
         public AssetCategory AssetCategory { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as Target;
+
+            if (item == null) return false;
+
+            return this.AssetCategoryId.Equals(item.AssetCategoryId)
+                && this.Percentage.Equals(item.Percentage)
+                ;
+        }
     }
 }

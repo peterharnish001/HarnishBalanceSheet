@@ -24,7 +24,10 @@ namespace HarnishBalanceSheet.DTO
             var item = obj as AssetComponentDto;
 
             if (item == null) return false;
-            return this.AssetCategory.Equals(item.AssetCategory) && this.Value.Equals(item.Value);
+            return this.AssetCategory.Equals(item.AssetCategory) 
+                && this.AssetComponentId.Equals(item.AssetComponentId)
+                && this.Value.Equals(item.Value)
+                ;
         }
     }
 }

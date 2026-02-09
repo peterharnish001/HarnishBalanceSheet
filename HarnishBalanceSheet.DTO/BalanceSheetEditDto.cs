@@ -11,6 +11,8 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public int? BalanceSheetId { get; set; }
         [DataMember]
+        public DateTime Date {  get; set; }
+        [DataMember]
         public List<AssetDto> Assets { get; set; }
         [DataMember]
         public List<LiabilityDto> Liabilities { get; set; }

@@ -9,6 +9,8 @@ namespace HarnishBalanceSheet.DTO
     public class LiabilityDto
     {
         [DataMember]
+        public int? LiabilityId { get; set; }
+        [DataMember]
         public string Name { get; set; }
         [DataMember]
         public decimal Value { get; set; }
@@ -18,7 +20,10 @@ namespace HarnishBalanceSheet.DTO
             var item = obj as LiabilityDto;
 
             if (item == null) return false;
-            return this.Name.Equals(item.Name) && this.Value.Equals(item.Value);
+            return this.Name.Equals(item.Name) 
+                && this.Value.Equals(item.Value)
+                && this.LiabilityId.Equals(item.LiabilityId)
+                ;
         }
     }
 }

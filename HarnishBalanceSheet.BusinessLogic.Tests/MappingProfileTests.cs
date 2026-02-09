@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HarnishBalanceSheet.BusinessLogic.Tests
 {
@@ -124,25 +125,279 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         [TestMethod]
         public void BalanceSheetMappingTest()
         {
-            var balanceSheet = new BalanceSheet()
-            { 
-                Assets = GetAssetList(),
-                BalanceSheetId = 1,
-                Bullion = GetBullionList(),
-                Liabilities = GetLiabilityList()
-            };
+            var date = DateTime.Now;
+            var balanceSheet = GetBalanceSheet(date);
 
             var expected = new BalanceSheetEditDto()
             {
                 Assets = GetAssetDtoList(),
                 BalanceSheetId = 1,
-                Bullion = GetBullionDtoList(),
+                Bullion = GetBullionDtoList(),  
+                Date = date,
                 Liabilities = GetLiabilityDtoList()
             };
 
             var result = _mapper.Map<BalanceSheetEditDto>(balanceSheet);
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void DetailsDtoMappingTest()
+        {
+            var date = DateTime.Now;
+            var balanceSheet = GetBalanceSheet(date);
+
+            var expected = GetDetailsDto(date);
+
+            var result = _mapper.Map<DetailsDto>(balanceSheet);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TargetDtoMappingTest()
+        {
+            var target = GetTarget();
+
+            var expected = GetTargetDto();
+
+            var result = _mapper.Map<TargetDto>(target);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TargetDtoListMappingTest()
+        {
+            var targets = GetTargetList();
+
+            var expected = GetTargetDtoList();
+
+            var result = _mapper.Map<List<TargetDto>>(targets);
+
+            CollectionAssert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void BalanceSheetDtoMappingTest()
+        {
+            var date = DateTime.Now;
+            var balanceSheetLinkItem = GetBalanceSheetLinkItem(date);
+
+            var expected = GetBalanceSheetDto(date);
+
+            var result = _mapper.Map<BalanceSheetDto>(balanceSheetLinkItem);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void BalanceSheetDtoListMappingTest()
+        {
+            var date = DateTime.Now;
+            var balanceSheetLinkItems = new List<BalanceSheetLinkItem>()
+            {
+                GetBalanceSheetLinkItem(date)
+            };
+
+            var expected = new List<BalanceSheetDto>()
+            {
+                GetBalanceSheetDto(date)
+            };
+
+            var result = _mapper.Map<List<BalanceSheetDto>>(balanceSheetLinkItems);
+
+            CollectionAssert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void DetailsToDetailsDtoMappingTest()
+        {
+            var date = DateTime.Now;
+            var details = new Details()
+            {
+                BalanceSheet = GetBalanceSheet(date),
+                AssetTypes = new List<string>()
+                {
+                    "Bonds",
+                    "Cash",
+                    "Precious Metals",
+                    "Real Estate",
+                    "Stocks"
+                }
+            };
+
+            var expected = GetDetailsDto(date);
+
+            var result = _mapper.Map<DetailsDto>(details);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void LiabilityChartItemToLiabilityChartDtoMappingTest()
+        {
+            var date = DateTime.Now;
+            var liabilityChartItem = GetLiabilityChartItem(date);
+
+            var expected = GetLiabilityChartDto(date);
+
+            var result = _mapper.Map<LiabilityChartDto>(liabilityChartItem);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void LiabilityChartItemListToLiabilityChartDtoListMappingTest()
+        {
+            var date = DateTime.Now;
+            var liabilityChartItemList = new List<LiabilityChartItem>()
+            {
+                GetLiabilityChartItem(date)
+            };
+
+            var expected = new List<LiabilityChartDto>()
+            {
+                GetLiabilityChartDto(date)
+            };
+
+            var result = _mapper.Map<List<LiabilityChartDto>>(liabilityChartItemList);
+
+            CollectionAssert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TargetDtoToTargetMappingTest()
+        {
+            var targetDto = GetTargetDto();
+
+            var expected = GetTarget();
+
+            var result = _mapper.Map<Target>(targetDto);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void TargetDtoListToTargetListMappingTest()
+        {
+            var targetDtoList = GetTargetDtoList();
+
+            var expected = GetTargetList();
+
+            var result = _mapper.Map<List<Target>>(targetDtoList);
+
+            CollectionAssert.AreEqual(expected, result);
+        }
+
+        private List<TargetDto> GetTargetDtoList()
+        {
+            return new List<TargetDto>()
+            {
+                GetTargetDto()
+            };
+        }
+
+        private List<Target> GetTargetList()
+        {
+            return new List<Target>()
+            {
+                GetTarget()
+            };
+        }
+
+        private LiabilityChartDto GetLiabilityChartDto(DateTime date)
+        {
+            return new LiabilityChartDto()
+            {
+                Date = date,
+                TotalLiabilities = 1
+            };
+        }
+
+        private LiabilityChartItem GetLiabilityChartItem(DateTime date)
+        {
+            return new LiabilityChartItem()
+            {
+                Date = date,
+                TotalLiabilities = 1
+            };
+        }
+
+        private DetailsDto GetDetailsDto(DateTime date)
+        {
+            return new DetailsDto()
+            {
+                Assets = GetAssetDtoList(),
+                BullionSummary = new BullionSummaryDto()
+                {
+                    Bullion = GetBullionDtoList()
+                },
+                Date = date,
+                Liabilities = GetLiabilityDtoList(),
+                AssetTypes = new List<string>()
+                {
+                    "Bonds",
+                    "Cash",
+                    "Precious Metals",
+                    "Real Estate",
+                    "Stocks"
+                }
+            };
+        }
+
+        private BalanceSheetDto GetBalanceSheetDto(DateTime date)
+        {
+            return new BalanceSheetDto()
+            {
+                BalanceSheetId = 1,
+                Date = date
+            };
+        }
+
+        private BalanceSheetLinkItem GetBalanceSheetLinkItem(DateTime date)
+        {
+            return new BalanceSheetLinkItem()
+            {
+                BalanceSheetId = 1,
+                Date = date
+            };
+        }
+
+        private TargetDto GetTargetDto()
+        {
+            return new TargetDto()
+            {
+                AssetCategoryId = 1,
+                TargetName = "Bonds",
+                Percentage = 0.2m
+            };
+        }
+
+        private Target GetTarget()
+        {
+            return new Target()
+            {
+                AssetCategory = new AssetCategory()
+                {
+                    Name = "Bonds"
+                },
+                AssetCategoryId = 1,
+                Percentage = 0.2m
+            };
+        }
+
+        private BalanceSheet GetBalanceSheet(DateTime date)
+        {
+            return new BalanceSheet()
+            {
+                Assets = GetAssetList(),
+                BalanceSheetId = 1,
+                Bullion = GetBullionList(), 
+                Date = date,
+                Liabilities = GetLiabilityList()
+            };
         }
 
         private List<LiabilityDto> GetLiabilityDtoList()
@@ -197,6 +452,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             return new LiabilityDto()
             {
+                LiabilityId = 1,
                 Name = "Mortgage",
                 Value = 114886.11m
             };
@@ -206,6 +462,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             return new Liability()
             {
+                LiabilityId = 1,
                 Name = "Mortgage",
                 Value = 114886.11m
             };
@@ -215,6 +472,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             return new MetalDto()
             {
+                MetalId = 1,
                 MetalName = "Gold",
                 NumOunces = 5,
                 PricePerOunce = 4987.1m
@@ -225,6 +483,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             return new Metal()
             {
+                MetalId = 1,
                 MetalName = "Gold",
                 NumOunces = 5,
                 PricePerOunce = 4987.1m
@@ -271,6 +530,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             return new AssetComponentDto()
             {
+                AssetComponentId = 1,
                 AssetCategory = "Real Estate",
                 Value = 407416m
             };
@@ -280,6 +540,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             return new AssetPortion()
             {
+                AssetPortionId = 1,
                 AssetCategory = "Real Estate",
                 Value = 407416m
             };

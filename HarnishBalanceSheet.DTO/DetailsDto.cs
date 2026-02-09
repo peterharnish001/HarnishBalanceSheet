@@ -30,6 +30,20 @@ namespace HarnishBalanceSheet.DTO
         public IEnumerable<string> AssetTypes { get; set; }
         [DataMember]
         public IEnumerable<TargetDto> Targets { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as DetailsDto;
+
+            if (item == null) return false;
+
+            return this.Date.Equals(item.Date)
+                && this.Assets.SequenceEqual(item.Assets)
+                && this.Liabilities.SequenceEqual(item.Liabilities)
+                && this.BullionSummary.Equals(item.BullionSummary)
+                && this.AssetTypes.SequenceEqual(item.AssetTypes)
+                ;
+        }
        
     }
 }
