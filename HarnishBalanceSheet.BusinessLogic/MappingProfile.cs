@@ -31,12 +31,12 @@ namespace HarnishBalanceSheet.BusinessLogic
             CreateMap<LiabilityChartItem, LiabilityChartDto>();
 
             CreateMap<TargetDto, Target>();
-            CreateMap<AssetComponentDto, AssetPortion>();
-            CreateMap<IEnumerable<AssetComponentDto>, IEnumerable<AssetPortion>>();
+            CreateMap<AssetComponentDto, AssetPortion>()
+                .ForMember(dest => dest.AssetPortionId, opt => opt.MapFrom(src => src.AssetComponentId));
             CreateMap<AssetDto, Asset>()
                 .ForMember(dest => dest.AssetPortions, opt => opt.MapFrom(src => src.AssetComponents));
-            CreateMap<IEnumerable<AssetDto>, IEnumerable<Asset>>();
             CreateMap<MetalDto, Metal>();
+            CreateMap<LiabilityDto, Liability>();
             CreateMap<BalanceSheetEditDto, BalanceSheet>()
                 .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
                 .ForMember(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))

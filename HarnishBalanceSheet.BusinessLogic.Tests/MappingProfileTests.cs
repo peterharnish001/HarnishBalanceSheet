@@ -291,6 +291,122 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             CollectionAssert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        public void AssetComponentDtoToAssetPortionMappingTest()
+        {
+            var assetComponentDto = GetAssetComponentDto();
+
+            var expected = GetAssetPortion();
+
+            var result = _mapper.Map<AssetPortion>(assetComponentDto);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void AssetComponentDtoListToAssetPortionListMappingTest()
+        {
+            var assetComponentDtoList = GetAssetComponentList();
+
+            var expected = GetAssetPortionList();
+
+            var result = _mapper.Map<List<AssetPortion>>(assetComponentDtoList);
+
+            CollectionAssert.AreEqual(expected.ToList(), result);
+        }
+
+        [TestMethod]
+        public void AssetDtoToAssetMappingTest()
+        {
+            var assetDto = GetAssetDto();
+
+            var expected = GetAsset();
+
+            var result = _mapper.Map<Asset>(assetDto);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void AssetDtoListToAssetListMappingTest()
+        {
+            var assetDtoList = GetAssetDtoList();
+
+            var expected = GetAssetList(); 
+
+            var result = _mapper.Map<List<Asset>>(assetDtoList);
+
+            CollectionAssert.AreEqual(expected.ToList(), result);
+        }
+
+        [TestMethod]
+        public void MetalDtoToMetalMappingTest()
+        {
+            var metalDto = GetMetalDto();
+
+            var expected = GetMetal();
+
+            var result = _mapper.Map<Metal>(metalDto);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void MetalDtoListToMetalListMappingTest()
+        {
+            var metalDtoList = GetBullionDtoList();
+
+            var expected = GetBullionList();
+
+            var result = _mapper.Map<List<Metal>>(metalDtoList);
+
+            CollectionAssert.AreEqual (expected.ToList(), result);
+        }
+
+        [TestMethod]
+        public void LiabilityDtoToLiabilityMappingTest()
+        {
+            var liabilityDto = GetLiabilityDto();
+
+            var expected = GetLiability();
+
+            var result = _mapper.Map<Liability>(liabilityDto);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void LiabilityDtoListToLiabilityListMappingTest()
+        {
+            var liabilityDtoList = GetLiabilityDtoList();
+
+            var expected = GetLiabilityList();
+
+            var result = _mapper.Map<List<Liability>>(liabilityDtoList);
+
+            CollectionAssert.AreEqual(expected.ToList(), result);
+        }
+
+        [TestMethod]
+        public void BalanceSheetEditDtoToBalanceSheetMappingTest()
+        {
+            var date = DateTime.Now;
+            var balanceSheetEditDto = new BalanceSheetEditDto()
+            {
+                Assets = GetAssetDtoList(),
+                BalanceSheetId = 1,
+                Bullion = GetBullionDtoList(),
+                Date = date,
+                Liabilities = GetLiabilityDtoList()
+            };
+
+            var expected = GetBalanceSheet(date);
+
+            var result = _mapper.Map<BalanceSheet>(balanceSheetEditDto);
+
+            Assert.AreEqual(expected, result);
+        }
+
         private List<TargetDto> GetTargetDtoList()
         {
             return new List<TargetDto>()

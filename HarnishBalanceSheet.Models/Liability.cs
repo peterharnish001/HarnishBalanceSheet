@@ -11,5 +11,17 @@ namespace HarnishBalanceSheet.Models
         public string Name { get; set; }
         public decimal Value { get; set; }
         public BalanceSheet BalanceSheet { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as Liability;
+
+            if (item == null) return false;
+
+            return this.LiabilityId.Equals(item.LiabilityId)
+                && this.Name.Equals(item.Name)
+                && this.Value.Equals(item.Value)
+                ;
+        }
     }
 }

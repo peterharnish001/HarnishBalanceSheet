@@ -9,5 +9,19 @@
         public ICollection<Asset> Assets { get; set; }
         public ICollection<Metal> Bullion { get; set; }
         public ICollection<Liability> Liabilities { get; set; }
-     }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as BalanceSheet;
+
+            if (item == null) return false;
+
+            return this.BalanceSheetId.Equals(item.BalanceSheetId)
+                && this.Date.Equals(item.Date)
+                && this.Assets.SequenceEqual(item.Assets)
+                && this.Bullion.SequenceEqual(item.Bullion)
+                && this.Liabilities.SequenceEqual(item.Liabilities)
+                ;
+        }
+    }
 }

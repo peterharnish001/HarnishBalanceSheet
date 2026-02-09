@@ -12,7 +12,7 @@ namespace HarnishBalanceSheet.BusinessLogic
         Task<bool> HasTargets(int userId);
         Task<bool> SetTargets(int userId, IEnumerable<TargetDto> targets);
         Task<DetailsDto> GetDetails(int userId, int balanceSheetId);
-        Task<BalanceSheetEditDto> GetBalanceSheetForEditing (int userId, int balanceSheetId);
+        Task<BalanceSheetEditDto> GetBalanceSheetForEditing(int userId, int balanceSheetId);
         Task<BalanceSheetEditDto> GetBalanceSheetForCreating(int userId);
         Task<bool> CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheet);
         Task<bool> EditBalanceSheet(int userId, BalanceSheetEditDto balanceSheet);

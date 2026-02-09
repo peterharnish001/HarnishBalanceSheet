@@ -12,5 +12,17 @@ namespace HarnishBalanceSheet.Models
         public int AssetId { get; set; }
         public Asset Asset { get; set; }
         public decimal Value { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var item = obj as AssetPortion;
+
+            if (item == null) return false;
+
+            return this.AssetPortionId.Equals(item.AssetPortionId)
+                && this.Value.Equals(item.Value)
+                && this.AssetCategoryId.Equals(item.AssetCategoryId)
+                ;
+        }
     }
 }

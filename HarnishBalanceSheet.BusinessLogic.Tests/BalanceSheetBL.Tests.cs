@@ -118,7 +118,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                 new NetWorthChartDto()
                 {
                     Date = date,
-                    NetWorth = 1226122.56m
+                    NetWorth = 1213360.81m
                 }
             };
 
@@ -223,17 +223,17 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                                 new AssetPortion()
                                 {
                                     AssetCategory = _assetCategories[0],
-                                    Value = 2593.4m
+                                    Value = 5637.82m
                                 },
                                 new AssetPortion()
                                 {
                                     AssetCategory = _assetCategories[3],
-                                    Value = 1851.46m
+                                    Value = 11275.64m
                                 },
                                 new AssetPortion()
                                 {
                                     AssetCategory = _assetCategories[4],
-                                    Value = 7901.97m
+                                    Value = 5637.82m
                                 }
                             }
                         },
@@ -424,6 +424,19 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
 
             CollectionAssert.AreEqual(expected, result.ToList());
         }
+
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public async Task HasTargetsTest(bool expected)
+        {
+            _context.Setup(x => x.HasTargetsAsync(It.IsAny<int>()))
+                .Returns(Task.FromResult(expected));
+
+            var result = await _balanceSheetBL.HasTargets(_userId);
+
+            Assert.AreEqual(expected, result);
+;        }
 
         private IMapper CreateMapper()
         {

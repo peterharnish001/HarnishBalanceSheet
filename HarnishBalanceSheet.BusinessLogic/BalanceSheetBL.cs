@@ -98,11 +98,7 @@ namespace HarnishBalanceSheet.BusinessLogic
         public async Task<IEnumerable<NetWorthChartDto>> GetNetWorthChart(int userId, int count)
         {
             var balanceSheets = await _balanceSheetContext.GetBalanceSheetsAsync(userId, count);
-            var detailsList = new List<DetailsDto>();
-            foreach (var balanceSheet in balanceSheets)
-            {
-                detailsList.Add(_mapper.Map<DetailsDto>(balanceSheet));
-            }
+            var detailsList = _mapper.Map<List<DetailsDto>>(balanceSheets);
             return detailsList.Select(x => new NetWorthChartDto()
             {
                 Date = x.Date,
