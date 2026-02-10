@@ -27,7 +27,7 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public decimal NetWorth {  get; set; }
         [DataMember]
-        public IEnumerable<string> AssetTypes { get; set; }
+        public IEnumerable<AssetTypeDto> AssetTypes { get; set; }
         [DataMember]
         public IEnumerable<TargetDto> Targets { get; set; }
 
@@ -42,6 +42,7 @@ namespace HarnishBalanceSheet.DTO
                 && this.Liabilities.SequenceEqual(item.Liabilities)
                 && this.BullionSummary.Equals(item.BullionSummary)
                 && this.AssetTypes.SequenceEqual(item.AssetTypes)
+                && this.Targets.SequenceEqual(item.Targets)
                 ;
         }
        

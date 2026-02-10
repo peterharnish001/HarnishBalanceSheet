@@ -436,7 +436,131 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             var result = await _balanceSheetBL.HasTargets(_userId);
 
             Assert.AreEqual(expected, result);
-;        }
+;       }
+
+        [TestMethod]
+        public async Task SetTargetsTest()
+        {
+            var targetList = new List<TargetDto>();
+            var expected = true;
+
+            _context.Setup(x => x.SetTargetsAsync(It.IsAny<int>(), It.IsAny<IEnumerable<Target>>()))
+                .Returns(Task.FromResult(expected));
+
+            var result = await _balanceSheetBL.SetTargets(_userId, targetList);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public async Task GetDetailsTest()
+        {
+            var balanceSheetId = 1;
+            var date = DateTime.Now;
+            var details = new Details()
+            {
+                AssetTypes = new List<AssetCategory>()
+                {
+                    new AssetCategory()
+                    {
+                        Name = "Bonds"
+                    },
+                    new AssetCategory()
+                    {
+                        Name = "Cash"
+                    },
+                    new AssetCategory()
+                    {
+                        Name = "Precious Metals"
+                    },
+                    new AssetCategory()
+                    {
+                        Name = "Real Estate"
+                    },
+                    new AssetCategory()
+                    {
+                        Name = "Stocks"
+                    },
+                },
+                BalanceSheet = new BalanceSheet()
+                {
+                    Assets = new List<Asset>()
+                    {
+                        new Asset()
+                        {
+                            AssetPortions = new List<AssetPortion>(),
+                            Name = "Home"
+                        }
+                    },
+                    BalanceSheetId = balanceSheetId,
+                    Bullion = new List<Metal>(),
+                    Date = date,
+                    Liabilities = new List<Liability>()
+                },
+                Targets = new List<Target>()
+            };
+            var expected = new DetailsDto()
+            {
+                Assets = new List<AssetDto>()
+                {
+                    new AssetDto()
+                    {
+                        AssetComponents = new List<AssetComponentDto>(),
+                        Name = "Home"
+                    },
+                    new AssetDto()
+                    {
+                        AssetComponents = new List<AssetComponentDto>()
+                        {
+                            new AssetComponentDto()
+                            {
+                                AssetCategory = "Precious Metals"
+                            }
+                        },
+                        Name = "Bullion"
+                    }
+
+                },
+                AssetTypes = new List<AssetTypeDto>()
+                {
+                    new AssetTypeDto()
+                    {
+                        Name = "Bonds"
+                    },
+                    new AssetTypeDto()
+                    {
+                        Name = "Cash"
+                    },
+                    new AssetTypeDto()
+                    {
+                        Name = "Precious Metals"
+                    },
+                    new AssetTypeDto()
+                    {
+                        Name = "Real Estate"
+                    },
+                    new AssetTypeDto()
+                    {
+                        Name = "Stocks"
+                    }
+                },
+                BullionSummary = new BullionSummaryDto()
+                {
+                    Bullion = new List<MetalDto>()
+                },
+                Date = date,
+                Liabilities = new List<LiabilityDto>(),
+                Targets = new List<TargetDto>()
+            };
+
+            _context.Setup(x => x.GetDetailsAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(Task.FromResult(details));
+
+            var result = await _balanceSheetBL.GetDetails(_userId, balanceSheetId);
+
+            Assert.AreEqual(expected, result);
+        }
+
 
         private IMapper CreateMapper()
         {

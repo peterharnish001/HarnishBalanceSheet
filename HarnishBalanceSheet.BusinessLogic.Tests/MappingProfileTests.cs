@@ -218,13 +218,28 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             var details = new Details()
             {
                 BalanceSheet = GetBalanceSheet(date),
-                AssetTypes = new List<string>()
+                AssetTypes = new List<AssetCategory>()
                 {
-                    "Bonds",
-                    "Cash",
-                    "Precious Metals",
-                    "Real Estate",
-                    "Stocks"
+                    new AssetCategory()
+                    {
+                        Name = "Bonds"
+                    },
+                    new AssetCategory()
+                    {
+                        Name = "Cash"
+                    },
+                    new AssetCategory()
+                    {
+                        Name = "Precious Metals"
+                    },
+                    new AssetCategory()
+                    {
+                        Name = "Real Estate"
+                    },
+                    new AssetCategory()
+                    {
+                        Name = "Stocks"
+                    },
                 }
             };
 
@@ -407,6 +422,52 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        public void AssetCategoryToAssetTypeDtoMappingTest()
+        {
+            var assetCategory = GetAssetCategory();
+
+            var expected = GetAssetTypeDto();
+
+            var result = _mapper.Map<AssetTypeDto>(assetCategory);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void AssetCategoryListToAssetTypeDtoListMappingTest()
+        {
+            var assetCategoryList = new List<AssetCategory>()
+            {
+                GetAssetCategory()
+            };
+
+            var expected = new List<AssetTypeDto>()
+            {
+                GetAssetTypeDto()
+            };
+
+            var result = _mapper.Map<List<AssetTypeDto>>(assetCategoryList);
+
+            CollectionAssert.AreEqual(expected, result);
+        }
+
+        private AssetTypeDto GetAssetTypeDto()
+        {
+            return new AssetTypeDto()
+            {
+                Name = "Bonds"
+            };
+        }
+
+        private AssetCategory GetAssetCategory()
+        {
+            return new AssetCategory()
+            {
+                Name = "Bonds"
+            };
+        }
+
         private List<TargetDto> GetTargetDtoList()
         {
             return new List<TargetDto>()
@@ -452,13 +513,28 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                 },
                 Date = date,
                 Liabilities = GetLiabilityDtoList(),
-                AssetTypes = new List<string>()
+                AssetTypes = new List<AssetTypeDto>()
                 {
-                    "Bonds",
-                    "Cash",
-                    "Precious Metals",
-                    "Real Estate",
-                    "Stocks"
+                    new AssetTypeDto()
+                    {
+                        Name = "Bonds"
+                    },
+                    new AssetTypeDto()
+                    {
+                        Name = "Cash"
+                    },
+                    new AssetTypeDto()
+                    {
+                        Name = "Precious Metals"
+                    },
+                    new AssetTypeDto()
+                    {
+                        Name = "Real Estate"
+                    },
+                    new AssetTypeDto()
+                    {
+                        Name = "Stocks"
+                    }
                 }
             };
         }

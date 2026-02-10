@@ -25,7 +25,7 @@ namespace HarnishBalanceSheet.DTO
             if (item == null) return false;
             return this.Name.Equals(item.Name) 
                 && this.AssetComponents.SequenceEqual(item.AssetComponents)
-                && this.AssetId.Equals(item.AssetId)
+                && (this.AssetId == null || this.AssetId.Equals(item.AssetId))
                 ;
         }
     }
