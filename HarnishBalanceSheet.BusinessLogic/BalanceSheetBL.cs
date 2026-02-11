@@ -2,7 +2,6 @@
 using HarnishBalanceSheet.DataAccess;
 using HarnishBalanceSheet.DTO;
 using HarnishBalanceSheet.Models;
-using HarnishBalanceSheet.PreciousMetalsService;
 
 namespace HarnishBalanceSheet.BusinessLogic
 {
@@ -10,12 +9,10 @@ namespace HarnishBalanceSheet.BusinessLogic
     {
         private IBalanceSheetContext _balanceSheetContext;
         private IMapper _mapper;
-        private IPreciousMetalsService _preciousMetalsService;
-        public BalanceSheetBL(IBalanceSheetContext context, IMapper mapper, IPreciousMetalsService preciousMetalService)
+        public BalanceSheetBL(IBalanceSheetContext context, IMapper mapper)
         { 
             _balanceSheetContext = context;
             _mapper = mapper;
-            _preciousMetalsService = preciousMetalService;
         }
 
         public async Task<bool> CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
@@ -36,15 +33,13 @@ namespace HarnishBalanceSheet.BusinessLogic
         {
             BalanceSheet balanceSheet = await _balanceSheetContext.GetLatestAsync(userId);
             BalanceSheetEditDto result = _mapper.Map<BalanceSheetEditDto>(balanceSheet);
-            var prices = await _preciousMetalsService.GetPreciousMetalPricesAsync();
-            result.Bullion.ForEach(x => x.PricePerOunce = prices.Where(y => y.Metal == x.MetalName).First().Price);
             return result;
         }
 
         public async Task<BalanceSheetEditDto> GetBalanceSheetForEditing(int userId, int balanceSheetId)
         {
-            Details details = await _balanceSheetContext.GetDetailsAsync(userId, balanceSheetId);
-            return _mapper.Map<BalanceSheetEditDto>(details.BalanceSheet);
+            BalanceSheet balanceSheet = await _balanceSheetContext.GetBalanceSheetAsync(userId, balanceSheetId);
+            return _mapper.Map<BalanceSheetEditDto>(balanceSheet);
         }
 
         public async Task<IEnumerable<BalanceSheetDto>> GetBalanceSheets(int userId, int count)
@@ -108,15 +103,19 @@ namespace HarnishBalanceSheet.BusinessLogic
             details.Assets.ForEach(x => x.Value = x.AssetComponents.Select(y => y.Value).Sum());
             details.BullionSummary.Bullion.ForEach(x => x.TotalPrice = x.NumOunces * x.PricePerOunce);
             details.BullionSummary.Total = details.BullionSummary.Bullion.Select(x => x.TotalPrice).Sum();
-            details.Assets.Add(new AssetDto()
+
+            if (details.BullionSummary.Total > 0)
             {
-                Name = "Bullion",
-                Value = details.BullionSummary.Total,
-                AssetComponents = new List<AssetComponentDto>()
+                details.Assets.Add(new AssetDto()
+                {
+                    Name = "Bullion",
+                    Value = details.BullionSummary.Total,
+                    AssetComponents = new List<AssetComponentDto>()
                 {
                     new AssetComponentDto() { AssetCategory = "Precious Metals", Value = details.BullionSummary.Total }
                 }
-            });
+                });
+            }
             details.TotalAssets = details.Assets.Select(x => x.Value).Sum();
             details.TotalLiabilities = details.Liabilities.Select(x => x.Value).Sum();
             return details.TotalAssets - details.TotalLiabilities;

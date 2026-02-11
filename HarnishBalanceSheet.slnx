@@ -5,5 +5,4 @@
   <Project Path="HarnishBalanceSheet.DTO/HarnishBalanceSheet.DTO.csproj" Id="6971315a-ff4d-4e14-b9fc-783498d685ee" />
   <Project Path="HarnishBalanceSheet.Models/HarnishBalanceSheet.Models.csproj" />
   <Project Path="HarnishBalanceSheet.MVC/HarnishBalanceSheet.MVC.csproj" />
-  <Project Path="HarnishBalanceSheet.PreciousMetalsService/HarnishBalanceSheet.PreciousMetalsService.csproj" Id="42bd0a1d-4072-4968-87ed-4f2e6589acd6" />
 </Solution>

@@ -3,7 +3,7 @@ using HarnishBalanceSheet.BusinessLogic;
 using HarnishBalanceSheet.DataAccess;
 using HarnishBalanceSheet.DTO;
 using HarnishBalanceSheet.Models;
-using HarnishBalanceSheet.PreciousMetalsService;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -16,10 +16,10 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         private BalanceSheetBL _balanceSheetBL;
         private Mock<IBalanceSheetContext> _context;
         private IMapper _mapper;
-        private Mock<IPreciousMetalsService> _preciousMetalsService;
         private ILoggerFactory _loggerFactory;
         private int _userId = 1;
         private int _count = 1;
+        private int _balanceSheetId = 1;
         private string[] _assetCategories = { "Bonds", "Cash", "Precious Metals", "Real Estate", "Stocks" };
 
         [TestInitialize]
@@ -27,9 +27,8 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             _context = new Mock<IBalanceSheetContext>();
             _loggerFactory = new NullLoggerFactory();
-            _mapper = CreateMapper();
-            _preciousMetalsService = new Mock<IPreciousMetalsService>();            
-            _balanceSheetBL = new BalanceSheetBL(_context.Object, _mapper, _preciousMetalsService.Object);
+            _mapper = CreateMapper();          
+            _balanceSheetBL = new BalanceSheetBL(_context.Object, _mapper);
         }        
 
         [TestMethod]
@@ -135,7 +134,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[3],
                                     Value = 407416m
                                 }
                             }
@@ -147,7 +145,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 7035.65m
                                 }
                             }
@@ -159,7 +156,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 14635.9m
                                 }
                             }
@@ -171,12 +167,10 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[0],
                                     Value = 17471.98m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[4],
                                     Value = 273626.47m
                                 }
                             }
@@ -188,17 +182,14 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[0],
                                     Value = 24524.4m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 4236.89m
                                 },
                                 new AssetPortion()
-                                {
-                                    AssetCategory = _assetCategories[4],
+                                {                                    
                                     Value = 4101.9m
                                 }
                             }
@@ -210,7 +201,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 2850.48m
                                 }
                             }
@@ -222,17 +212,14 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[0],
                                     Value = 5637.82m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[3],
                                     Value = 11275.64m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[4],
                                     Value = 5637.82m
                                 }
                             }
@@ -244,22 +231,18 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[0],
                                     Value = 41379.79m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 20689.89m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[3],
                                     Value = 41379.79m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[4],
                                     Value = 84640.87m
                                 },
                             }
@@ -271,7 +254,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 22185.36m
                                 }
                             }
@@ -283,22 +265,18 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[0],
                                     Value = 4775m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 28.9m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[2],
                                     Value = 18830.81m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[4],
                                     Value = 9523.96m
                                 },
                             }
@@ -310,22 +288,18 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[0],
                                     Value = 4775m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 28.9m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[2],
                                     Value = 18830.81m
                                 },
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[4],
                                     Value = 9523.96m
                                 },
                             }
@@ -337,7 +311,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[1],
                                     Value = 5062.57m
                                 }
                             }
@@ -349,7 +322,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[2],
                                     Value = 1042.57m
                                 }
                             }
@@ -361,41 +333,35 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                             {
                                 new AssetPortion()
                                 {
-                                    AssetCategory = _assetCategories[3],
                                     Value = 169900m
                                 }
                             }
                         }
                     },
-                    Bullion = new List<Metal>()
+                    Bullion = new List<MetalPosition>()
                     {
-                        new Metal()
+                        new MetalPosition()
                         {
-                            MetalName = "Gold",
                             NumOunces = 5m,
                             PricePerOunce = 4987.1m
                         },
-                        new Metal()
+                        new MetalPosition()
                         {
-                            MetalName = "Silver",
                             NumOunces = 245m,
                             PricePerOunce = 94.34m
                         },
-                        new Metal()
+                        new MetalPosition()
                         {
-                            MetalName = "Platinum",
                             NumOunces = 10m,
                             PricePerOunce = 2219m
                         },
-                        new Metal()
+                        new MetalPosition()
                         {
-                            MetalName = "Palladium",
                             NumOunces = 5m,
                             PricePerOunce = 1755m
                         },
-                        new Metal()
+                        new MetalPosition()
                         {
-                            MetalName = "Rhodium",
                             NumOunces = 2m,
                             PricePerOunce = 10500m
                         },
@@ -493,7 +459,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                         }
                     },
                     BalanceSheetId = balanceSheetId,
-                    Bullion = new List<Metal>(),
+                    Bullion = new List<MetalPosition>(),
                     Date = date,
                     Liabilities = new List<Liability>()
                 },
@@ -507,19 +473,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                     {
                         AssetComponents = new List<AssetComponentDto>(),
                         Name = "Home"
-                    },
-                    new AssetDto()
-                    {
-                        AssetComponents = new List<AssetComponentDto>()
-                        {
-                            new AssetComponentDto()
-                            {
-                                AssetCategory = "Precious Metals"
-                            }
-                        },
-                        Name = "Bullion"
                     }
-
                 },
                 AssetTypes = new List<AssetTypeDto>()
                 {
@@ -561,6 +515,68 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        public async Task GetBalanceSheetForEditingTest()
+        {
+            var balanceSheet = new BalanceSheet()
+            {
+                BalanceSheetId = _balanceSheetId
+            };
+
+            var expected = new BalanceSheetEditDto()
+            {
+                Assets = new List<AssetDto>(),
+                BalanceSheetId = _balanceSheetId,
+                Bullion = new List<MetalDto>(),
+                Liabilities = new List<LiabilityDto>()
+            };
+
+            _context.Setup(x => x.GetBalanceSheetAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(Task.FromResult(balanceSheet));
+
+            var result = await _balanceSheetBL.GetBalanceSheetForEditing(_userId, _balanceSheetId);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public async Task GetBalanceSheetForCreatingTest()
+        {
+            var balanceSheet = new BalanceSheet()
+            {
+                BalanceSheetId = _balanceSheetId
+            };
+
+            var expected = new BalanceSheetEditDto()
+            {
+                Assets = new List<AssetDto>(),
+                BalanceSheetId = _balanceSheetId,
+                Bullion = new List<MetalDto>(),
+                Liabilities = new List<LiabilityDto>()
+            };
+
+            _context.Setup(x => x.GetLatestAsync(It.IsAny<int>()))
+                .Returns(Task.FromResult(balanceSheet));
+
+            var result = await _balanceSheetBL.GetBalanceSheetForCreating(_userId);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public async Task EditBalanceSheetTest()
+        {
+            var balanceSheetEditDto = new BalanceSheetEditDto();
+
+            var expected = true;
+
+            _context.Setup(x => x.EditBalanceSheetAsync(It.IsAny<BalanceSheet>()))
+                .Returns(Task.FromResult(expected));
+
+            var result = await _balanceSheetBL.EditBalanceSheet(_userId, balanceSheetEditDto);
+
+            Assert.AreEqual(expected, result);
+        }
 
         private IMapper CreateMapper()
         {

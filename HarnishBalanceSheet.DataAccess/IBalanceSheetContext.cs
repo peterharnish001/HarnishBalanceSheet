@@ -12,6 +12,7 @@ namespace HarnishBalanceSheet.DataAccess
         Task<bool> HasTargetsAsync(int userId);
         Task<bool> SetTargetsAsync(int userId, IEnumerable<Target> targets);
         Task<Details> GetDetailsAsync(int userId, int balanceSheetId);
+        Task<BalanceSheet> GetBalanceSheetAsync(int userId, int balanceSheetId);
         Task<BalanceSheet> GetLatestAsync(int userId);
         Task<bool> CreateBalanceSheetAsync(BalanceSheet balanceSheet);
         Task<bool> EditBalanceSheetAsync(BalanceSheet balancesheet);

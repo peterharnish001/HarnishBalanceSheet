@@ -7,9 +7,8 @@
         public DateTime Date { get; set; }
         public User User { get; set; }
         public ICollection<Asset> Assets { get; set; }
-        public ICollection<Metal> Bullion { get; set; }
+        public ICollection<MetalPosition> Bullion { get; set; }
         public ICollection<Liability> Liabilities { get; set; }
-        public ICollection<AssetCategory> AssetCategories { get; set; }
 
         public override bool Equals(object? obj)
         {

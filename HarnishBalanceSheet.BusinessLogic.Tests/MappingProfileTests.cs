@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HarnishBalanceSheet.DTO;
 using HarnishBalanceSheet.Models;
-using HarnishBalanceSheet.PreciousMetalsService;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -361,7 +360,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
 
             var expected = GetMetal();
 
-            var result = _mapper.Map<Metal>(metalDto);
+            var result = _mapper.Map<MetalPosition>(metalDto);
 
             Assert.AreEqual(expected, result);
         }
@@ -373,7 +372,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
 
             var expected = GetBullionList();
 
-            var result = _mapper.Map<List<Metal>>(metalDtoList);
+            var result = _mapper.Map<List<MetalPosition>>(metalDtoList);
 
             CollectionAssert.AreEqual (expected.ToList(), result);
         }
@@ -624,9 +623,9 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             };
         }
 
-        private ICollection<Metal> GetBullionList()
+        private ICollection<MetalPosition> GetBullionList()
         {
-            return new List<Metal>()
+            return new List<MetalPosition>()
             {
                 GetMetal()
             };
@@ -671,12 +670,11 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             };
         }
 
-        private Metal GetMetal()
+        private MetalPosition GetMetal()
         {
-            return new Metal()
+            return new MetalPosition()
             {
                 MetalId = 1,
-                MetalName = "Gold",
                 NumOunces = 5,
                 PricePerOunce = 4987.1m
             };
@@ -733,7 +731,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             return new AssetPortion()
             {
                 AssetPortionId = 1,
-                AssetCategory = "Real Estate",
                 Value = 407416m
             };
         }
