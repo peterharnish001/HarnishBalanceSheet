@@ -4,7 +4,7 @@ using HarnishBalanceSheet.Models;
 
 namespace HarnishBalanceSheet.DataAccess
 {
-    public interface IBalanceSheetContext
+    public interface IBalanceSheetRepository
     {
         Task<IEnumerable<BalanceSheetLinkItem>> GetBalanceSheetDatesAsync(int userId, int count);
         Task<IEnumerable<LiabilityChartItem>> GetLiabilitiesAsync(int userId, int count);
@@ -14,7 +14,7 @@ namespace HarnishBalanceSheet.DataAccess
         Task<Details> GetDetailsAsync(int userId, int balanceSheetId);
         Task<BalanceSheet> GetBalanceSheetAsync(int userId, int balanceSheetId);
         Task<BalanceSheet> GetLatestAsync(int userId);
-        Task<bool> CreateBalanceSheetAsync(BalanceSheet balanceSheet);
+        Task<int> CreateBalanceSheetAsync(BalanceSheet balanceSheet);
         Task<bool> EditBalanceSheetAsync(BalanceSheet balancesheet);
 
     }

@@ -6,7 +6,7 @@ namespace HarnishBalanceSheet.Models
 {
     public class MetalPosition
     {
-        public int MetalId { get; set; }
+        public int MetalPositionId { get; set; }
         public int BalanceSheetId { get; set; }
         public int PreciousMetalId { get; set; }
         public decimal NumOunces { get; set; }
@@ -20,7 +20,7 @@ namespace HarnishBalanceSheet.Models
 
             if (item == null) return false;
 
-            return this.MetalId.Equals(item.MetalId)
+            return this.MetalPositionId.Equals(item.MetalPositionId)
                 && this.NumOunces.Equals(item.NumOunces)
                 && this.PricePerOunce.Equals(item.PricePerOunce)
                 && this.PreciousMetalId.Equals(item.PreciousMetalId)

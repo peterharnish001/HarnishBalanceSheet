@@ -14,7 +14,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
     public sealed class BalanceSheetBLTests
     {
         private BalanceSheetBL _balanceSheetBL;
-        private Mock<IBalanceSheetContext> _context;
+        private Mock<IBalanceSheetRepository> _context;
         private IMapper _mapper;
         private ILoggerFactory _loggerFactory;
         private int _userId = 1;
@@ -25,7 +25,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         [TestInitialize]
         public void CreateBusinessLogic()
         {
-            _context = new Mock<IBalanceSheetContext>();
+            _context = new Mock<IBalanceSheetRepository>();
             _loggerFactory = new NullLoggerFactory();
             _mapper = CreateMapper();          
             _balanceSheetBL = new BalanceSheetBL(_context.Object, _mapper);
@@ -34,7 +34,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         [TestMethod]
         public async Task CreateBalanceSheetTest()
         {
-            var expected = true;
+            var expected = _balanceSheetId;
 
             _context.Setup(x => x.CreateBalanceSheetAsync(It.IsAny<BalanceSheet>()))
                 .Returns(Task.FromResult(expected));

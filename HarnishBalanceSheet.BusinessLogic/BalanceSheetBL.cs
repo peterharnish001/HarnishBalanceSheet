@@ -7,15 +7,15 @@ namespace HarnishBalanceSheet.BusinessLogic
 {
     public class BalanceSheetBL : IBalanceSheetBL
     {
-        private IBalanceSheetContext _balanceSheetContext;
+        private IBalanceSheetRepository _balanceSheetContext;
         private IMapper _mapper;
-        public BalanceSheetBL(IBalanceSheetContext context, IMapper mapper)
+        public BalanceSheetBL(IBalanceSheetRepository context, IMapper mapper)
         { 
             _balanceSheetContext = context;
             _mapper = mapper;
         }
 
-        public async Task<bool> CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
+        public async Task<int> CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
         {
             BalanceSheet balanceSheet = _mapper.Map<BalanceSheet>(balanceSheetDto);
             balanceSheet.UserId = userId;
