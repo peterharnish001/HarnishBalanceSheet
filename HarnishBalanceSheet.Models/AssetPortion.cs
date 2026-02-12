@@ -11,6 +11,7 @@ namespace HarnishBalanceSheet.Models
         public string AssetCategoryName { get; set; }
         public AssetCategory AssetCategory {  get; set; }
         public int AssetId { get; set; }
+        public string AssetName { get; set; }
         public Asset Asset { get; set; }
         public decimal Value { get; set; }
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Text;
 
 namespace HarnishBalanceSheet.DataAccess
@@ -136,6 +137,7 @@ namespace HarnishBalanceSheet.DataAccess
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         List<AssetCategory> categories = new List<AssetCategory>();
+                        BalanceSheet balanceSheet = new BalanceSheet();
 
                         while (await reader.ReadAsync())
                         {
@@ -153,17 +155,28 @@ namespace HarnishBalanceSheet.DataAccess
 
                             while (await reader.ReadAsync())
                             {
-                               /* portions.Add(
+                                portions.Add(new AssetPortion()
                                 {
                                     AssetCategoryName = reader.GetString("AssetCategoryName"),
-                                    AssetId = reader.GetInt32("AssetId"),
+                                    AssetName = reader.GetString("AssetName"),
                                     Value = reader.GetDecimal("Value")
-                                });*/
+                                });
                             }
+
+                            balanceSheet.Assets = portions.Select(x => new Asset()
+                            {
+                                Name = x.AssetName                       
+                            }).Distinct().ToList();
+
+                            ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where( y => y.AssetName == x.Name).ToList());
                         }
+
+                        details.BalanceSheet = balanceSheet;
                     }
                 }
             }
+
+            return details;
         }
 
         public Task<BalanceSheet> GetLatestAsync(int userId)
