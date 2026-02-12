@@ -22,7 +22,7 @@ namespace HarnishBalanceSheet.BusinessLogic
             return await _balanceSheetContext.CreateBalanceSheetAsync(balanceSheet);
         }
 
-        public async Task<bool> EditBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
+        public async Task<int> EditBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
         {
             BalanceSheet balanceSheet = _mapper.Map<BalanceSheet>(balanceSheetDto);
             balanceSheet.UserId = userId;
@@ -78,13 +78,8 @@ namespace HarnishBalanceSheet.BusinessLogic
 
         public async Task<IEnumerable<NetWorthChartDto>> GetNetWorthChart(int userId, int count)
         {
-            var balanceSheets = await _balanceSheetContext.GetBalanceSheetsAsync(userId, count);
-            var detailsList = _mapper.Map<List<DetailsDto>>(balanceSheets);
-            return detailsList.Select(x => new NetWorthChartDto()
-            {
-                Date = x.Date,
-                NetWorth = CalculateNetWorth(x)
-            }).ToList();
+            var netWorthChartModels = await _balanceSheetContext.GetNetWorthChartModelsAsync(userId, count);
+            return _mapper.Map<List<NetWorthChartDto>>(netWorthChartModels);            
         }        
 
         public async Task<bool> HasTargets(int userId)

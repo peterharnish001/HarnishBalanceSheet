@@ -9,7 +9,8 @@ namespace HarnishBalanceSheet.BusinessLogic
         public MappingProfile()
         {
             CreateMap<AssetPortion, AssetComponentDto>()
-                .ForMember(dest => dest.AssetComponentId, opt => opt.MapFrom(src => src.AssetPortionId));
+                .ForMember(dest => dest.AssetComponentId, opt => opt.MapFrom(src => src.AssetPortionId))
+                .ForMember(dest => dest.AssetCategory, opt => opt.MapFrom(src => src.AssetCategoryName));
             CreateMap<Asset, AssetDto>()
                .ForMember(dest => dest.AssetComponents, opt => opt.MapFrom(src => src.AssetPortions));
             CreateMap<MetalPosition, MetalDto>();
@@ -22,6 +23,7 @@ namespace HarnishBalanceSheet.BusinessLogic
             CreateMap<Target, TargetDto>()
                 .ForPath(dest => dest.TargetName, opt => opt.MapFrom(src => src.AssetCategory.Name));
             CreateMap<BalanceSheetLinkItem, BalanceSheetDto>();
+            CreateMap<PreciousMetal, PreciousMetalDto>();
             CreateMap<Details, DetailsDto>()
                 .ForPath(dest => dest.Assets, opt => opt.MapFrom(src => src.BalanceSheet.Assets))
                 .ForPath(dest => dest.BullionSummary.Bullion, opt => opt.MapFrom(src => src.BalanceSheet.Bullion))
@@ -29,7 +31,8 @@ namespace HarnishBalanceSheet.BusinessLogic
                 .ForPath(dest => dest.AssetTypes, opt => opt.MapFrom(src => src.AssetTypes))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.BalanceSheet.Date));
             CreateMap<LiabilityChartItem, LiabilityChartDto>();
-            CreateMap<AssetCategory, AssetTypeDto>();
+            CreateMap<NetWorthChartModel, NetWorthChartDto>();
+            CreateMap<AssetCategory, AssetTypeDto>();            
 
             CreateMap<TargetDto, Target>();
             CreateMap<AssetComponentDto, AssetPortion>()

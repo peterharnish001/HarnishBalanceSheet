@@ -8,6 +8,7 @@ namespace HarnishBalanceSheet.Models
     {
         public int AssetPortionId { get; set; }       
         public int AssetCategoryId { get; set; }
+        public string AssetCategoryName { get; set; }
         public AssetCategory AssetCategory {  get; set; }
         public int AssetId { get; set; }
         public Asset Asset { get; set; }

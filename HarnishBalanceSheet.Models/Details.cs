@@ -8,6 +8,7 @@ namespace HarnishBalanceSheet.Models
     {
         public BalanceSheet BalanceSheet { get; set; }
         public IEnumerable<AssetCategory> AssetTypes { get; set; }
+        public IEnumerable<PreciousMetal> MetalTypes { get; set; }
         public IEnumerable<Target> Targets { get; set; }
     }
 }
