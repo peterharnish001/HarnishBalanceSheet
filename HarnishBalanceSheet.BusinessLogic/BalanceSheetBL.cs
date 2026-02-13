@@ -2,17 +2,20 @@
 using HarnishBalanceSheet.DataAccess;
 using HarnishBalanceSheet.DTO;
 using HarnishBalanceSheet.Models;
+using HarnishBalanceSheet.PreciousMetalsService;
 
 namespace HarnishBalanceSheet.BusinessLogic
 {
     public class BalanceSheetBL : IBalanceSheetBL
     {
         private IBalanceSheetRepository _balanceSheetContext;
+        private IPreciousMetalsService _preciousMetalsService;
         private IMapper _mapper;
-        public BalanceSheetBL(IBalanceSheetRepository context, IMapper mapper)
+        public BalanceSheetBL(IBalanceSheetRepository context, IMapper mapper, IPreciousMetalsService preciousMetalsService)
         { 
             _balanceSheetContext = context;
             _mapper = mapper;
+            _preciousMetalsService = preciousMetalsService;
         }
 
         public async Task<int> CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
@@ -33,6 +36,8 @@ namespace HarnishBalanceSheet.BusinessLogic
         {
             BalanceSheet balanceSheet = await _balanceSheetContext.GetLatestAsync(userId);
             BalanceSheetEditDto result = _mapper.Map<BalanceSheetEditDto>(balanceSheet);
+            IEnumerable<PreciousMetalPrice> prices = await _preciousMetalsService.GetPreciousMetalsPricesAsync();
+            result.Bullion.ToList().ForEach(x => x.PricePerOunce = prices.Where(y => y.Metal == x.MetalName).First().Price);
             return result;
         }
 

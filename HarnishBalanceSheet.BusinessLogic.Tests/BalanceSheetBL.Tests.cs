@@ -3,6 +3,7 @@ using HarnishBalanceSheet.BusinessLogic;
 using HarnishBalanceSheet.DataAccess;
 using HarnishBalanceSheet.DTO;
 using HarnishBalanceSheet.Models;
+using HarnishBalanceSheet.PreciousMetalsService;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -15,6 +16,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
     {
         private BalanceSheetBL _balanceSheetBL;
         private Mock<IBalanceSheetRepository> _context;
+        private Mock<IPreciousMetalsService> _preciousMetalsService;
         private IMapper _mapper;
         private ILoggerFactory _loggerFactory;
         private int _userId = 1;
@@ -26,9 +28,10 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         public void CreateBusinessLogic()
         {
             _context = new Mock<IBalanceSheetRepository>();
+            _preciousMetalsService = new Mock<IPreciousMetalsService>();
             _loggerFactory = new NullLoggerFactory();
             _mapper = CreateMapper();          
-            _balanceSheetBL = new BalanceSheetBL(_context.Object, _mapper);
+            _balanceSheetBL = new BalanceSheetBL(_context.Object, _mapper, _preciousMetalsService.Object);
         }        
 
         [TestMethod]
