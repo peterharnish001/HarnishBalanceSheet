@@ -3,8 +3,6 @@ using System;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Text.Json.Nodes;
 
 namespace HarnishBalanceSheet.PreciousMetalsService
 {
@@ -28,9 +26,9 @@ namespace HarnishBalanceSheet.PreciousMetalsService
 
             using var httpClient = new HttpClient();
 
-            string json = JsonSerializer.Serialize(postData);
+            //string json = JsonSerializer.Serialize(postData);
             
-            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+            using var content = new StringContent(postData, Encoding.UTF8, "application/json");
             
             HttpResponseMessage response = await httpClient.PostAsync(_apiUrl, content);
             
@@ -41,8 +39,9 @@ namespace HarnishBalanceSheet.PreciousMetalsService
             using JsonDocument doc = JsonDocument.Parse(jsonString);
 
             JsonElement root = doc.RootElement;
+            root.TryGetProperty("data", out var data);
 
-            foreach (JsonProperty metal in root.EnumerateObject())
+            foreach (JsonProperty metal in data.EnumerateObject())
             {
                 metal.Value.TryGetProperty("name", out var name);
                 metal.Value.TryGetProperty("results", out var results);

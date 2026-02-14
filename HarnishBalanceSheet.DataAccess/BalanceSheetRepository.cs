@@ -165,13 +165,85 @@ namespace HarnishBalanceSheet.DataAccess
 
                             balanceSheet.Assets = portions.Select(x => new Asset()
                             {
-                                Name = x.AssetName                       
+                                Name = x.AssetName
                             }).Distinct().ToList();
 
-                            ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where( y => y.AssetName == x.Name).ToList());
+                            ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where(y => y.AssetName == x.Name).ToList());
+                        }
+
+                        if (await reader.NextResultAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                balanceSheet.Date = reader.GetDateTime("Date");
+                            }
+                        }
+
+                        if (await reader.NextResultAsync())
+                        {
+                            List<MetalPosition> metalPositions = new List<MetalPosition>();
+
+                            while (await reader.ReadAsync())
+                            {
+                                metalPositions.Add(new MetalPosition()
+                                {
+                                    NumOunces = reader.GetDecimal("NumOunces"),
+                                    PreciousMetalName = reader.GetString("PreciousMetalName"),
+                                    PricePerOunce = reader.GetDecimal("PricePerOunce")
+                                });
+                            }
+
+                            balanceSheet.Bullion = metalPositions;
+                        }
+
+                        if (await reader.NextResultAsync())
+                        {
+                            List<Liability> liabilities = new List<Liability>();
+
+                            while (await reader.ReadAsync())
+                            {
+                                liabilities.Add(new Liability()
+                                {
+                                    Name = reader.GetString("Name"),
+                                    Value = reader.GetDecimal("Value")
+                                });
+                            }
+
+                            balanceSheet.Liabilities = liabilities;
                         }
 
                         details.BalanceSheet = balanceSheet;
+
+                        if (await reader.NextResultAsync())
+                        {
+                            List<PreciousMetal> metals = new List<PreciousMetal>();
+
+                            while (await reader.ReadAsync())
+                            {
+                                metals.Add(new PreciousMetal()
+                                {
+                                    Name = reader.GetString("Name")
+                                });
+                            }
+
+                            details.MetalTypes = metals;
+                        }
+
+                        if (await reader.NextResultAsync())
+                        {
+                            List<Target> targets = new List<Target>();
+
+                            while (await reader.ReadAsync())
+                            {
+                                targets.Add(new Target()
+                                {
+                                    AssetCategoryName = reader.GetString("AssetCategoryName"),
+                                    Percentage = reader.GetDecimal("Percentage")
+                                });
+                            }
+
+                            details.Targets = targets;
+                        }
                     }
                 }
             }
@@ -179,9 +251,39 @@ namespace HarnishBalanceSheet.DataAccess
             return details;
         }
 
-        public Task<BalanceSheet> GetLatestAsync(int userId)
+        public async Task<BalanceSheet> GetLatestAsync(int userId)
         {
-            throw new NotImplementedException();
+            BalanceSheet balanceSheet = new BalanceSheet();
+
+            using (var conn = _context.Database.GetDbConnection())
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "GetLatest";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    DbParameter param1 = cmd.CreateParameter();
+                    param1.ParameterName = "UserId";
+                    param1.DbType = DbType.Int32;
+                    param1.Value = userId;
+                    cmd.Parameters.Add(param1);
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        List<AssetCategory> categories = new List<AssetCategory>();
+
+                        while (await reader.ReadAsync())
+                        {
+                            categories.Add(new AssetCategory()
+                            {
+                                Name = reader.GetString("Name")
+                            });
+                        }
+                    }
+                }
+            }
+
+            return balanceSheet;
         }
 
         public Task<IEnumerable<LiabilityChartItem>> GetLiabilitiesAsync(int userId, int count)
