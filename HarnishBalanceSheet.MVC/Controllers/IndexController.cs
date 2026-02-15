@@ -35,13 +35,13 @@ namespace HarnishBalanceSheet.MVC.Controllers
         }
 
         [HttpGet("[hastargets]")]
-        public async Task<ActionResult<bool>> HasTargets()
+        public async Task<ActionResult<IEnumerable<AssetTypeDto>>> HasTargets()
         {
-            return await _balanceSheetBL.HasTargets(_userId);
+            return new JsonResult(await _balanceSheetBL.HasTargets(_userId));
         }
 
         [HttpPost("[targets]")]
-        public async Task<ActionResult<bool>> Targets(List<TargetDto> targets)
+        public async Task<ActionResult<int>> Targets(List<TargetDto> targets)
         {
             return await _balanceSheetBL.SetTargets(_userId, targets);
         }

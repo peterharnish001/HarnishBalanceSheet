@@ -20,5 +20,6 @@ namespace HarnishBalanceSheet.DataAccess
         public DbSet<User> Users { get; set; }  
         public DbSet<NetWorthChartModel> NetWorthChartModels { get; set; }
         public DbSet<BalanceSheetLinkItem> BalanceSheetLinks { get; set; }
+        public DbSet<LiabilityChartItem> LiabilityChart {  get; set; }
     }
 }

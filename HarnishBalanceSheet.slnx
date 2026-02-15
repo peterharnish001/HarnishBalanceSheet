@@ -2,6 +2,10 @@
   <Project Path="HarnishBalanceSheet.BusinessLogic.Tests/HarnishBalanceSheet.BusinessLogic.Tests.csproj" Id="3209854b-d820-4139-bc5f-81ade66899cd" />
   <Project Path="HarnishBalanceSheet.BusinessLogic/HarnishBalanceSheet.BusinessLogic.csproj" Id="886800ca-0dca-4ab1-9623-ac6e4a7851d2" />
   <Project Path="HarnishBalanceSheet.DataAccess/HarnishBalanceSheet.DataAccess.csproj" Id="458cd9f2-4ea6-4f04-a25c-625b268c8158" />
+  <Project Path="HarnishBalanceSheet.Database/HarnishBalanceSheet.Database.sqlproj" Id="a85801e1-f94a-48b2-91f2-7210fb3ca117">
+    <Build />
+    <Deploy />
+  </Project>
   <Project Path="HarnishBalanceSheet.DTO/HarnishBalanceSheet.DTO.csproj" Id="6971315a-ff4d-4e14-b9fc-783498d685ee" />
   <Project Path="HarnishBalanceSheet.Models/HarnishBalanceSheet.Models.csproj" />
   <Project Path="HarnishBalanceSheet.MVC/HarnishBalanceSheet.MVC.csproj" />

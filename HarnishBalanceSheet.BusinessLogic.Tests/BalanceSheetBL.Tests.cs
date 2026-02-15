@@ -128,23 +128,23 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         }
 
         [TestMethod]
-        [DataRow(false)]
-        [DataRow(true)]
-        public async Task HasTargetsTest(bool expected)
+        public async Task HasTargetsTest()
         {
+            var expected = new List<AssetCategory>();
+
             _context.Setup(x => x.HasTargetsAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(expected));
+                .Returns(Task.FromResult(expected.AsEnumerable()));
 
             var result = await _balanceSheetBL.HasTargets(_userId);
 
-            Assert.AreEqual(expected, result);
+            CollectionAssert.AreEqual(expected, result.ToList());
 ;       }
 
         [TestMethod]
         public async Task SetTargetsTest()
         {
             var targetList = new List<TargetDto>();
-            var expected = true;
+            var expected = 1;
 
             _context.Setup(x => x.SetTargetsAsync(It.IsAny<int>(), It.IsAny<IEnumerable<Target>>()))
                 .Returns(Task.FromResult(expected));
@@ -254,9 +254,9 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         [TestMethod]
         public async Task GetBalanceSheetForEditingTest()
         {
-            var balanceSheet = new BalanceSheet()
+            var editModel = new EditModel()
             {
-                BalanceSheetId = _balanceSheetId
+                BalanceSheet = new BalanceSheet()
             };
 
             var expected = new BalanceSheetEditDto()
@@ -267,8 +267,8 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                 Liabilities = new List<LiabilityDto>()
             };
 
-            _context.Setup(x => x.GetBalanceSheetAsync(It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(Task.FromResult(balanceSheet));
+            _context.Setup(x => x.GetEditModelAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(Task.FromResult(editModel));
 
             var result = await _balanceSheetBL.GetBalanceSheetForEditing(_userId, _balanceSheetId);
 
@@ -278,9 +278,15 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         [TestMethod]
         public async Task GetBalanceSheetForCreatingTest()
         {
-            var balanceSheet = new BalanceSheet()
+            var editModel = new EditModel()
             {
-                BalanceSheetId = _balanceSheetId
+                BalanceSheet = new BalanceSheet()
+                {
+                    Assets = new List<Asset>(),
+                    BalanceSheetId = _balanceSheetId,
+                    Bullion = new List<MetalPosition>(),
+                    Liabilities = new List<Liability>()
+                }
             };
 
             var expected = new BalanceSheetEditDto()
@@ -292,7 +298,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             };
 
             _context.Setup(x => x.GetLatestAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(balanceSheet));
+                .Returns(Task.FromResult(editModel));
 
             var result = await _balanceSheetBL.GetBalanceSheetForCreating(_userId);
 

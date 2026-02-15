@@ -34,8 +34,8 @@ namespace HarnishBalanceSheet.BusinessLogic
 
         public async Task<BalanceSheetEditDto> GetBalanceSheetForCreating(int userId)
         {
-            BalanceSheet balanceSheet = await _balanceSheetContext.GetLatestAsync(userId);
-            BalanceSheetEditDto result = _mapper.Map<BalanceSheetEditDto>(balanceSheet);
+            EditModel editModel = await _balanceSheetContext.GetLatestAsync(userId);
+            BalanceSheetEditDto result = _mapper.Map<BalanceSheetEditDto>(editModel);
             IEnumerable<PreciousMetalPrice> prices = await _preciousMetalsService.GetPreciousMetalsPricesAsync();
             result.Bullion.ToList().ForEach(x => x.PricePerOunce = prices.Where(y => y.Metal == x.MetalName).First().Price);
             return result;
@@ -43,8 +43,11 @@ namespace HarnishBalanceSheet.BusinessLogic
 
         public async Task<BalanceSheetEditDto> GetBalanceSheetForEditing(int userId, int balanceSheetId)
         {
-            BalanceSheet balanceSheet = await _balanceSheetContext.GetBalanceSheetAsync(userId, balanceSheetId);
-            return _mapper.Map<BalanceSheetEditDto>(balanceSheet);
+            EditModel editModel = await _balanceSheetContext.GetEditModelAsync(userId, balanceSheetId);
+            BalanceSheetEditDto result = _mapper.Map<BalanceSheetEditDto>(editModel);
+            IEnumerable<PreciousMetalPrice> prices = await _preciousMetalsService.GetPreciousMetalsPricesAsync();
+            result.Bullion.ToList().ForEach(x => x.PricePerOunce = prices.Where(y => y.Metal == x.MetalName).First().Price);
+            return result;
         }
 
         public async Task<IEnumerable<BalanceSheetDto>> GetBalanceSheets(int userId, int count)
@@ -87,12 +90,13 @@ namespace HarnishBalanceSheet.BusinessLogic
             return _mapper.Map<List<NetWorthChartDto>>(netWorthChartModels);            
         }        
 
-        public async Task<bool> HasTargets(int userId)
+        public async Task<IEnumerable<AssetTypeDto>> HasTargets(int userId)
         {
-            return await _balanceSheetContext.HasTargetsAsync(userId);
+            var assetCategories = await _balanceSheetContext.HasTargetsAsync(userId);
+            return _mapper.Map<List<AssetTypeDto>>(assetCategories);
         }
 
-        public async Task<bool> SetTargets(int userId, IEnumerable<TargetDto> targets)
+        public async Task<int> SetTargets(int userId, IEnumerable<TargetDto> targets)
         {
             var targetModels = _mapper.Map<IEnumerable<Target>>(targets);
             return await _balanceSheetContext.SetTargetsAsync(userId, targetModels);

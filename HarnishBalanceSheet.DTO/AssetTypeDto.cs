@@ -10,6 +10,8 @@ namespace HarnishBalanceSheet.DTO
     {
         [DataMember]
         public string Name { get; set; }
+        [DataMember]
+        public string AssetTypeId { get; set; }
 
         public override bool Equals(object? obj)
         {

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="d16e4147-e8d1-4cdc-aa5b-3385d7d4da31" ChangeDateTime="02/15/2026 19:11:08">
+    <Property Name="ElementName" Value="[dbo].[Table1].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Table1]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AssetId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0b3ed30f-8d2f-4225-b175-fa2489b07d67" ChangeDateTime="02/15/2026 19:14:08">
+    <Property Name="ElementName" Value="[dbo].[AssetCategory].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AssetCategory]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AssetCategoryId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0181f883-9d5b-4056-a714-863bf10c33e0" ChangeDateTime="02/15/2026 19:15:18">
+    <Property Name="ElementName" Value="[dbo].[AssetPortion].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AssetPortion]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AssetPortionId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a8021003-20d8-421f-957f-1a7caee2e1f9" ChangeDateTime="02/15/2026 19:20:54">
+    <Property Name="ElementName" Value="[dbo].[BalanceSheet].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BalanceSheet]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="BalanceSheetId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="018885fe-455c-451a-8f9d-9391010469fa" ChangeDateTime="02/15/2026 19:23:14">
+    <Property Name="ElementName" Value="[dbo].[Liability].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Liability]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LiabilityId" />
+  </Operation>
+</Operations>
