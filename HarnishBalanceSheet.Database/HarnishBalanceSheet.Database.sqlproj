@@ -73,6 +73,10 @@
     <Build Include="Types\TargetType.sql" />
     <Build Include="StoredProcedures\CreateBalanceSheet.sql" />
     <Build Include="StoredProcedures\EditBalanceSheet.sql" />
+    <Build Include="StoredProcedures\GetNetWorthChart.sql" />
+    <Build Include="StoredProcedures\GetBalanceSheetDates.sql" />
+    <Build Include="StoredProcedures\GetDetails.sql" />
+    <Build Include="StoredProcedures\GetLatest.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="HarnishBalanceSheet.Database.refactorlog" />
