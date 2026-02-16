@@ -9,4 +9,8 @@
 	CONSTRAINT FK_AssetCategory_AssetPortion FOREIGN KEY (AssetCategoryId)
 		REFERENCES dbo.AssetCategory (AssetCategoryId),
 	Constraint UK_AssetPortion_AssetId_AssetCategoryId UNIQUE (AssetId, AssetCategoryId)
-)
+);
+GO
+CREATE NONCLUSTERED INDEX IX_AssetPortion_AssetId
+ON dbo.AssetPortion (AssetId);
+GO

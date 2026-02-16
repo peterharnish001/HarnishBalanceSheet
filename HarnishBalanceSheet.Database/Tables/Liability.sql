@@ -7,4 +7,8 @@
     Constraint FK_BalanceSheet_Liability FOREIGN KEY (BalanceSheetId)
 		References dbo.BalanceSheet (BalanceSheetId),
 	Constraint UK_Liabliity_BalanceSheetId_Name UNIQUE (BalanceSheetId, [Name])
-)
+);
+GO
+CREATE NONCLUSTERED INDEX IX_Liability_BalanceSheetId
+ON dbo.Liability (BalanceSheetId);
+GO

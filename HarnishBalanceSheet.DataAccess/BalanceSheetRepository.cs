@@ -371,7 +371,7 @@ namespace HarnishBalanceSheet.DataAccess
         public async Task<IEnumerable<AssetCategory>> HasTargetsAsync(int userId)
         {
             return await _context.AssetCategories
-                .FromSqlInterpolated($"EXEC dbo.GetTargets {userId}")
+                .FromSqlInterpolated($"EXEC dbo.HasTargets {userId}")
                 .ToListAsync();
         }
 
@@ -398,7 +398,7 @@ namespace HarnishBalanceSheet.DataAccess
             {
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "GetLatest";
+                    cmd.CommandText = "GetEditModel";
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     DbParameter param1 = cmd.CreateParameter();
@@ -406,6 +406,12 @@ namespace HarnishBalanceSheet.DataAccess
                     param1.DbType = DbType.Int32;
                     param1.Value = userId;
                     cmd.Parameters.Add(param1);
+
+                    DbParameter param2 = cmd.CreateParameter();
+                    param2.ParameterName = "BalanceSheetId";
+                    param2.DbType = DbType.Int32;
+                    param2.Value = balanceSheetId;
+                    cmd.Parameters.Add(param2);
 
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
@@ -465,6 +471,14 @@ namespace HarnishBalanceSheet.DataAccess
                             }
 
                             balanceSheet.Bullion = metalPositions;
+                        }
+
+                        if (await reader.NextResultAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                balanceSheet.Date = reader.GetDateTime("Date");
+                            }
                         }
 
                         if (await reader.NextResultAsync())

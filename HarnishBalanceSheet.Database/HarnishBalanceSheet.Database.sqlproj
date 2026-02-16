@@ -77,6 +77,10 @@
     <Build Include="StoredProcedures\GetBalanceSheetDates.sql" />
     <Build Include="StoredProcedures\GetDetails.sql" />
     <Build Include="StoredProcedures\GetLatest.sql" />
+    <Build Include="StoredProcedures\GetLiabilityChart.sql" />
+    <Build Include="StoredProcedures\HasTargets.sql" />
+    <Build Include="StoredProcedures\SetTargets.sql" />
+    <Build Include="StoredProcedures\GetEditModel.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="HarnishBalanceSheet.Database.refactorlog" />
@@ -85,5 +89,8 @@
     <Build Include="Types\LiabilityType.sql" />
     <Build Include="Types\BullionType.sql" />
     <Build Include="Types\AssetPortionType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment1.sql" />
   </ItemGroup>
 </Project>

@@ -9,4 +9,10 @@
 	Constraint FK_User_Target FOREIGN KEY (UserId)
 		References dbo.[User] (UserId),
 	Constraint UK_Target_AssetCategoryId_UserId UNIQUE (AssetCategoryId, UserId)
-)	
+);
+GO
+CREATE NONCLUSTERED INDEX IX_Target_AssetCategoryId_UserId
+ON dbo.[Target] (AssetCategoryId, UserId);
+GO
+
+

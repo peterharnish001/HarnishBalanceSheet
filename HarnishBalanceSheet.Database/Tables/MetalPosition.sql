@@ -10,4 +10,8 @@
     Constraint FK_PreciousMetal_MetalPosition FOREIGN KEY (PreciousMetalId)
         References dbo.PreciousMetal (PreciousMetalId),
     Constraint UK_MetalPosition_BalanceSheetId_PreciousMetalId UNIQUE (BalanceSheetId, PreciousMetalId)
-)
+);
+GO
+CREATE NONCLUSTERED INDEX IX_MetalPosition_BalanceSheetId
+ON dbo.MetalPosition (BalanceSheetId);
+GO
