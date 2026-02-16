@@ -1,0 +1,5 @@
+{
+  "MySettings": {
+    "DbConnectionString": "Data Source=localhost\\SQLEXPRESS;Initial Catalog=HarnishDb;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Command Timeout=0"
+  }
+}

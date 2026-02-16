@@ -384,7 +384,7 @@ namespace HarnishBalanceSheet.DataAccess
                 ParameterName = "@Targets",
                 SqlDbType = SqlDbType.Structured,
                 Value = dt,
-                TypeName = "dbo.TargetTableType"
+                TypeName = "dbo.TargetType"
             };
 
             return await _context.Database.ExecuteSqlRawAsync("EXEC dbo.SetTargets @Targets", param);

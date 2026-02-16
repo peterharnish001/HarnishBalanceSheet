@@ -2,5 +2,5 @@
 (
     UserId INT NOT NULL,
     AssetCategoryId INT NOT NULL,
-    [Percentage] DECIMAL NOT NULL
+    [Percentage] DECIMAL(2,2) NOT NULL
 );

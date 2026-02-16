@@ -12,16 +12,12 @@ AS
 
 	INSERT INTO dbo.Asset (BalanceSheetId, [Name], IsPercent)
 	SELECT DISTINCT @BalanceSheetId, [Name], IsPercent
-	FROM @AssetPortions;
-
-	UPDATE @AssetPortions
-	SET AssetId = A.AssetId
-	FROM dbo.Asset A
-	INNER JOIN @AssetPortions AP ON A.[Name] = AP.[Name] AND A.BalanceSheetId = @BalanceSheetId;
+	FROM @AssetPortions;	
 
 	INSERT INTO dbo.AssetPortion (AssetId, AssetCategoryId, [Value])
-	SELECT AssetId, AssetCategoryId, [Value]
-	FROM @AssetPortions;
+	SELECT A.AssetId, AP.AssetCategoryId, AP.[Value]
+	FROM @AssetPortions AP
+	INNER JOIN Asset A ON AP.[Name] = A.[Name] AND A.BalanceSheetId = @BalanceSheetId;
 
 	INSERT INTO dbo.MetalPosition (BalanceSheetId, NumOunces, PricePerOunce, PreciousMetalId)
 	SELECT @BalanceSheetId, NumOunces, PricePerOunce, PreciousMetalId

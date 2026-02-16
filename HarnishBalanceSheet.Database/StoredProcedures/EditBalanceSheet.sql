@@ -19,15 +19,13 @@ AS
 	target.IsPercent = source.IsPercent
 	WHEN NOT MATCHED BY TARGET THEN
 	INSERT (BalanceSheetId, [Name], IsPercent)
-	VALUES (@BalanceSheetId, source.[Name], source.IsPercent);
+	VALUES (@BalanceSheetId, source.[Name], source.IsPercent);	
 
-	UPDATE @AssetPortions
-	SET AssetId = A.AssetId
-	FROM dbo.Asset A
-	INNER JOIN @AssetPortions AP ON A.[Name] = AP.[Name] AND A.BalanceSheetId = @BalanceSheetId;
-
+	WITH cte AS (SELECT A.AssetId, AP.[Name], AP.IsPercent, AP.AssetCategoryId, AP.[Value]
+					FROM @AssetPortions AP
+					INNER JOIN Asset A ON AP.[Name] = A.[Name] AND A.BalanceSheetId = @BalanceSheetId)
 	MERGE dbo.AssetPortion AS target
-	USING @AssetPortions AS source
+	USING cte AS source
 	ON target.AssetId = source.AssetId AND target.AssetCategoryId = source.AssetCategoryId
 	WHEN MATCHED THEN
 	UPDATE SET
