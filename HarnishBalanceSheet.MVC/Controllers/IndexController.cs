@@ -16,20 +16,20 @@ namespace HarnishBalanceSheet.MVC.Controllers
             _balanceSheetBL = balanceSheetBL;
         }
 
-        [HttpGet("[balancesheets/{count:int}]")]
-        public async Task<ActionResult<IEnumerable<BalanceSheetDto>>> BalanceSheets(int count)
+        [HttpGet("[balancesheets]")]
+        public async Task<ActionResult<IEnumerable<BalanceSheetDto>>> BalanceSheets([FromQuery]int count)
         {
             return new JsonResult(await _balanceSheetBL.GetBalanceSheets(_userId, count));
         }
 
-        [HttpGet("[liabilities/{count:int}]")]
-        public async Task<ActionResult<List<LiabilityChartDto>>> LiabilitiesChart(int count)
+        [HttpGet("[liabilities]")]
+        public async Task<ActionResult<List<LiabilityChartDto>>> LiabilitiesChart([FromQuery] int count)
         {
             return new JsonResult(await _balanceSheetBL.GetLiabilityChart(_userId, count));
         }
 
-        [HttpGet("[networth/{count:int}]")]
-        public async Task<ActionResult<List<NetWorthChartDto>>> NetWorthChart(int count)
+        [HttpGet("[networth]")]
+        public async Task<ActionResult<List<NetWorthChartDto>>> NetWorthChart([FromQuery] int count)
         {
             return new JsonResult(await _balanceSheetBL.GetNetWorthChart(_userId, count));
         }

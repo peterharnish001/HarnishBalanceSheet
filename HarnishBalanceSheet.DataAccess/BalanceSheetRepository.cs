@@ -74,13 +74,27 @@ namespace HarnishBalanceSheet.DataAccess
 
             var param = new SqlParameter
             {
+                ParameterName = "@UserId",
+                SqlDbType = SqlDbType.Int,
+                Value = balanceSheet.UserId
+            };
+
+            var param1 = new SqlParameter
+            {
+                ParameterName = "@BalanceSheetId",
+                SqlDbType = SqlDbType.Int,
+                Value = balanceSheet.BalanceSheetId
+            };
+
+            var param2 = new SqlParameter
+            {
                 ParameterName = "@AssetPortions",
                 SqlDbType = SqlDbType.Structured,
                 Value = dt,
                 TypeName = "dbo.AssetPortionType"
             };
 
-            var param1 = new SqlParameter
+            var param3 = new SqlParameter
             {
                 ParameterName = "@Bullion",
                 SqlDbType = SqlDbType.Structured,
@@ -88,7 +102,7 @@ namespace HarnishBalanceSheet.DataAccess
                 TypeName = "dbo.BullionType"
             };
 
-            var param2 = new SqlParameter
+            var param4 = new SqlParameter
             {
                 ParameterName = "@Liabilities",
                 SqlDbType = SqlDbType.Structured,
@@ -96,8 +110,8 @@ namespace HarnishBalanceSheet.DataAccess
                 TypeName = "dbo.LiabilityType"
             };
 
-            return await _context.Database.ExecuteSqlRawAsync("EXEC dbo.EditBalanceSheet @UserId @BalanceSheetId @AssetPortions @Bullion @Liabilities",
-                balanceSheet.UserId, balanceSheet.BalanceSheetId, param, param1, param2);
+            return await _context.Database.ExecuteSqlRawAsync("EXEC dbo.EditBalanceSheet @UserId, @BalanceSheetId, @AssetPortions, @Bullion, @Liabilities",
+                param, param1, param2, param3, param4);
         }
 
         public async Task<IEnumerable<NetWorthChartModel>> GetNetWorthChartModelsAsync(int userId, int count)
@@ -168,10 +182,15 @@ namespace HarnishBalanceSheet.DataAccess
                                 });
                             }
 
-                            balanceSheet.Assets = portions.Select(x => new Asset()
+                            var assetNames = portions.Select(x => new 
                             {
                                 Name = x.AssetName
-                            }).Distinct().ToList();
+                            }).Distinct();
+
+                            balanceSheet.Assets = assetNames.Select(x => new Asset()
+                            {
+                                Name = x.Name
+                            }).ToList();
 
                             ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where(y => y.AssetName == x.Name).ToList());
                         }
@@ -262,6 +281,8 @@ namespace HarnishBalanceSheet.DataAccess
 
             using (var conn = _context.Database.GetDbConnection())
             {
+                await conn.OpenAsync();
+
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "GetLatest";
@@ -303,10 +324,15 @@ namespace HarnishBalanceSheet.DataAccess
                                 });
                             }
 
-                            balanceSheet.Assets = portions.Select(x => new Asset()
+                            var assetNames = portions.Select(x => new
                             {
+                                x.AssetName
+                            }).Distinct();
+
+                            balanceSheet.Assets = assetNames.Select(x => new Asset()
+                            {                                
                                 Name = x.AssetName
-                            }).Distinct().ToList();
+                            }).ToList();
 
                             ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where(y => y.AssetName == x.Name).ToList());
                         }
@@ -403,6 +429,8 @@ namespace HarnishBalanceSheet.DataAccess
 
             using (var conn = _context.Database.GetDbConnection())
             {
+                await conn.OpenAsync();
+
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "GetEditModel";
@@ -453,11 +481,16 @@ namespace HarnishBalanceSheet.DataAccess
                                 });
                             }
 
-                            balanceSheet.Assets = portions.Select(x => new Asset()
+                            var assetIds = portions.Select(x => new
+                            {
+                                x.AssetId
+                            }).Distinct();
+
+                            balanceSheet.Assets = assetIds.Select(x => new Asset()
                             {
                                 AssetId = x.AssetId,
-                                Name = x.AssetName
-                            }).Distinct().ToList();
+                                Name = portions.Where(y => y.AssetId == x.AssetId).First().AssetName
+                            }).ToList();
 
                             ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where(y => y.AssetId == x.AssetId).ToList());
                         }

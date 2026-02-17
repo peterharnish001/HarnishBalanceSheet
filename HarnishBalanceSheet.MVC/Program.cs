@@ -1,4 +1,20 @@
+using HarnishBalanceSheet.BusinessLogic;
+using HarnishBalanceSheet.DataAccess;
+using HarnishBalanceSheet.PreciousMetalsService;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+IConfigurationRoot root = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+var optionsBuilder = new DbContextOptionsBuilder<BalanceSheetContext>();
+optionsBuilder.UseSqlServer(root.GetConnectionString("DefaultConnection"));
+
+builder.Services.AddScoped<IBalanceSheetRepository, BalanceSheetRepository>();
+builder.Services.AddScoped<IPreciousMetalsService, PreciousMetalsService>();
+builder.Services.AddScoped<IBalanceSheetBL, BalanceSheetBL>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
