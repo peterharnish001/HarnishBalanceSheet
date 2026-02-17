@@ -24,39 +24,46 @@ namespace HarnishBalanceSheet.DataAccess
 
             var param = new SqlParameter
             {
-                ParameterName = "@AssetPortions",
-                SqlDbType = SqlDbType.Structured,
-                Value = dt,
-                TypeName = "dbo.AssetPortionTableType"
+                ParameterName = "@UserId",
+                SqlDbType = SqlDbType.Int,
+                Value = balanceSheet.UserId
             };
 
             var param1 = new SqlParameter
             {
-                ParameterName = "@Bullion",
+                ParameterName = "@AssetPortions",
                 SqlDbType = SqlDbType.Structured,
-                Value = dt1,
-                TypeName = "dbo.BullionTableType"
+                Value = dt,
+                TypeName = "dbo.AssetPortionType"
             };
 
             var param2 = new SqlParameter
             {
-                ParameterName = "@Liabilities",
+                ParameterName = "@Bullion",
                 SqlDbType = SqlDbType.Structured,
-                Value = dt2,
-                TypeName = "dbo.LiabilityTableType"
+                Value = dt1,
+                TypeName = "dbo.BullionType"
             };
 
             var param3 = new SqlParameter
+            {
+                ParameterName = "@Liabilities",
+                SqlDbType = SqlDbType.Structured,
+                Value = dt2,
+                TypeName = "dbo.LiabilityType"
+            };
+
+            var param4 = new SqlParameter
             {
                 ParameterName = "@BalanceSheetId",
                 SqlDbType = SqlDbType.Int,
                 Direction = ParameterDirection.Output
             };
 
-            await _context.Database.ExecuteSqlRawAsync("EXEC dbo.CreateBalanceSheet @UserId @AssetPortions @Bullion @Liabilities @BalanceSheetId OUTPUT",
-                balanceSheet.UserId, param, param1, param2, param3);
+            await _context.Database.ExecuteSqlRawAsync("EXEC dbo.CreateBalanceSheet @UserId, @AssetPortions, @Bullion, @Liabilities, @BalanceSheetId OUTPUT",
+                param, param1, param2, param3, param4);
 
-            return (int)(param3.Value ?? 0);
+            return (int)(param4.Value ?? 0);
         }        
 
         public async Task<int> EditBalanceSheetAsync(BalanceSheet balanceSheet)
@@ -70,7 +77,7 @@ namespace HarnishBalanceSheet.DataAccess
                 ParameterName = "@AssetPortions",
                 SqlDbType = SqlDbType.Structured,
                 Value = dt,
-                TypeName = "dbo.AssetPortionTableType"
+                TypeName = "dbo.AssetPortionType"
             };
 
             var param1 = new SqlParameter
@@ -78,7 +85,7 @@ namespace HarnishBalanceSheet.DataAccess
                 ParameterName = "@Bullion",
                 SqlDbType = SqlDbType.Structured,
                 Value = dt1,
-                TypeName = "dbo.BullionTableType"
+                TypeName = "dbo.BullionType"
             };
 
             var param2 = new SqlParameter
@@ -86,7 +93,7 @@ namespace HarnishBalanceSheet.DataAccess
                 ParameterName = "@Liabilities",
                 SqlDbType = SqlDbType.Structured,
                 Value = dt2,
-                TypeName = "dbo.LiabilityTableType"
+                TypeName = "dbo.LiabilityType"
             };
 
             return await _context.Database.ExecuteSqlRawAsync("EXEC dbo.EditBalanceSheet @UserId @BalanceSheetId @AssetPortions @Bullion @Liabilities",
@@ -96,14 +103,14 @@ namespace HarnishBalanceSheet.DataAccess
         public async Task<IEnumerable<NetWorthChartModel>> GetNetWorthChartModelsAsync(int userId, int count)
         {
             return await _context.NetWorthChartModels
-                .FromSqlInterpolated($"EXEC dbo.GetNetWorthChart {userId} {count}")
+                .FromSqlInterpolated($"EXEC dbo.GetNetWorthChart {userId}, {count}")
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<BalanceSheetLinkItem>> GetBalanceSheetDatesAsync(int userId, int count)
         {
             return await _context.BalanceSheetLinks
-                .FromSqlInterpolated($"EXEC dbo.GetBalanceSheetDates {userId} {count}")
+                .FromSqlInterpolated($"EXEC dbo.GetBalanceSheetDates {userId}, {count}")
                 .ToListAsync();
         }
 
@@ -364,7 +371,7 @@ namespace HarnishBalanceSheet.DataAccess
         public async Task<IEnumerable<LiabilityChartItem>> GetLiabilitiesAsync(int userId, int count)
         {
             return await _context.LiabilityChart
-                .FromSqlInterpolated($"EXEC dbo.GetLiabilityChart {userId} {count}")
+                .FromSqlInterpolated($"EXEC dbo.GetLiabilityChart {userId}, {count}")
                 .ToListAsync();
         }
 
@@ -540,7 +547,7 @@ namespace HarnishBalanceSheet.DataAccess
         private DataTable CreateLiabilityDataTable(ICollection<Liability> liabilities)
         {
             var table = new DataTable();
-            table.Columns.Add("LiabilityId", typeof(int?));
+            table.Columns.Add("LiabilityId", typeof(int));
             table.Columns.Add("Name", typeof(string));
             table.Columns.Add("Value", typeof(decimal));
 
@@ -555,7 +562,7 @@ namespace HarnishBalanceSheet.DataAccess
         private DataTable CreateBullionDataTable(ICollection<MetalPosition> bullion)
         {
             var table = new DataTable();
-            table.Columns.Add("MetalPositionId", typeof(int?));
+            table.Columns.Add("MetalPositionId", typeof(int));
             table.Columns.Add("PreciousMetalId", typeof(int));
             table.Columns.Add("NumOunces", typeof(decimal));
             table.Columns.Add("PricePerOunce", typeof(decimal));
@@ -571,8 +578,8 @@ namespace HarnishBalanceSheet.DataAccess
         private DataTable CreateAssetPortionDataTable(ICollection<Asset> assets)
         {
             var table = new DataTable();
-            table.Columns.Add("AssetPortionId", typeof(int?));
-            table.Columns.Add("AssetId", typeof(int?));
+            table.Columns.Add("AssetPortionId", typeof(int));
+            table.Columns.Add("AssetId", typeof(int));
             table.Columns.Add("Name", typeof(string));
             table.Columns.Add("IsPercent", typeof(bool));
             table.Columns.Add("AssetCategoryId", typeof(int));
