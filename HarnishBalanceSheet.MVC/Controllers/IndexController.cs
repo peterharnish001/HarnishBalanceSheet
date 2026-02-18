@@ -5,10 +5,10 @@ using HarnishBalanceSheet.DTO;
 namespace HarnishBalanceSheet.MVC.Controllers
 {   
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/index/")]
     public class IndexController : ControllerBase
     {
-        private IBalanceSheetBL _balanceSheetBL;
+        private readonly IBalanceSheetBL _balanceSheetBL;
         private int _userId = 1;
 
         public IndexController(IBalanceSheetBL balanceSheetBL)
@@ -16,32 +16,32 @@ namespace HarnishBalanceSheet.MVC.Controllers
             _balanceSheetBL = balanceSheetBL;
         }
 
-        [HttpGet("[balancesheets]")]
+        [HttpGet("balancesheets")]
         public async Task<ActionResult<IEnumerable<BalanceSheetDto>>> BalanceSheets([FromQuery]int count)
         {
             return new JsonResult(await _balanceSheetBL.GetBalanceSheets(_userId, count));
         }
 
-        [HttpGet("[liabilities]")]
+        [HttpGet("liabilities")]
         public async Task<ActionResult<List<LiabilityChartDto>>> LiabilitiesChart([FromQuery] int count)
         {
             return new JsonResult(await _balanceSheetBL.GetLiabilityChart(_userId, count));
         }
 
-        [HttpGet("[networth]")]
+        [HttpGet("networth")]
         public async Task<ActionResult<List<NetWorthChartDto>>> NetWorthChart([FromQuery] int count)
         {
             return new JsonResult(await _balanceSheetBL.GetNetWorthChart(_userId, count));
         }
 
-        [HttpGet("[hastargets]")]
+        [HttpGet("has-targets")]
         public async Task<ActionResult<IEnumerable<AssetTypeDto>>> HasTargets()
         {
             return new JsonResult(await _balanceSheetBL.HasTargets(_userId));
         }
 
-        [HttpPost("[targets]")]
-        public async Task<ActionResult<int>> Targets(List<TargetDto> targets)
+        [HttpPost("set-targets")]
+        public async Task<ActionResult<int>> SetTargets(List<SetTargetDto> targets)
         {
             return await _balanceSheetBL.SetTargets(_userId, targets);
         }

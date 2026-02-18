@@ -96,7 +96,7 @@ namespace HarnishBalanceSheet.BusinessLogic
             return _mapper.Map<List<AssetTypeDto>>(assetCategories);
         }
 
-        public async Task<int> SetTargets(int userId, IEnumerable<TargetDto> targets)
+        public async Task<int> SetTargets(int userId, IEnumerable<SetTargetDto> targets)
         {
             var targetModels = _mapper.Map<IEnumerable<Target>>(targets);
             return await _balanceSheetContext.SetTargetsAsync(userId, targetModels);

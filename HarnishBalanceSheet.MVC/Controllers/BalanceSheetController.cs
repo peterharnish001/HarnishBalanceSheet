@@ -5,10 +5,10 @@ using HarnishBalanceSheet.DTO;
 namespace HarnishBalanceSheet.MVC.Controllers
 {   
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/balance-sheet/")]
     public class BalanceSheetController : ControllerBase
     {
-        private IBalanceSheetBL _balanceSheetBL;
+        private readonly IBalanceSheetBL _balanceSheetBL;
         private int _userId = 1;
 
         public BalanceSheetController(IBalanceSheetBL balanceSheetBL)
@@ -16,31 +16,31 @@ namespace HarnishBalanceSheet.MVC.Controllers
             _balanceSheetBL = balanceSheetBL;
         }
 
-        [HttpGet("[details/{balanceSheetId:int}]")]
+        [HttpGet("details/{balanceSheetId:int}")]
         public async Task<ActionResult<BalanceSheetDto>> Details(int balanceSheetId)
         {
             return new JsonResult(await _balanceSheetBL.GetDetails(_userId, balanceSheetId));
         }
 
-        [HttpGet("[edit/{balanceSheetId:int}]")]
+        [HttpGet("edit/{balanceSheetId:int}")]
         public async Task<ActionResult<List<LiabilityChartDto>>> GetDetailsForEditing(int balanceSheetId)
         {
             return new JsonResult(await _balanceSheetBL.GetBalanceSheetForEditing(_userId, balanceSheetId));
         }
 
-        [HttpGet("[create]")]
+        [HttpGet("create")]
         public async Task<ActionResult<List<LiabilityChartDto>>> GetDetailsForCreating()
         {
             return new JsonResult(await _balanceSheetBL.GetBalanceSheetForCreating(_userId));
         }
 
-        [HttpPost("[create]")]
+        [HttpPost("create")]
         public async Task<ActionResult<List<NetWorthChartDto>>> Create(BalanceSheetEditDto balanceSheet)
         {
             return new JsonResult(await _balanceSheetBL.CreateBalanceSheet(_userId, balanceSheet));
         }
 
-        [HttpPut("[edit]")]
+        [HttpPut("edit")]
         public async Task<ActionResult<bool>> Edit(BalanceSheetEditDto balanceSheet)
         {
             return new JsonResult(await _balanceSheetBL.EditBalanceSheet(_userId, balanceSheet));
