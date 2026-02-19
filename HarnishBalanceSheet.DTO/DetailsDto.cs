@@ -26,10 +26,6 @@ namespace HarnishBalanceSheet.DTO
         public decimal TotalLiabilities { get; set; }
         [DataMember]
         public decimal NetWorth {  get; set; }
-        [DataMember]
-        public IEnumerable<AssetTypeDto> AssetTypes { get; set; }
-        [DataMember]
-        public IEnumerable<TargetDto> Targets { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -41,8 +37,6 @@ namespace HarnishBalanceSheet.DTO
                 && this.Assets.SequenceEqual(item.Assets)
                 && this.Liabilities.SequenceEqual(item.Liabilities)
                 && this.BullionSummary.Equals(item.BullionSummary)
-                && this.AssetTypes.SequenceEqual(item.AssetTypes)
-                && this.Targets.SequenceEqual(item.Targets)
                 ;
         }
        

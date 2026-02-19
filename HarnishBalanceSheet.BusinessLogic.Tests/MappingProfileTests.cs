@@ -511,30 +511,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                     Bullion = GetBullionDtoList()
                 },
                 Date = date,
-                Liabilities = GetLiabilityDtoList(),
-                AssetTypes = new List<AssetTypeDto>()
-                {
-                    new AssetTypeDto()
-                    {
-                        Name = "Bonds"
-                    },
-                    new AssetTypeDto()
-                    {
-                        Name = "Cash"
-                    },
-                    new AssetTypeDto()
-                    {
-                        Name = "Precious Metals"
-                    },
-                    new AssetTypeDto()
-                    {
-                        Name = "Real Estate"
-                    },
-                    new AssetTypeDto()
-                    {
-                        Name = "Stocks"
-                    }
-                }
+                Liabilities = GetLiabilityDtoList()
             };
         }
 
@@ -685,8 +662,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             return new AssetDto()
             {
                 AssetId = 1,
-                Name = "Home",
-                AssetComponents = GetAssetComponentList()
+                Name = "Home"
             };
         }
 

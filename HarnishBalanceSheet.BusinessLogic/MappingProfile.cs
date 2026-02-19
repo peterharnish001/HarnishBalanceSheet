@@ -11,9 +11,9 @@ namespace HarnishBalanceSheet.BusinessLogic
             CreateMap<AssetPortion, AssetComponentDto>()
                 .ForMember(dest => dest.AssetComponentId, opt => opt.MapFrom(src => src.AssetPortionId))
                 .ForMember(dest => dest.AssetCategory, opt => opt.MapFrom(src => src.AssetCategoryName));
-            CreateMap<Asset, AssetDto>()
-               .ForMember(dest => dest.AssetComponents, opt => opt.MapFrom(src => src.AssetPortions));
-            CreateMap<MetalPosition, MetalDto>();
+            CreateMap<Asset, AssetDto>();
+            CreateMap<MetalPosition, MetalDto>()
+                .ForMember(dest => dest.MetalName, opt => opt.MapFrom(src => src.PreciousMetalName));
             CreateMap<Liability, LiabilityDto>();
             CreateMap<BalanceSheet, BalanceSheetDto>();
             CreateMap<AssetCategory, AssetTypeDto>()
@@ -24,14 +24,13 @@ namespace HarnishBalanceSheet.BusinessLogic
                 .ForPath(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
                 .ForPath(dest => dest.BullionSummary.Bullion, opt => opt.MapFrom(src => src.Bullion));
             CreateMap<Target, TargetDto>()
-                .ForPath(dest => dest.TargetName, opt => opt.MapFrom(src => src.AssetCategory.Name));
+                .ForPath(dest => dest.TargetName, opt => opt.MapFrom(src => src.AssetCategoryName));
             CreateMap<BalanceSheetLinkItem, BalanceSheetDto>();
             CreateMap<PreciousMetal, PreciousMetalDto>();
             CreateMap<Details, DetailsDto>()
                 .ForPath(dest => dest.Assets, opt => opt.MapFrom(src => src.BalanceSheet.Assets))
                 .ForPath(dest => dest.BullionSummary.Bullion, opt => opt.MapFrom(src => src.BalanceSheet.Bullion))
                 .ForPath(dest => dest.Liabilities, opt => opt.MapFrom(src => src.BalanceSheet.Liabilities))
-                .ForPath(dest => dest.AssetTypes, opt => opt.MapFrom(src => src.AssetTypes))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.BalanceSheet.Date));
             CreateMap<LiabilityChartItem, LiabilityChartDto>();
             CreateMap<NetWorthChartModel, NetWorthChartDto>();                        

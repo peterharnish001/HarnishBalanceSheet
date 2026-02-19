@@ -207,31 +207,8 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                 {
                     new AssetDto()
                     {
-                        AssetComponents = new List<AssetComponentDto>(),
+                       
                         Name = "Home"
-                    }
-                },
-                AssetTypes = new List<AssetTypeDto>()
-                {
-                    new AssetTypeDto()
-                    {
-                        Name = "Bonds"
-                    },
-                    new AssetTypeDto()
-                    {
-                        Name = "Cash"
-                    },
-                    new AssetTypeDto()
-                    {
-                        Name = "Precious Metals"
-                    },
-                    new AssetTypeDto()
-                    {
-                        Name = "Real Estate"
-                    },
-                    new AssetTypeDto()
-                    {
-                        Name = "Stocks"
                     }
                 },
                 BullionSummary = new BullionSummaryDto()
@@ -239,8 +216,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
                     Bullion = new List<MetalDto>()
                 },
                 Date = date,
-                Liabilities = new List<LiabilityDto>(),
-                Targets = new List<TargetDto>()
+                Liabilities = new List<LiabilityDto>()
             };
 
             _context.Setup(x => x.GetDetailsAsync(It.IsAny<int>(), It.IsAny<int>()))

@@ -18,6 +18,8 @@ namespace HarnishBalanceSheet.DTO
         public decimal Fraction {  get; set; }
         [DataMember]
         public decimal Value { get; set; }
+        [DataMember]
+        public string AssetName { get; set; }
 
         public override bool Equals(object? obj)
         {

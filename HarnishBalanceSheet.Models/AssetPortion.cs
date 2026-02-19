@@ -14,6 +14,7 @@ namespace HarnishBalanceSheet.Models
         public string AssetName { get; set; }
         public Asset Asset { get; set; }
         public decimal Value { get; set; }
+        public bool IsPercent { get; set; }
 
         public override bool Equals(object? obj)
         {

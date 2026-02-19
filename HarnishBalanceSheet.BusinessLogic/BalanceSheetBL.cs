@@ -58,20 +58,20 @@ namespace HarnishBalanceSheet.BusinessLogic
         {
             Details detailsModel = await _balanceSheetContext.GetDetailsAsync(userId, balanceSheetId);
             DetailsDto details = _mapper.Map<DetailsDto>(detailsModel);
-            CalculateNetWorth(details);
-            details.AssetShares = details.AssetTypes.Select(x => new AssetShareDto()
+            var assetPortions = detailsModel.BalanceSheet.Assets.SelectMany(x => x.AssetPortions).ToList();
+            details.NetWorth = CalculateNetWorth(details, assetPortions);
+            details.AssetShares = detailsModel.AssetTypes.Select(x => new AssetShareDto()
             {
                 Name = x.Name,
-                AssetComponents = details.Assets.SelectMany(y => y.AssetComponents.Where(z => z.AssetCategory == x.Name)).ToList(),
-                Total = details.Assets.SelectMany(y => y.AssetComponents.Where(z => z.AssetCategory == x.Name)).Select(a => a.Value).Sum()
+                AssetComponents = _mapper.Map<List<AssetComponentDto>>(assetPortions.Where(y => y.AssetCategoryName == x.Name))
             });
-            details.TargetComparisons = details.Targets.Select(x => new TargetComparisonDto()
+            details.TargetComparisons = detailsModel.Targets.Select(x => new TargetComparisonDto()
             {
-                Name = x.TargetName,
+                Name = x.AssetCategoryName,
                 Target = x.Percentage,
-                Actual = details.AssetShares.Where(y => y.Name == x.TargetName).First().Total / details.NetWorth
+                Actual = details.AssetShares.Where(y => y.Name == x.AssetCategoryName).First().Total / details.NetWorth
             }).ToList();
-            details.TargetComparisons.ForEach(x => x.Difference = x.Actual / x.Target - 100);
+            details.TargetComparisons.ForEach(x => x.Difference = x.Actual / x.Target - 1);
 
             return details;
         }
@@ -100,9 +100,9 @@ namespace HarnishBalanceSheet.BusinessLogic
             return await _balanceSheetContext.SetTargetsAsync(userId, targetModels);
         }
 
-        private decimal CalculateNetWorth(DetailsDto details)
+        private decimal CalculateNetWorth(DetailsDto details, List<AssetPortion> assetPortions)
         {            
-            details.Assets.ForEach(x => x.Value = x.AssetComponents.Select(y => y.Value).Sum());
+            details.Assets.ForEach(x => x.Value = assetPortions.Where(y => y.AssetName == x.Name).Select(z => z.Value).Sum());
             details.BullionSummary.Bullion.ForEach(x => x.TotalPrice = x.NumOunces * x.PricePerOunce);
             details.BullionSummary.Total = details.BullionSummary.Bullion.Select(x => x.TotalPrice).Sum();
 
@@ -111,11 +111,14 @@ namespace HarnishBalanceSheet.BusinessLogic
                 details.Assets.Add(new AssetDto()
                 {
                     Name = "Bullion",
-                    Value = details.BullionSummary.Total,
-                    AssetComponents = new List<AssetComponentDto>()
+                    Value = details.BullionSummary.Total
+                });
+
+                assetPortions.Add(new AssetPortion()
                 {
-                    new AssetComponentDto() { AssetCategory = "Precious Metals", Value = details.BullionSummary.Total }
-                }
+                    AssetCategoryName = "Precious Metals",
+                    Value = details.BullionSummary.Total,
+                    AssetName = "Bullion"
                 });
             }
             details.TotalAssets = details.Assets.Select(x => x.Value).Sum();

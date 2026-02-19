@@ -178,7 +178,8 @@ namespace HarnishBalanceSheet.DataAccess
                                 {
                                     AssetCategoryName = reader.GetString("AssetCategoryName"),
                                     AssetName = reader.GetString("AssetName"),
-                                    Value = reader.GetDecimal("Value")
+                                    Value = reader.GetDecimal("Value"),
+                                    IsPercent = reader.GetBoolean("IsPercent")
                                 });
                             }
 
@@ -189,7 +190,8 @@ namespace HarnishBalanceSheet.DataAccess
 
                             balanceSheet.Assets = assetNames.Select(x => new Asset()
                             {
-                                Name = x.Name
+                                Name = x.Name,
+                                IsPercent = portions.Where(y => y.AssetName == x.Name).First().IsPercent
                             }).ToList();
 
                             ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where(y => y.AssetName == x.Name).ToList());
