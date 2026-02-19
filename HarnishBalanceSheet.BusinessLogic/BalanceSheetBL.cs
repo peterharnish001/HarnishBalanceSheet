@@ -18,18 +18,16 @@ namespace HarnishBalanceSheet.BusinessLogic
             _preciousMetalsService = preciousMetalsService;
         }
 
-        public async Task<int> CreateBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
+        public async Task<int> CreateBalanceSheet(int userId, BalanceSheetSaveDto balanceSheetSaveDto)
         {
-            BalanceSheet balanceSheet = _mapper.Map<BalanceSheet>(balanceSheetDto);
-            balanceSheet.UserId = userId;
-            return await _balanceSheetContext.CreateBalanceSheetAsync(balanceSheet);
+            BalanceSheet balanceSheet = _mapper.Map<BalanceSheet>(balanceSheetSaveDto);
+            return await _balanceSheetContext.CreateBalanceSheetAsync(userId, balanceSheet);
         }
 
-        public async Task<int> EditBalanceSheet(int userId, BalanceSheetEditDto balanceSheetDto)
+        public async Task<int> EditBalanceSheet(int userId, int balanceSheetId, BalanceSheetEditDto balanceSheetDto)
         {
             BalanceSheet balanceSheet = _mapper.Map<BalanceSheet>(balanceSheetDto);
-            balanceSheet.UserId = userId;
-            return await _balanceSheetContext.EditBalanceSheetAsync(balanceSheet);
+            return await _balanceSheetContext.EditBalanceSheetAsync(userId, balanceSheetId, balanceSheet);
         }
 
         public async Task<BalanceSheetEditDto> GetBalanceSheetForCreating(int userId)

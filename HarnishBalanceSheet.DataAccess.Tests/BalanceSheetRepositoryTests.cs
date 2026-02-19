@@ -385,7 +385,7 @@ namespace HarnishBalanceSheet.DataAccess.Tests
                 UserId = _userId
             };
 
-            var result = await _repository.CreateBalanceSheetAsync(balanceSheet);
+            var result = await _repository.CreateBalanceSheetAsync(_userId, balanceSheet);
 
             Assert.IsGreaterThan(0, result);
         }
@@ -790,7 +790,7 @@ namespace HarnishBalanceSheet.DataAccess.Tests
                 UserId = _userId
             };
 
-            var result = await _repository.EditBalanceSheetAsync(balanceSheet);
+            var result = await _repository.EditBalanceSheetAsync(_userId, 1, balanceSheet);
 
             Assert.IsGreaterThan(0, result);
         }

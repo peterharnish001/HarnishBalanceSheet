@@ -39,10 +39,10 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             var expected = _balanceSheetId;
 
-            _context.Setup(x => x.CreateBalanceSheetAsync(It.IsAny<BalanceSheet>()))
+            _context.Setup(x => x.CreateBalanceSheetAsync(It.IsAny<int>(), It.IsAny<BalanceSheet>()))
                 .Returns(Task.FromResult(expected));
 
-            var result = await _balanceSheetBL.CreateBalanceSheet(_userId, new BalanceSheetEditDto());
+            var result = await _balanceSheetBL.CreateBalanceSheet(_userId, new BalanceSheetSaveDto());
 
             Assert.AreEqual(expected, result);
         }
@@ -143,7 +143,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         [TestMethod]
         public async Task SetTargetsTest()
         {
-            var targetList = new List<TargetDto>();
+            var targetList = new List<SetTargetDto>();
             var expected = 1;
 
             _context.Setup(x => x.SetTargetsAsync(It.IsAny<int>(), It.IsAny<IEnumerable<Target>>()))
@@ -312,10 +312,10 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
 
             var expected = 1;
 
-            _context.Setup(x => x.EditBalanceSheetAsync(It.IsAny<BalanceSheet>()))
+            _context.Setup(x => x.EditBalanceSheetAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<BalanceSheet>()))
                 .Returns(Task.FromResult(expected));
 
-            var result = await _balanceSheetBL.EditBalanceSheet(_userId, balanceSheetEditDto);
+            var result = await _balanceSheetBL.EditBalanceSheet(_userId, 1, balanceSheetEditDto);
 
             Assert.AreEqual(expected, result);
         }

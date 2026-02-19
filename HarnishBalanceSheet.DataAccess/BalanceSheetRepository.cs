@@ -16,7 +16,7 @@ namespace HarnishBalanceSheet.DataAccess
             _context = context;
         }
 
-        public async Task<int> CreateBalanceSheetAsync(BalanceSheet balanceSheet)
+        public async Task<int> CreateBalanceSheetAsync(int userId, BalanceSheet balanceSheet)
         {
             var dt = CreateAssetPortionDataTable(balanceSheet.Assets);
             var dt1 = CreateBullionDataTable(balanceSheet.Bullion);
@@ -26,7 +26,7 @@ namespace HarnishBalanceSheet.DataAccess
             {
                 ParameterName = "@UserId",
                 SqlDbType = SqlDbType.Int,
-                Value = balanceSheet.UserId
+                Value = userId
             };
 
             var param1 = new SqlParameter
@@ -66,7 +66,7 @@ namespace HarnishBalanceSheet.DataAccess
             return (int)(param4.Value ?? 0);
         }        
 
-        public async Task<int> EditBalanceSheetAsync(BalanceSheet balanceSheet)
+        public async Task<int> EditBalanceSheetAsync(int userId, int balanceSheetId, BalanceSheet balanceSheet)
         {
             var dt = CreateAssetPortionDataTable(balanceSheet.Assets);
             var dt1 = CreateBullionDataTable(balanceSheet.Bullion);
@@ -76,14 +76,14 @@ namespace HarnishBalanceSheet.DataAccess
             {
                 ParameterName = "@UserId",
                 SqlDbType = SqlDbType.Int,
-                Value = balanceSheet.UserId
+                Value = userId
             };
 
             var param1 = new SqlParameter
             {
                 ParameterName = "@BalanceSheetId",
                 SqlDbType = SqlDbType.Int,
-                Value = balanceSheet.BalanceSheetId
+                Value = balanceSheetId
             };
 
             var param2 = new SqlParameter

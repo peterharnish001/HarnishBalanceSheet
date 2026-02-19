@@ -29,21 +29,21 @@ namespace HarnishBalanceSheet.MVC.Controllers
         }
 
         [HttpGet("create")]
-        public async Task<ActionResult<List<LiabilityChartDto>>> GetDetailsForCreating()
+        public async Task<ActionResult<BalanceSheetEditDto>> GetDetailsForCreating()
         {
             return new JsonResult(await _balanceSheetBL.GetBalanceSheetForCreating(_userId));
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<List<NetWorthChartDto>>> Create(BalanceSheetEditDto balanceSheet)
+        public async Task<ActionResult<int>> Create(BalanceSheetSaveDto balanceSheet)
         {
             return new JsonResult(await _balanceSheetBL.CreateBalanceSheet(_userId, balanceSheet));
         }
 
-        [HttpPut("edit")]
-        public async Task<ActionResult<bool>> Edit(BalanceSheetEditDto balanceSheet)
+        [HttpPut("edit/{balanceSheetId:int}")]
+        public async Task<ActionResult<int>> Edit([FromQuery] int balanceSheetId, BalanceSheetEditDto balanceSheet)
         {
-            return new JsonResult(await _balanceSheetBL.EditBalanceSheet(_userId, balanceSheet));
+            return new JsonResult(await _balanceSheetBL.EditBalanceSheet(_userId, balanceSheetId, balanceSheet));
         }
     }
 }

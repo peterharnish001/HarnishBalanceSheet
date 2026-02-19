@@ -37,13 +37,13 @@ namespace HarnishBalanceSheet.BusinessLogic
             CreateMap<NetWorthChartModel, NetWorthChartDto>();                        
 
             CreateMap<SetTargetDto, Target>();
-            CreateMap<AssetComponentDto, AssetPortion>()
-                .ForMember(dest => dest.AssetPortionId, opt => opt.MapFrom(src => src.AssetComponentId));
-            CreateMap<AssetDto, Asset>()
+            CreateMap<AssetComponentSaveDto, AssetPortion>()
+                .ForMember(dest => dest.AssetCategoryId, opt => opt.MapFrom(src => src.AssetTypeId));
+            CreateMap<AssetSaveDto, Asset>()
                 .ForMember(dest => dest.AssetPortions, opt => opt.MapFrom(src => src.AssetComponents));
-            CreateMap<MetalDto, MetalPosition>();
+            CreateMap<MetalPositionSaveDto, MetalPosition>();
             CreateMap<LiabilityDto, Liability>();
-            CreateMap<BalanceSheetEditDto, BalanceSheet>()
+            CreateMap<BalanceSheetSaveDto, BalanceSheet>()
                 .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
                 .ForMember(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
                 .ForMember(dest => dest.Bullion, opt => opt.MapFrom(src => src.Bullion));
