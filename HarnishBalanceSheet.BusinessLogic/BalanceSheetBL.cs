@@ -24,7 +24,7 @@ namespace HarnishBalanceSheet.BusinessLogic
             return await _balanceSheetContext.CreateBalanceSheetAsync(userId, balanceSheet);
         }
 
-        public async Task<int> EditBalanceSheet(int userId, int balanceSheetId, BalanceSheetEditDto balanceSheetDto)
+        public async Task<int> EditBalanceSheet(int userId, int balanceSheetId, BalanceSheetSaveDto balanceSheetDto)
         {
             BalanceSheet balanceSheet = _mapper.Map<BalanceSheet>(balanceSheetDto);
             return await _balanceSheetContext.EditBalanceSheetAsync(userId, balanceSheetId, balanceSheet);

@@ -9,15 +9,17 @@ namespace HarnishBalanceSheet.DTO
     public class BalanceSheetEditDto
     {
         [DataMember]
-        public int? BalanceSheetId { get; set; }
-        [DataMember]
         public DateTime Date {  get; set; }
         [DataMember]
-        public List<AssetDto> Assets { get; set; }
+        public List<AssetSaveDto> Assets { get; set; }
         [DataMember]
         public List<LiabilityDto> Liabilities { get; set; }
         [DataMember]
         public List<MetalDto> Bullion { get; set; }
+        [DataMember]
+        public List<AssetTypeDto> AssetTypes { get; set; }
+        [DataMember]
+        public List<PreciousMetalDto> PreciousMetals { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -25,8 +27,7 @@ namespace HarnishBalanceSheet.DTO
 
             if (item == null) return false;
 
-            return this.BalanceSheetId.Equals(item.BalanceSheetId)
-                && this.Assets.SequenceEqual(item.Assets)
+            return this.Assets.SequenceEqual(item.Assets)
                 && this.Liabilities.SequenceEqual(item.Liabilities)
                 && this.Bullion.SequenceEqual(item.Bullion)
                 ;

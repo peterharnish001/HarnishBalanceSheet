@@ -11,6 +11,7 @@ AS
 		,A.[Name] AS AssetName
 		,AP.AssetPortionId
 		,AP.[Value]
+		,AP.AssetCategoryId
 	FROM AssetCategory AC
 	INNER JOIN AssetPortion AP ON AC.AssetCategoryId = AP.AssetCategoryId
 	INNER JOIN Asset A ON AP.AssetId = A.AssetId

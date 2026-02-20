@@ -13,8 +13,6 @@ namespace HarnishBalanceSheet.DTO
         public string Name { get; set; }
         [DataMember]
         public decimal Value { get; set; }
-        [DataMember]
-        public bool IsPercent { get; set; }
 
         public override bool Equals(object? obj)
         {

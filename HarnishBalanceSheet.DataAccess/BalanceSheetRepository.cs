@@ -178,8 +178,7 @@ namespace HarnishBalanceSheet.DataAccess
                                 {
                                     AssetCategoryName = reader.GetString("AssetCategoryName"),
                                     AssetName = reader.GetString("AssetName"),
-                                    Value = reader.GetDecimal("Value"),
-                                    IsPercent = reader.GetBoolean("IsPercent")
+                                    Value = reader.GetDecimal("Value")
                                 });
                             }
 
@@ -190,8 +189,7 @@ namespace HarnishBalanceSheet.DataAccess
 
                             balanceSheet.Assets = assetNames.Select(x => new Asset()
                             {
-                                Name = x.Name,
-                                IsPercent = portions.Where(y => y.AssetName == x.Name).First().IsPercent
+                                Name = x.Name
                             }).ToList();
 
                             ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where(y => y.AssetName == x.Name).ToList());
@@ -322,7 +320,9 @@ namespace HarnishBalanceSheet.DataAccess
                                 {
                                     AssetCategoryName = reader.GetString("AssetCategoryName"),
                                     AssetName = reader.GetString("AssetName"),
-                                    Value = reader.GetDecimal("Value")
+                                    Value = reader.GetDecimal("Value"),
+                                    AssetCategoryId = reader.GetInt32("AssetCategoryId"),
+                                    IsPercent = reader.GetBoolean("IsPercent")
                                 });
                             }
 
@@ -333,7 +333,8 @@ namespace HarnishBalanceSheet.DataAccess
 
                             balanceSheet.Assets = assetNames.Select(x => new Asset()
                             {                                
-                                Name = x.AssetName
+                                Name = x.AssetName,
+                                IsPercent = portions.Where(y => y.AssetName == x.AssetName).First().IsPercent
                             }).ToList();
 
                             ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where(y => y.AssetName == x.Name).ToList());
@@ -476,10 +477,12 @@ namespace HarnishBalanceSheet.DataAccess
                                 portions.Add(new AssetPortion()
                                 {
                                     AssetCategoryName = reader.GetString("AssetCategoryName"),
+                                    AssetCategoryId = reader.GetInt32("AssetCategoryId"),
                                     AssetId = reader.GetInt32("AssetId"),
                                     AssetName = reader.GetString("AssetName"),
                                     AssetPortionId = reader.GetInt32("AssetPortionId"),
-                                    Value = reader.GetDecimal("Value")
+                                    Value = reader.GetDecimal("Value"),
+                                    IsPercent = reader.GetBoolean("IsPercent")
                                 });
                             }
 
@@ -491,7 +494,8 @@ namespace HarnishBalanceSheet.DataAccess
                             balanceSheet.Assets = assetIds.Select(x => new Asset()
                             {
                                 AssetId = x.AssetId,
-                                Name = portions.Where(y => y.AssetId == x.AssetId).First().AssetName
+                                Name = portions.Where(y => y.AssetId == x.AssetId).First().AssetName,
+                                IsPercent = portions.Where(y => y.AssetId == x.AssetId).First().IsPercent
                             }).ToList();
 
                             ((List<Asset>)balanceSheet.Assets).ForEach(x => x.AssetPortions = portions.Where(y => y.AssetId == x.AssetId).ToList());

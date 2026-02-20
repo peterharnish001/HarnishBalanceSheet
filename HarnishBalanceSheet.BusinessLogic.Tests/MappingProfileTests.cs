@@ -56,7 +56,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
 
             var expected = GetAssetDto();
 
-            var result = _mapper.Map<AssetDto>(asset);
+            var result = _mapper.Map<AssetSaveDto>(asset);
 
             Assert.AreEqual(expected, result);
         }
@@ -130,7 +130,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             var expected = new BalanceSheetEditDto()
             {
                 Assets = GetAssetDtoList(),
-                BalanceSheetId = 1,
                 Bullion = GetBullionDtoList(),  
                 Date = date,
                 Liabilities = GetLiabilityDtoList()
@@ -408,7 +407,6 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             var balanceSheetEditDto = new BalanceSheetEditDto()
             {
                 Assets = GetAssetDtoList(),
-                BalanceSheetId = 1,
                 Bullion = GetBullionDtoList(),
                 Date = date,
                 Liabilities = GetLiabilityDtoList()
@@ -505,7 +503,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             return new DetailsDto()
             {
-                Assets = GetAssetDtoList(),
+                Assets = new List<AssetDto>(),
                 BullionSummary = new BullionSummaryDto()
                 {
                     Bullion = GetBullionDtoList()
@@ -584,9 +582,9 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             };
         }
 
-        private List<AssetDto> GetAssetDtoList()
+        private List<AssetSaveDto> GetAssetDtoList()
         {
-            return new List<AssetDto>()
+            return new List<AssetSaveDto>()
             {
                 GetAssetDto()
             };
@@ -657,9 +655,9 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
             };
         }
 
-        private AssetDto GetAssetDto()
+        private AssetSaveDto GetAssetDto()
         {
-            return new AssetDto()
+            return new AssetSaveDto()
             {
                 AssetId = 1,
                 Name = "Home"

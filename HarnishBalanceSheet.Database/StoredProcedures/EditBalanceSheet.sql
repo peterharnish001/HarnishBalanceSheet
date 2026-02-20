@@ -36,11 +36,10 @@ AS
 
 	MERGE dbo.MetalPosition AS target
 	USING @Bullion AS source
-	ON target.MetalPositionId = source.MetalPositionId AND target.BalanceSheetId = @BalanceSheetId
+	ON target.PreciousMetalId = source.PreciousMetalId AND target.BalanceSheetId = @BalanceSheetId
 	WHEN MATCHED THEN
 	UPDATE SET
-	target.NumOunces = source.NumOunces,
-	target.PricePerOunce = source.PricePerOunce
+	target.NumOunces = source.NumOunces
 	WHEN NOT MATCHED BY TARGET THEN
 	INSERT (BalanceSheetId, NumOunces, PricePerOunce, PreciousMetalId)
 	VALUES (@BalanceSheetId, source.NumOunces, source.PricePerOunce, source.PreciousMetalId);

@@ -41,7 +41,7 @@ namespace HarnishBalanceSheet.MVC.Controllers
         }
 
         [HttpPut("edit/{balanceSheetId:int}")]
-        public async Task<ActionResult<int>> Edit([FromQuery] int balanceSheetId, BalanceSheetEditDto balanceSheet)
+        public async Task<ActionResult<int>> Edit(int balanceSheetId, BalanceSheetSaveDto balanceSheet)
         {
             return new JsonResult(await _balanceSheetBL.EditBalanceSheet(_userId, balanceSheetId, balanceSheet));
         }

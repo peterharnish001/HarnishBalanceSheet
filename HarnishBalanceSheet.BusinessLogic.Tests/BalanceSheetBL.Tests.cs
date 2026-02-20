@@ -237,8 +237,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
 
             var expected = new BalanceSheetEditDto()
             {
-                Assets = new List<AssetDto>(),
-                BalanceSheetId = _balanceSheetId,
+                Assets = new List<AssetSaveDto>(),
                 Bullion = new List<MetalDto>(),
                 Liabilities = new List<LiabilityDto>()
             };
@@ -267,8 +266,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
 
             var expected = new BalanceSheetEditDto()
             {
-                Assets = new List<AssetDto>(),
-                BalanceSheetId = _balanceSheetId,
+                Assets = new List<AssetSaveDto>(),
                 Bullion = new List<MetalDto>(),
                 Liabilities = new List<LiabilityDto>()
             };

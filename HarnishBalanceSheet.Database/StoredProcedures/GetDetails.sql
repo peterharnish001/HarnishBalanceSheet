@@ -7,7 +7,6 @@ AS
 	SELECT AC.[Name] AS AssetCategoryName
 		,A.[Name] AS AssetName
 		,AP.[Value]
-		,A.IsPercent
 	FROM AssetCategory AC
 	INNER JOIN AssetPortion AP ON AC.AssetCategoryId = AP.AssetCategoryId
 	INNER JOIN Asset A ON AP.AssetId = A.AssetId

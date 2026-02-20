@@ -11,14 +11,26 @@ namespace HarnishBalanceSheet.BusinessLogic
             CreateMap<AssetPortion, AssetComponentDto>()
                 .ForMember(dest => dest.AssetComponentId, opt => opt.MapFrom(src => src.AssetPortionId))
                 .ForMember(dest => dest.AssetCategory, opt => opt.MapFrom(src => src.AssetCategoryName));
+            CreateMap<AssetPortion, AssetComponentSaveDto>()
+                .ForMember(dest => dest.AssetComponentId, opt => opt.MapFrom(src => src.AssetPortionId))
+                .ForMember(dest => dest.AssetTypeId, opt => opt.MapFrom(src => src.AssetCategoryId));
             CreateMap<Asset, AssetDto>();
+            CreateMap<Asset, AssetSaveDto>()
+                .ForMember(dest => dest.AssetComponents, opt => opt.MapFrom(src => src.AssetPortions));
             CreateMap<MetalPosition, MetalDto>()
-                .ForMember(dest => dest.MetalName, opt => opt.MapFrom(src => src.PreciousMetalName));
+                .ForMember(dest => dest.MetalName, opt => opt.MapFrom(src => src.PreciousMetalName))
+                .ForMember(dest => dest.MetalId, opt => opt.MapFrom(src => src.MetalPositionId));
             CreateMap<Liability, LiabilityDto>();
             CreateMap<BalanceSheet, BalanceSheetDto>();
             CreateMap<AssetCategory, AssetTypeDto>()
                 .ForMember(dest => dest.AssetTypeId, opt => opt.MapFrom(src => src.AssetCategoryId));
-            CreateMap<EditModel, BalanceSheetEditDto>();            
+            CreateMap<EditModel, BalanceSheetEditDto>()
+                .ForMember(dest => dest.Bullion, opt => opt.MapFrom(src => src.BalanceSheet.Bullion))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.BalanceSheet.Date))
+                .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.BalanceSheet.Assets))
+                .ForMember(dest => dest.Liabilities, opt => opt.MapFrom(src => src.BalanceSheet.Liabilities))
+                .ForMember(dest => dest.AssetTypes, opt => opt.MapFrom(src => src.AssetTypes))
+                .ForMember(dest => dest.PreciousMetals, opt => opt.MapFrom(src => src.MetalTypes));
             CreateMap<BalanceSheet, DetailsDto>()
                 .ForPath(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
                 .ForPath(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
