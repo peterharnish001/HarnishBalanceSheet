@@ -282,14 +282,14 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         [TestMethod]
         public async Task EditBalanceSheetTest()
         {
-            var balanceSheetEditDto = new BalanceSheetEditDto();
+            var balanceSheetSaveDto = new BalanceSheetSaveDto();
 
             var expected = 1;
 
             _context.Setup(x => x.EditBalanceSheetAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<BalanceSheet>()))
                 .Returns(Task.FromResult(expected));
 
-            var result = await _balanceSheetBL.EditBalanceSheet(_userId, 1, balanceSheetEditDto);
+            var result = await _balanceSheetBL.EditBalanceSheet(_userId, 1, balanceSheetSaveDto);
 
             Assert.AreEqual(expected, result);
         }

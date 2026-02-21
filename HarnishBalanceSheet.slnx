@@ -1,4 +1,9 @@
 <Solution>
+  <Project Path="FrontEnd/frontend.client/harnishbalancesheet.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="FrontEnd/FrontEnd.Server/HarnishBalanceSheet.Server.csproj" Id="e355fcf9-545c-4780-aad3-27ad81e28c35" />
   <Project Path="HarnishBalanceSheet.BusinessLogic.Tests/HarnishBalanceSheet.BusinessLogic.Tests.csproj" Id="3209854b-d820-4139-bc5f-81ade66899cd" />
   <Project Path="HarnishBalanceSheet.BusinessLogic/HarnishBalanceSheet.BusinessLogic.csproj" Id="886800ca-0dca-4ab1-9623-ac6e4a7851d2" />
   <Project Path="HarnishBalanceSheet.DataAccess.Tests/HarnishBalanceSheet.DataAccess.Tests.csproj" Id="8a74b5f8-a7c3-40d1-bbc9-d1edd8871f1e" />
