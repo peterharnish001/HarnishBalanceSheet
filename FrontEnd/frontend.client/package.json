@@ -32,15 +32,20 @@
     "@angular/forms": "^21.1.0",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
+    "datatables.net": "^2.3.7",
+    "datatables.net-dt": "^2.3.7",
     "jest-editor-support": "*",
-    "run-script-os": "*"
+    "jquery": "^4.0.0",
+    "run-script-os": "*",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "^21.1.0",
     "@angular/cli": "^21.1.0",
     "@angular/compiler-cli": "^21.1.0",
+    "@types/datatables.net": "^1.10.28",
+    "angular-datatables": "^16.0.1",
     "jsdom": "^27.1.0",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
