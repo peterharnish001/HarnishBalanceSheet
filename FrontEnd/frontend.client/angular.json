@@ -35,12 +35,7 @@
               }
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
-            ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js"
+              "src/styles.css"
             ]
           },
           "configurations": {
@@ -86,7 +81,6 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "karmaConfig": "karma.conf.js"
           }
         }
       }

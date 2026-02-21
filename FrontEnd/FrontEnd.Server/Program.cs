@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 builder.Configuration.AddJsonFile("appsettings.json");
 
 builder.Services.AddDbContext<BalanceSheetContext>(options =>
@@ -15,10 +17,24 @@ builder.Services.AddScoped<IPreciousMetalsService, PreciousMetalsService>();
 builder.Services.AddScoped<IBalanceSheetBL, BalanceSheetBL>();
 builder.Services.AddAutoMapper(config => config.AddProfile<MappingProfile>());
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy//.WithOrigins("https://localhost:63940/")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin();
+        });
+    
+});
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
