@@ -12,7 +12,7 @@ export class HbsIndexComponent implements OnInit {
 constructor(private http: HttpClient) {}
 
  ngOnInit() {
-    this.http.get('http://localhost:5298/api/index/has-targets?count=1')
+    this.http.get('http://localhost:5001/api/index/has-targets?count=1')
       .subscribe(response => {
         console.log(response);
       });
