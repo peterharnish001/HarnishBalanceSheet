@@ -4,13 +4,22 @@
     <div class="col-md-6 bold paddingleft10">Asset Type</div>
     <div class="col-md-6 bold">Percentage</div>
   </div>
-  @for (assetType of data; track assetType.assetTypeId) {
+  @for (target of targets; track target.assetTypeId) {
     <div class="row">
-      <div class="col-md-6 paddingleft10">{{assetType.name}}</div>
+      <div class="col-md-6 paddingleft10">{{target.name}}</div>
       <div class="col-md-6">
-        <input type="number" min="0" max="100" />&nbsp;%
+        <input type="number" min="0" max="100" [(ngModel)]="target.percentage" (ngModelChange)="onTargetChange($event)"/>&nbsp;%
       </div>
     </div>
   }
-  <button class="right-button">OK</button>
+  <div class="row">
+    <div class="col-md-10">
+      @if (validationMsg()) {
+        <p class="error">{{validationMsg()}}</p>
+      }
+    </div>
+    <div class="col-md-2">
+      <button class="right-button" (click)="onClick()">OK</button>
+    </div>
+  </div>
 </div>
