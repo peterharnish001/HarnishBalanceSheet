@@ -1,0 +1,16 @@
+<div class="width500">
+  <h2>Set your asset targets</h2>
+  <div class="row">
+    <div class="col-md-6 bold paddingleft10">Asset Type</div>
+    <div class="col-md-6 bold">Percentage</div>
+  </div>
+  @for (assetType of data; track assetType.assetTypeId) {
+    <div class="row">
+      <div class="col-md-6 paddingleft10">{{assetType.name}}</div>
+      <div class="col-md-6">
+        <input type="number" min="0" max="100" />&nbsp;%
+      </div>
+    </div>
+  }
+  <button class="right-button">OK</button>
+</div>

@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { HbsIndexService } from './hbs-index.service';
+import { SetTargetsComponent } from './set-targets/set-targets.component';
 
 @Component({
   selector: 'app-hbs-index',
@@ -8,13 +10,20 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './hbs-index.component.css'
 })
 export class HbsIndexComponent implements OnInit {
+  private dialog = inject(MatDialog);
 
-constructor(private http: HttpClient) {}
+  constructor(private service: HbsIndexService) {}
 
  ngOnInit() {
-    this.http.get('http://localhost:5001/api/index/has-targets?count=1')
-      .subscribe(response => {
-        console.log(response);
-      });
+  this.service.getHasTargets()
+    .subscribe({
+      next: (output) => {
+        if (output.length > 0) {
+          this.dialog.open(SetTargetsComponent, {
+            data: output
+          });
+        }
+      }
+    });
  }
 }

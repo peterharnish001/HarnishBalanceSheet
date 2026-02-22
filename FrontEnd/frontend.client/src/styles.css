@@ -7,6 +7,11 @@ body {
 
 h1 {
   text-align: center;
+  padding-top: 10px;
+}
+
+h2 {
+  text-align: center;
 }
 
 .container {
@@ -25,4 +30,42 @@ button {
 
 select {
   font-size: 1.5rem;
+}
+
+.row {
+  display: flex;
+}
+
+.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.width500 {
+  width: 500px;
+}
+
+.paddingleft10 {
+  padding-left: 10px;
+}
+
+.mat-mdc-dialog-surface {
+  overflow-x: hidden !important; /* Hide horizontal scrollbar */
+}
+
+input {
+  font-size: 1.5rem;
+}
+
+input[type="number"] {
+  text-align: right;
+}
+
+.right-button {
+  float: right;
+  margin: 10px;
 }
