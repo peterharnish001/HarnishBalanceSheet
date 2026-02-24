@@ -13,13 +13,14 @@ import { TargetInputModel } from '../models/targetinput.model';
   imports: [FormsModule, ReactiveFormsModule, CommonModule]
 })
 export class SetTargetsComponent implements OnInit {
-  public dialogRef = MatDialogRef<SetTargetsComponent>;
   public data: AssetTypeModel[] = inject(MAT_DIALOG_DATA);
   public targetInputModels: TargetInputModel[] = [];
   public errMsg: string = '';
   public clicked: boolean = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,
+    private dialogRef: MatDialogRef<SetTargetsComponent>
+  ) {}
 
   ngOnInit(): void {
    this.targetInputModels = this.data.map(datum => new TargetInputModel(datum.assetTypeId, datum.name, 0));
@@ -28,7 +29,7 @@ export class SetTargetsComponent implements OnInit {
   onClick(): void {
     this.clicked = true;
     if (this.validate()) {
-
+      this.dialogRef.close(this.targetInputModels);
     }
   }
 

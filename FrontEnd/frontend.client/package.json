@@ -38,6 +38,8 @@
     "datatables.net-dt": "^2.3.7",
     "jest-editor-support": "*",
     "jquery": "^4.0.0",
+    "ngx-spinner": "^21.0.0",
+    "ngx-toastr": "^20.0.5",
     "run-script-os": "*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
