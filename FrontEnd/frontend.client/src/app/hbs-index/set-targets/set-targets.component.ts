@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormsModule, FormGroup, ValidatorFn } from '@angular/forms';
+import { FormsModule, FormGroup, FormBuilder, FormArray, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { AssetTypeModel } from '../models/assettype.model';
 import { TargetInputModel } from '../models/targetinput.model';
 
@@ -9,51 +10,49 @@ import { TargetInputModel } from '../models/targetinput.model';
   standalone: true,
   templateUrl: './set-targets.component.html',
   styleUrl: './set-targets.component.css',
-  imports: [FormsModule]
+  imports: [FormsModule, ReactiveFormsModule, CommonModule]
 })
 export class SetTargetsComponent implements OnInit {
   public dialogRef = MatDialogRef<SetTargetsComponent>;
   public data: AssetTypeModel[] = inject(MAT_DIALOG_DATA);
-  public targets: TargetInputModel[] = [];
-  public myForm: FormGroup;
-  public isClicked: boolean = false;
+  public targetInputModels: TargetInputModel[] = [];
+  public errMsg: string = '';
+  public clicked: boolean = false;
 
-  constructor(private fb: FormBuilder) {
-    this.myForm = this.fb.group({
-      name: ['']
-    });
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.targets = this.data.map(datum => new TargetInputModel(datum.assetTypeId, datum.name, 0));
+   this.targetInputModels = this.data.map(datum => new TargetInputModel(datum.assetTypeId, datum.name, 0));
   }
 
   onClick(): void {
-    this.isClicked = true;
-  }
+    this.clicked = true;
+    if (this.validate()) {
 
-  sumPercentages(): number {
-    return this.targets.reduce((total, obj) => {
-        const value = obj['percentage'];
-        if (typeof value === "number" && !isNaN(value)) {
-            return total + value;
-        }
-        return total;
-    }, 0);
-  }
-
-  public validationMsg(): string {
-    if (this.targets.find((target) => target.percentage !== undefined && target.percentage < 0)) {
-      return 'Percentages must be non-negative.';
-    } else if (this.sumPercentages() !== 100 && this.isClicked) {
-      return 'Percentages must sum to 100.'
     }
-
-    return '';
   }
 
-  public onTargetChange(event: any) {
-    this.isClicked = false;
+  validate(): boolean {
+    if (this.targetInputModels.find(target => target.percentage < 0)) {
+      this.errMsg = 'Percentages must be non-negative.';
+      return false;
+    }
+    if (this.targetInputModels.find(target => target.percentage > 100))    {
+      this.errMsg = 'Percentages must not be greater than 100.';
+      return false;
+    }
+      if (this.clicked && this.targetInputModels.reduce((sum, item) => {
+          const value = Number(item.percentage);
+          return sum + (isNaN(value) ? 0 : value);
+        }, 0) !== 100) {
+          this.errMsg = 'Percentages must add up to 100.'
+          return false;
+        }
+    this.errMsg = '';
+    return true;
   }
 
+  errorMsg(): string {
+    return this.errMsg;
+  }
 }

@@ -4,18 +4,16 @@
     <div class="col-md-6 bold paddingleft10">Asset Type</div>
     <div class="col-md-6 bold">Percentage</div>
   </div>
-  @for (target of targets; track target.assetTypeId) {
+  @for (target of targetInputModels; track target.assetTypeId) {
     <div class="row">
       <div class="col-md-6 paddingleft10">{{target.name}}</div>
-      <div class="col-md-6">
-        <input type="number" min="0" max="100" [(ngModel)]="target.percentage" (ngModelChange)="onTargetChange($event)"/>&nbsp;%
-      </div>
+      <input placeholder="0" type="number" min="0" max="100" [(ngModel)]="target.percentage" (blur)="validate()"/>&nbsp;%
     </div>
   }
   <div class="row">
     <div class="col-md-10">
-      @if (validationMsg()) {
-        <p class="error">{{validationMsg()}}</p>
+      @if (!validate()) {
+      <p class="error">{{errorMsg()}}</p>
       }
     </div>
     <div class="col-md-2">
