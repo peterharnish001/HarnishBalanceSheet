@@ -8,5 +8,16 @@
       <option value="60">60</option>
     </select> entries
   </p>
+  <div class="row">
+    <div class="col-md-5">
+      @for (model of balanceSheetDateModels(); track model.balanceSheetId) {
+      <div class="row">
+        <div class="col-md-12">
+          <a href="'~/details/' + model.balanceSheetId.toString()">{{model.date | date:'longDate'}}</a>
+        </div>
+      </div>
+    }
+    </div>
+  </div>
   <ngx-spinner type="ball-beat"></ngx-spinner>
 </div>
