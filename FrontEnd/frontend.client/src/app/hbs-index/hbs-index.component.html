@@ -19,20 +19,36 @@
       <hr />
     }
     </div>
-    @if (this.source().length > 0) {
     <div class="col-md-7">
-        <jqxChart
-          [width]="'90%'"
-          [height]="500"
-          [source]="source()"
-          [seriesGroups]="seriesGroups()"
-          [xAxis]="xAxis"
-          [colorScheme]="'scheme01'"
-          [title]="'Liabilities'"
-          [description]="''">
+      <div>
+      @if (this.liabilitiesSource().length > 0) {
+          <jqxChart
+            [width]="'90%'"
+            [height]="500"
+            [source]="liabilitiesSource()"
+            [seriesGroups]="seriesGroup1"
+            [xAxis]="xAxis1"
+            [colorScheme]="'scheme01'"
+            [title]="'Liabilities'"
+            [description]="''">
         </jqxChart>
+      }
+      </div>
+      <br />
+      <div>
+      @if (this.netWorthSource().length > 0) {
+          <jqxChart
+            [width]="'90%'"
+            [height]="500"
+            [source]="netWorthSource()"
+            [seriesGroups]="seriesGroup2"
+            [xAxis]="xAxis2"
+            [colorScheme]="'scheme04'"
+            [title]="'Net Worth'"
+            [description]="''">
+        </jqxChart>
+      }
     </div>
-    }
   </div>
-  <ngx-spinner type="ball-beat"></ngx-spinner>
+  <ngx-spinner type="ball-beat"><p>Loading...</p></ngx-spinner>
 </div>

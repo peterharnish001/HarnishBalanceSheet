@@ -23,10 +23,37 @@ export class HbsIndexComponent implements OnInit {
   private toastr = inject(ToastrService);
   public balanceSheetDateModels = signal<BalanceSheetDateModel[]>([]);
   public count: number = 24;
-  public source = signal<any[]>([]);
+  public liabilitiesSource = signal<any[]>([]);
+  public netWorthSource = signal<any[]>([]);
   public padding: any = { left: 10, top: 5, right: 10, bottom: 5 };
-  public xAxis: any = { dataField: 'date', type: 'date'};
-  public seriesGroups = signal<any[]>([]);
+  public xAxis1: any = { dataField: 'date', type: 'date' };
+  public xAxis2: any = { dataField: 'date', type: 'date' };
+  public seriesGroup1: any[] = [
+          {
+            type: 'spline',
+            valueAxis: {
+              description: 'Liabilities',
+              minValue: 0,
+              displayValueAxis: true
+            },
+            series: [
+              { dataField: 'totalLiabilities', displayText: 'Total Liabilities' }
+            ]
+          }
+        ];
+  public seriesGroup2: any[] = [
+          {
+            type: 'spline',
+            valueAxis: {
+              description: 'Net Worth',
+              minValue: 0,
+              displayValueAxis: true
+            },
+            series: [
+              { dataField: 'netWorth', displayText: 'Net Worth' }
+            ]
+          }
+        ];
 
   constructor(private service: HbsIndexService,
               private spinner: NgxSpinnerService
@@ -64,9 +91,9 @@ export class HbsIndexComponent implements OnInit {
  }
 
  getBalanceSheetAndChartData(): void {
-  this.spinner.show();
   this.getBalanceSheetData();
   this.getLiabilityChartData();
+  this.getNetWorthChartData();
  }
 
  getBalanceSheetData(): void {
@@ -83,20 +110,18 @@ export class HbsIndexComponent implements OnInit {
   this.service.getLiabilityChartData(this.count)
     .subscribe({
       next: (output) => {
-        this.source.set(output);
-        this.seriesGroups.set([
-          {
-            type: 'spline',
-            valueAxis: {
-              description: 'Liabilities',
-              minValue: 0,
-              displayValueAxis: true
-            },
-            series: [
-              { dataField: 'totalLiabilities', displayText: 'Total Liabilities' }
-            ]
-          }
-        ]);
+        this.spinner.hide();
+        this.liabilitiesSource.set(output);
+      }
+    })
+ }
+
+ getNetWorthChartData(): void {
+  this.service.getNetWorthChartData(this.count)
+    .subscribe({
+      next: (output) => {
+        this.spinner.hide();
+        this.netWorthSource.set(output);
       }
     })
  }

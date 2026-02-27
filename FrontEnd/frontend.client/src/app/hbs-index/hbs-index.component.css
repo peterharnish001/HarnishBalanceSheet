@@ -17,3 +17,6 @@ hr {
   margin-left: 30px;
 }
 
+ngx-spinner p {
+  color: white;
+}
