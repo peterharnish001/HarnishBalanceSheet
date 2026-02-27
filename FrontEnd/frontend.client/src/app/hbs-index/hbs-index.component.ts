@@ -9,26 +9,31 @@ import { TargetInputModel } from './models/targetinput.model';
 import { NgxSpinnerService, NgxSpinnerComponent } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { BalanceSheetDateModel } from './models/balancesheetdate.model';
+import { jqxChartModule } from 'jqwidgets-ng/jqxchart';
 
 @Component({
   selector: 'app-hbs-index',
   standalone: true,
   templateUrl: './hbs-index.component.html',
   styleUrl: './hbs-index.component.css',
-  imports: [NgxSpinnerComponent, DatePipe]
+  imports: [NgxSpinnerComponent, DatePipe, jqxChartModule]
 })
 export class HbsIndexComponent implements OnInit {
   private dialog = inject(MatDialog);
   private toastr = inject(ToastrService);
   public balanceSheetDateModels = signal<BalanceSheetDateModel[]>([]);
   public count: number = 24;
+  public source = signal<any[]>([]);
+  public padding: any = { left: 10, top: 5, right: 10, bottom: 5 };
+  public xAxis: any = { dataField: 'date', type: 'date'};
+  public seriesGroups = signal<any[]>([]);
 
   constructor(private service: HbsIndexService,
               private spinner: NgxSpinnerService
   ) {}
 
  ngOnInit() {
-  //this.spinner.show();
+  this.spinner.show();
   this.service.getHasTargets()
     .subscribe({
       next: (output) => {
@@ -59,16 +64,39 @@ export class HbsIndexComponent implements OnInit {
  }
 
  getBalanceSheetAndChartData(): void {
-  //this.spinner.show();
+  this.spinner.show();
   this.getBalanceSheetData();
+  this.getLiabilityChartData();
  }
 
  getBalanceSheetData(): void {
   this.service.getBalanceSheetData(this.count)
     .subscribe({
       next: (output) => {
-        //this.spinner.hide();
+        this.spinner.hide();
         this.balanceSheetDateModels.set(output);
+      }
+    })
+ }
+
+ getLiabilityChartData(): void {
+  this.service.getLiabilityChartData(this.count)
+    .subscribe({
+      next: (output) => {
+        this.source.set(output);
+        this.seriesGroups.set([
+          {
+            type: 'spline',
+            valueAxis: {
+              description: 'Liabilities',
+              minValue: 0,
+              displayValueAxis: true
+            },
+            series: [
+              { dataField: 'totalLiabilities', displayText: 'Total Liabilities' }
+            ]
+          }
+        ]);
       }
     })
  }

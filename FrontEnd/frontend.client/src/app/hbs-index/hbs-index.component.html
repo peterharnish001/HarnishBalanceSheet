@@ -1,6 +1,6 @@
 <div class="container">
   <h1> Harnish Balance Sheet</h1>
-  <button>New</button>
+  <a href="~/create">New</a>
   <p>Show
     <select>
       <option value="12">12</option>
@@ -13,11 +13,26 @@
       @for (model of balanceSheetDateModels(); track model.balanceSheetId) {
       <div class="row">
         <div class="col-md-12">
-          <a href="'~/details/' + model.balanceSheetId.toString()">{{model.date | date:'longDate'}}</a>
+          <a href="'~/details/' + model.balanceSheetId.toString()" style="display:block;margin-left:auto;">{{model.date | date:'longDate'}}</a>
         </div>
       </div>
+      <hr />
     }
     </div>
+    @if (this.source().length > 0) {
+    <div class="col-md-7">
+        <jqxChart
+          [width]="'90%'"
+          [height]="500"
+          [source]="source()"
+          [seriesGroups]="seriesGroups()"
+          [xAxis]="xAxis"
+          [colorScheme]="'scheme01'"
+          [title]="'Liabilities'"
+          [description]="''">
+        </jqxChart>
+    </div>
+    }
   </div>
   <ngx-spinner type="ball-beat"></ngx-spinner>
 </div>

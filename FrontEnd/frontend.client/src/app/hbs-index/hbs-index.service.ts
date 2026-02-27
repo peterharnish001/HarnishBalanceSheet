@@ -5,6 +5,7 @@ import { AssetTypeModel } from './models/assettype.model';
 import { Observable } from 'rxjs';
 import { SetTargetModel } from './models/settarget.model';
 import { BalanceSheetDateModel } from './models/balancesheetdate.model';
+import { LiabilityChartModel } from './models/liabilitychart.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,5 +23,9 @@ export class HbsIndexService {
 
   public getBalanceSheetData(count: number): Observable<BalanceSheetDateModel[]> {
     return this.http.get<BalanceSheetDateModel[]>(environment.apiUrl + 'index/balancesheets?count=' + count.toString());
+  }
+
+  public getLiabilityChartData(count: number): Observable<LiabilityChartModel[]>{
+    return this.http.get<LiabilityChartModel[]>(environment.apiUrl + 'index/liabilities?count=' + count.toString());
   }
 }
