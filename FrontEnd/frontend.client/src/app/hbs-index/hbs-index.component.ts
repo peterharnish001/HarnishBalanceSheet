@@ -21,6 +21,9 @@ import { jqxChartModule } from 'jqwidgets-ng/jqxchart';
 export class HbsIndexComponent implements OnInit {
   private dialog = inject(MatDialog);
   private toastr = inject(ToastrService);
+  private balanceSheetLoading: boolean = false;
+  private liabilitiesLoading: boolean = false;
+  private netWorthLoading: boolean = false;
   public balanceSheetDateModels = signal<BalanceSheetDateModel[]>([]);
   public count: number = 24;
   public liabilitiesSource = signal<any[]>([]);
@@ -91,38 +94,53 @@ export class HbsIndexComponent implements OnInit {
  }
 
  getBalanceSheetAndChartData(): void {
+  this.spinner.show();
   this.getBalanceSheetData();
   this.getLiabilityChartData();
   this.getNetWorthChartData();
  }
 
  getBalanceSheetData(): void {
+  this.balanceSheetLoading = true;
   this.service.getBalanceSheetData(this.count)
     .subscribe({
       next: (output) => {
-        this.spinner.hide();
+        this.balanceSheetLoading = false;
+        this.setShowSpinner();
         this.balanceSheetDateModels.set(output);
       }
     })
  }
 
  getLiabilityChartData(): void {
+  this.liabilitiesLoading = true;
   this.service.getLiabilityChartData(this.count)
     .subscribe({
       next: (output) => {
-        this.spinner.hide();
+        this.liabilitiesLoading = false;
+        this.setShowSpinner();
         this.liabilitiesSource.set(output);
       }
     })
  }
 
  getNetWorthChartData(): void {
+  this.netWorthLoading = true;
   this.service.getNetWorthChartData(this.count)
     .subscribe({
       next: (output) => {
-        this.spinner.hide();
+        this.netWorthLoading = false;
+        this.setShowSpinner();
         this.netWorthSource.set(output);
       }
     })
  }
+
+ setShowSpinner(): void {
+    if (!this.balanceSheetLoading && !this.liabilitiesLoading && !this.netWorthLoading) {
+      this.spinner.hide();
+    }
+  }
 }
+
+
