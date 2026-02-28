@@ -2,28 +2,26 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
+import { RouterLink } from '@angular/router';
 import { HbsIndexService } from './hbs-index.service';
 import { SetTargetsComponent } from './set-targets/set-targets.component';
 import { SetTargetModel } from './models/settarget.model';
 import { TargetInputModel } from './models/targetinput.model';
-import { NgxSpinnerService, NgxSpinnerComponent } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { BalanceSheetDateModel } from './models/balancesheetdate.model';
 import { jqxChartModule } from 'jqwidgets-ng/jqxchart';
+import { NgxSpinnerComponent } from 'ngx-spinner';
 
 @Component({
   selector: 'app-hbs-index',
   standalone: true,
   templateUrl: './hbs-index.component.html',
   styleUrl: './hbs-index.component.css',
-  imports: [NgxSpinnerComponent, DatePipe, jqxChartModule]
+  imports: [DatePipe, jqxChartModule, NgxSpinnerComponent, RouterLink]
 })
 export class HbsIndexComponent implements OnInit {
   private dialog = inject(MatDialog);
   private toastr = inject(ToastrService);
-  private balanceSheetLoading: boolean = false;
-  private liabilitiesLoading: boolean = false;
-  private netWorthLoading: boolean = false;
   public balanceSheetDateModels = signal<BalanceSheetDateModel[]>([]);
   public count: number = 24;
   public liabilitiesSource = signal<any[]>([]);
@@ -58,27 +56,22 @@ export class HbsIndexComponent implements OnInit {
           }
         ];
 
-  constructor(private service: HbsIndexService,
-              private spinner: NgxSpinnerService
+  constructor(private service: HbsIndexService
   ) {}
 
  ngOnInit() {
-  this.spinner.show();
   this.service.getHasTargets()
     .subscribe({
       next: (output) => {
         if (output.length > 0) {
-          this.spinner.hide();
           this.dialog.open(SetTargetsComponent, {
             data: output
           })
           .afterClosed()
           .subscribe((result: TargetInputModel[]) => {
-            this.spinner.show();
             this.service.setTargets(result.map(datum => new SetTargetModel(datum.assetTypeId, datum.percentage / 100)))
             .subscribe({
               next: (response: HttpResponse<any>) => {
-                this.spinner.hide();
                 if (response.status === 200) {
                   this.toastr.success('Targets saved successfully', 'Success');
                 }
@@ -94,52 +87,42 @@ export class HbsIndexComponent implements OnInit {
  }
 
  getBalanceSheetAndChartData(): void {
-  this.spinner.show();
   this.getBalanceSheetData();
   this.getLiabilityChartData();
   this.getNetWorthChartData();
  }
 
  getBalanceSheetData(): void {
-  this.balanceSheetLoading = true;
   this.service.getBalanceSheetData(this.count)
     .subscribe({
       next: (output) => {
-        this.balanceSheetLoading = false;
-        this.setShowSpinner();
         this.balanceSheetDateModels.set(output);
       }
     })
  }
 
  getLiabilityChartData(): void {
-  this.liabilitiesLoading = true;
   this.service.getLiabilityChartData(this.count)
     .subscribe({
       next: (output) => {
-        this.liabilitiesLoading = false;
-        this.setShowSpinner();
         this.liabilitiesSource.set(output);
       }
     })
  }
 
  getNetWorthChartData(): void {
-  this.netWorthLoading = true;
   this.service.getNetWorthChartData(this.count)
     .subscribe({
       next: (output) => {
-        this.netWorthLoading = false;
-        this.setShowSpinner();
         this.netWorthSource.set(output);
       }
     })
  }
 
- setShowSpinner(): void {
-    if (!this.balanceSheetLoading && !this.liabilitiesLoading && !this.netWorthLoading) {
-      this.spinner.hide();
-    }
+ onDropdownChange(event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+    this.count = Number(value);
+    this.getBalanceSheetAndChartData();
   }
 }
 

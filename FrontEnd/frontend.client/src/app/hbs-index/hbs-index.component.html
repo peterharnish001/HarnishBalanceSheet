@@ -1,8 +1,8 @@
-<div class="container">
-  <h1> Harnish Balance Sheet</h1>
-  <a href="~/create">New</a>
+<div>
+  <h1>Harnish Balance Sheet</h1>
+  <a routerLink="/create">New</a>
   <p>Show
-    <select>
+    <select (change)="onDropdownChange($event)">
       <option value="12">12</option>
       <option value="24" selected="true">24</option>
       <option value="60">60</option>

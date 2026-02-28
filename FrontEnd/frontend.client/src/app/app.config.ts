@@ -5,6 +5,8 @@ import { provideRouter, withComponentInputBinding, withRouterConfig } from '@ang
 import { routes } from './app.routes';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { provideToastr } from 'ngx-toastr';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { loadingInterceptor } from './loading.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -18,5 +20,8 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimationsAsync(),
     importProvidersFrom(BrowserAnimationsModule),
+    provideHttpClient(
+      withInterceptors([loadingInterceptor])
+    )
   ]
 }

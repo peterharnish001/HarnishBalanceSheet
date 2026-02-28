@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { HbsIndexComponent } from './hbs-index/hbs-index.component';
+import { RouterOutlet } from '@angular/router';
+//import { HbsIndexComponent } from './hbs-index/hbs-index.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css',
-  imports: [HbsIndexComponent]
+  imports: [RouterOutlet]
 })
 export class AppComponent {
 }
