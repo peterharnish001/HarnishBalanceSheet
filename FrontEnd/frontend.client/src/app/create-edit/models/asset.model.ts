@@ -5,6 +5,7 @@ export class AssetModel {
     public assetId: number,
     public name: string,
     public isPercent: boolean,
-    public assetComponents: AssetComponentModel[]
+    public assetComponents: AssetComponentModel[],
+    public totalValue: number
   ) {}
 }

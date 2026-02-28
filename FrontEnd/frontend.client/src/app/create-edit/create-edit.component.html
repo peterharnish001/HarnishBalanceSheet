@@ -2,8 +2,11 @@
     <div class="col-md-6">
         <div class="bold center block">Assets</div>
         @for (asset of getAssets(); track asset.name) {
-          <div class="block">
-            <div class="col-md-3">{{asset.name}}</div>
+          <div class="row">
+            <div class="col-md-5">{{asset.name}}</div>
+            <div>
+              $&nbsp;<input placeholder="0" type="number" min="0" [ngModel]="asset.totalValue.toFixed(2)" name="totalValue"/>
+            </div>
           </div>
         }
     </div>
