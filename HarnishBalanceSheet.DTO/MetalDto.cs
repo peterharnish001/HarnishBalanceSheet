@@ -9,7 +9,7 @@ namespace HarnishBalanceSheet.DTO
     public class MetalDto
     {
         [DataMember]
-        public int? MetalId { get; set; }
+        public int? MetalPositionId { get; set; }
         [DataMember]
         public int PreciousMetalId { get; set; }
         [DataMember]
@@ -29,7 +29,7 @@ namespace HarnishBalanceSheet.DTO
             return this.MetalName.Equals(item.MetalName) 
                 && this.NumOunces.Equals(item.NumOunces)
                 && this.PricePerOunce.Equals(item.PricePerOunce)
-                && this.MetalId.Equals(item.MetalId)
+                && this.MetalPositionId.Equals(item.MetalPositionId)
                 ;
         }
     }

@@ -638,7 +638,7 @@ namespace HarnishBalanceSheet.BusinessLogic.Tests
         {
             return new MetalDto()
             {
-                MetalId = 1,
+                MetalPositionId = 1,
                 MetalName = "Gold",
                 NumOunces = 5,
                 PricePerOunce = 4987.1m

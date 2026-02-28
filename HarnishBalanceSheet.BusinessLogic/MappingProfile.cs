@@ -19,7 +19,7 @@ namespace HarnishBalanceSheet.BusinessLogic
                 .ForMember(dest => dest.AssetComponents, opt => opt.MapFrom(src => src.AssetPortions));
             CreateMap<MetalPosition, MetalDto>()
                 .ForMember(dest => dest.MetalName, opt => opt.MapFrom(src => src.PreciousMetalName))
-                .ForMember(dest => dest.MetalId, opt => opt.MapFrom(src => src.MetalPositionId));
+                .ForMember(dest => dest.MetalPositionId, opt => opt.MapFrom(src => src.MetalPositionId));
             CreateMap<Liability, LiabilityDto>();
             CreateMap<BalanceSheet, BalanceSheetDto>();
             CreateMap<AssetCategory, AssetTypeDto>()
