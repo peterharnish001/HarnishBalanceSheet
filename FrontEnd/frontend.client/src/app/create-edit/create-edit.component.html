@@ -11,8 +11,23 @@
             </div>
           </div>
         }
+        <div class="row">
+          <button class="center" (click)="addAsset()">Add</button>
+        </div>
     </div>
     <div class="col-md-6">
       <div class="bold center">Liabilities</div>
+      @for (liability of getLiabilities(); track liability.name) {
+          <div class="row">
+            <div class="col-md-5">{{liability.name}}</div>
+            <div>
+              <input type="text" [(ngModel)]="liability.value" name="value" appCurrencyFormat />
+              <button><i class="fa fa-trash"></i></button>
+            </div>
+          </div>
+        }
+        <div class="row">
+          <button class="center">Add</button>
+        </div>
     </div>
 </div>

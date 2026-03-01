@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormsModule, FormGroup, FormBuilder, FormArray, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AssetTypeModel } from '../models/assettype.model';
 import { TargetInputModel } from '../models/targetinput.model';
 

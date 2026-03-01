@@ -8,7 +8,7 @@ export class BalanceSheetModel {
   constructor(
     public date: Date,
     public assets: AssetModel[],
-    public lLiabilities: LiabilityModel[],
+    public liabilities: LiabilityModel[],
     public bullion: MetalPositionModel[],
     public assetTypes: AssetTypeModel[],
     public preciousMetals: PreciousMetalModel[]

@@ -4,6 +4,8 @@ import { environment } from '../environment';
 import { Observable } from 'rxjs';
 import { AssetModel } from './models/asset.model';
 import { BalanceSheetModel } from './models/balancesheet.model';
+import { LiabilityModel } from './models/liability.model';
+import { AssetTypeModel } from './models/assettype.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +13,13 @@ import { BalanceSheetModel } from './models/balancesheet.model';
 export class CreateEditService {
   private readonly _balanceSheet = signal<BalanceSheetModel | null>(null);
   private readonly _assets = signal<AssetModel[]>([]);
+  private readonly _liabilities = signal<LiabilityModel[]>([]);
+  private readonly _assetTypes = signal<AssetTypeModel[]>([]);
 
   public readonly balanceSheet = this._balanceSheet.asReadonly();
   public readonly assets = this._assets.asReadonly();
+  public readonly liabilities = this._liabilities.asReadonly();
+  public readonly assetTypes = this._assetTypes.asReadonly();
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +34,8 @@ export class CreateEditService {
           }, 0);
         })
         this._assets.set(result.assets);
+        this._liabilities.set(result.liabilities);
+        this._assetTypes.set(result.assetTypes);
       });
   }
 }

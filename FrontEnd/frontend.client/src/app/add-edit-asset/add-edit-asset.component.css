@@ -1,0 +1,15 @@
+input {
+  width: 200px;
+}
+
+label {
+  margin-left: 10px;
+}
+
+select {
+  width: 210px;
+}
+
+p.error {
+  margin: 0px;
+}
