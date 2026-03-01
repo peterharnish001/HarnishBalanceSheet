@@ -10,14 +10,13 @@ import { TargetInputModel } from './models/targetinput.model';
 import { ToastrService } from 'ngx-toastr';
 import { BalanceSheetDateModel } from './models/balancesheetdate.model';
 import { jqxChartModule } from 'jqwidgets-ng/jqxchart';
-import { NgxSpinnerComponent } from 'ngx-spinner';
 
 @Component({
   selector: 'app-hbs-index',
   standalone: true,
   templateUrl: './hbs-index.component.html',
   styleUrl: './hbs-index.component.css',
-  imports: [DatePipe, jqxChartModule, NgxSpinnerComponent, RouterLink]
+  imports: [DatePipe, jqxChartModule, RouterLink]
 })
 export class HbsIndexComponent implements OnInit {
   private dialog = inject(MatDialog);
