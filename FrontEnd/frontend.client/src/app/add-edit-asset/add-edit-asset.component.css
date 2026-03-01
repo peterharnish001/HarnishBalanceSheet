@@ -13,3 +13,7 @@ select {
 p.error {
   margin: 0px;
 }
+
+input[type='checkbox'] {
+  height: 20px;
+}

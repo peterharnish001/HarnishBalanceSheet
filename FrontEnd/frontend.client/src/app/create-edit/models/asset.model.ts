@@ -2,10 +2,10 @@ import { AssetComponentModel } from "./assetcomponent.model";
 
 export class AssetModel {
   constructor(
-    public assetId: number,
     public name: string,
-    public isPercent: boolean,
+    public totalValue: number,
     public assetComponents: AssetComponentModel[],
-    public totalValue: number
+    public assetId?: number,
+    public isPercent?: boolean
   ) {}
 }

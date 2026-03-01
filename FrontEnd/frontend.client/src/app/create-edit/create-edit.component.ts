@@ -33,8 +33,13 @@ export class CreateEditComponent {
     this.dialog.open(AddEditAssetComponent, {
       data: {
         addOrEdit: 'Add',
-        assetTypes: this.service.assetTypes()
+        assetTypes: this.service.assetTypes(),
+        assetNames: this.service.assetNames
       }
     })
+  }
+
+  public getDisabled(asset: AssetModel): boolean {
+    return (asset.assetComponents.length > 1 && !asset.isPercent) || asset.name.toLowerCase() === 'bullion' ? true : false;
   }
 }

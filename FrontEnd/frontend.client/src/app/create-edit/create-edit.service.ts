@@ -20,6 +20,7 @@ export class CreateEditService {
   public readonly assets = this._assets.asReadonly();
   public readonly liabilities = this._liabilities.asReadonly();
   public readonly assetTypes = this._assetTypes.asReadonly();
+  public readonly assetNames = this._assets().map(asset => asset.name);
 
   constructor(private http: HttpClient) {}
 
@@ -32,7 +33,16 @@ export class CreateEditService {
             const value = Number(item.value);
             return sum + (isNaN(value) ? 0 : value);
           }, 0);
-        })
+        });
+        if (result.bullion.length > 0) {
+           result.assets.push(new AssetModel(
+            'Bullion',
+            result.bullion.reduce((sum, item) => {
+                return sum + (item.numOunces * item.pricePerOunce);
+            }, 0),
+            []
+           ));
+        }
         this._assets.set(result.assets);
         this._liabilities.set(result.liabilities);
         this._assetTypes.set(result.assetTypes);
