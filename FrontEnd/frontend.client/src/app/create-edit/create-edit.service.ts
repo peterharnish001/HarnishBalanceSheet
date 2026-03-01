@@ -22,10 +22,10 @@ export class CreateEditService {
       .subscribe((result: BalanceSheetModel) => {
         this._balanceSheet.set(result);
         result.assets.forEach((asset) => {
-          asset.totalValue = parseFloat(asset.assetComponents.reduce((sum, item) => {
+          asset.totalValue = asset.assetComponents.reduce((sum, item) => {
             const value = Number(item.value);
             return sum + (isNaN(value) ? 0 : value);
-          }, 0).toFixed(2));
+          }, 0);
         })
         this._assets.set(result.assets);
       });

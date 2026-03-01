@@ -2,15 +2,14 @@ import { Component } from '@angular/core';
 import { AssetModel } from './models/asset.model';
 import { CreateEditService } from './create-edit.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxMaskDirective } from 'ngx-mask'
-
+import { CurrencyFormatDirective } from '../currency-format.directive';
 
 @Component({
   selector: 'app-create-edit',
   standalone: true,
   templateUrl: './create-edit.component.html',
   styleUrl: './create-edit.component.css',
-   imports: [FormsModule, ReactiveFormsModule, NgxMaskDirective]
+   imports: [FormsModule, ReactiveFormsModule, CurrencyFormatDirective]
 })
 export class CreateEditComponent {
 

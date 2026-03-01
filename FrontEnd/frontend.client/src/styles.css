@@ -117,3 +117,7 @@ input[type="number"] {
 .block {
   display: block;
 }
+
+input[appCurrencyFormat] {
+  text-align: right;
+}
