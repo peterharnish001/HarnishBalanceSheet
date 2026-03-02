@@ -17,3 +17,8 @@ p.error {
 input[type='checkbox'] {
   height: 20px;
 }
+
+input[id='percentage'] {
+  width: 100px;
+  text-align: right;
+}

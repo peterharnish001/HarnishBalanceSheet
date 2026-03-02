@@ -33,6 +33,9 @@ export class CreateEditService {
             const value = Number(item.value);
             return sum + (isNaN(value) ? 0 : value);
           }, 0);
+          asset.assetComponents.forEach((component) => {
+            component.percentage = component.value / asset.totalValue;
+          });
         });
         if (result.bullion.length > 0) {
            result.assets.push(new AssetModel(

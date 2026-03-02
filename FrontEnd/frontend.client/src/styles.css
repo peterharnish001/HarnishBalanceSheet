@@ -45,6 +45,11 @@ select {
   max-width: 16.67%;
 }
 
+.col-md-4 {
+  flex: 0 0 33.33%;
+  max-width: 33.33%;
+}
+
 .col-md-5 {
   flex: 0 0 41.67%;
   max-width: 41.67%;

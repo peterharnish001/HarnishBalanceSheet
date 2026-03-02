@@ -1,24 +1,18 @@
-<form [formGroup]="assetForm" class="width500">
+<div class="width500">
   <h2>{{data.addOrEdit}} Asset</h2>
   <div class="row">
     <div class="col-md-6">
       <label for="name">Name</label>
     </div>
     <div class="col-md-6">
-      <input id="name" type="text" formControlName="name">
+      <input id="name" type="text" [(ngModel)]="asset.name" [disabled]="data.addOrEdit === 'Edit'" />
     </div>
   </div>
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-      @if(assetForm.get('name')?.touched) {
-        @if(assetForm.get('name')?.hasError('required')) {
-          <p class="error">Name is required.</p>
-        } @else if(assetForm.get('name')?.hasError('nameInUse')) {
-          <p class="error">Name is in use.</p>
-        } @else {
-          <p></p>
-        }
+      @if (nameValidationError) {
+        <p class="error">{{nameValidationError}}</p>
       }
       @else {
           <p></p>
@@ -30,7 +24,7 @@
       <label for="type">Type</label>
     </div>
     <div class="col-md-6">
-      <select id="type" formControlName="type" (change)="onTypeOrIsPercentChange()">
+      <select id="type" [(ngModel)]="asset.type">
         <option [ngValue]="null">------- Type -------</option>
         @for (assetType of data.assetTypes; track assetType.assetTypeId) {
           <option [ngValue]="assetType.assetTypeId">{{assetType.name}}</option>
@@ -43,7 +37,7 @@
       <label for="isPercent">Is Percent</label>
     </div>
     <div class="col-md-6">
-      <input id="isPercent" type="checkbox" formControlName="isPercent"  (change)="onTypeOrIsPercentChange()"/>
+      <input id="isPercent" type="checkbox" [(ngModel)]="asset.isPercent" [disabled]="asset.type !== null"/>
     </div>
   </div>
   <div class="row">
@@ -51,27 +45,32 @@
       <label for="value">Value</label>
     </div>
     <div class="col-md-6">
-      <input id="value" type="text" formControlName="value" appCurrencyFormat  [disabled]="isValueDisabled()"/>
+      <input id="value" type="text" [(ngModel)]="asset.totalValue" appCurrencyFormat  [disabled]="isValueDisabled()"/>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-      @if(assetForm.get('value')?.touched && assetForm.get('value')?.hasError('required')) {
-        <p class="error"></p>
+      @if (valueValidationError) {
+        <p class="error">{{valueValidationError}}</p>
       }
       @else {
-        <p></p>
+          <p></p>
       }
     </div>
   </div>
-  @if(assetForm.get('type')?.value === null) {
-    @for (assetType of data.assetTypes; track assetType.assetTypeId) {
+  @if(asset.type === null) {
+    <div>
+    @for (assetComponent of asset.components; track assetComponent.assetTypeId) {
       <div class="row">
-        <div class="col-md-4">
-          <label for="amount">{{assetType.name}}</label>
+        <div class="col-md-5">
+          <label for="amount">{{assetComponent.name}}</label>
+        </div>
+        <div class="col-md-3">
+          <input id="percentage" type="text" [(ngModel)]="assetComponent.percentage" appPercentFormat [disabled]="!asset.isPercent"/>
         </div>
       </div>
     }
+    </div>
   }
-</form>
+</div>
