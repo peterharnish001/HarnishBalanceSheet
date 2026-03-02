@@ -30,7 +30,7 @@
       <label for="type">Type</label>
     </div>
     <div class="col-md-6">
-      <select id="type" formControlName="type">
+      <select id="type" formControlName="type" (change)="onTypeOrIsPercentChange()">
         <option [ngValue]="null">------- Type -------</option>
         @for (assetType of data.assetTypes; track assetType.assetTypeId) {
           <option [ngValue]="assetType.assetTypeId">{{assetType.name}}</option>
@@ -43,7 +43,35 @@
       <label for="isPercent">Is Percent</label>
     </div>
     <div class="col-md-6">
-      <input id="isPercent" type="checkbox" formControlName="isPercent" />
+      <input id="isPercent" type="checkbox" formControlName="isPercent"  (change)="onTypeOrIsPercentChange()"/>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label for="value">Value</label>
+    </div>
+    <div class="col-md-6">
+      <input id="value" type="text" formControlName="value" appCurrencyFormat  [disabled]="isValueDisabled()"/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6"></div>
+    <div class="col-md-6">
+      @if(assetForm.get('value')?.touched && assetForm.get('value')?.hasError('required')) {
+        <p class="error"></p>
+      }
+      @else {
+        <p></p>
+      }
+    </div>
+  </div>
+  @if(assetForm.get('type')?.value === null) {
+    @for (assetType of data.assetTypes; track assetType.assetTypeId) {
+      <div class="row">
+        <div class="col-md-4">
+          <label for="amount">{{assetType.name}}</label>
+        </div>
+      </div>
+    }
+  }
 </form>
