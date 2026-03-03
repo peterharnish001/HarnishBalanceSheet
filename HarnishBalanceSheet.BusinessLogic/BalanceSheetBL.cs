@@ -36,6 +36,10 @@ namespace HarnishBalanceSheet.BusinessLogic
             BalanceSheetEditDto result = _mapper.Map<BalanceSheetEditDto>(editModel);
             IEnumerable<PreciousMetalPrice> prices = await _preciousMetalsService.GetPreciousMetalsPricesAsync();
             result.Bullion.ToList().ForEach(x => x.PricePerOunce = prices.Where(y => y.Metal == x.MetalName).First().Price);
+            foreach (var metal in result.PreciousMetals.ToList())
+            {
+                metal.PricePerOunce = prices.Where(x => x.Metal == metal.Name).First().Price;
+            }
             return result;
         }
 

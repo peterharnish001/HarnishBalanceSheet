@@ -5,17 +5,16 @@
       <label for="name">Name</label>
     </div>
     <div class="col-md-6">
-      <input id="name" type="text" [(ngModel)]="asset.name" [disabled]="data.addOrEdit === 'Edit'" />
+      <input id="name" type="text" [(ngModel)]="asset.name" [disabled]="data.addOrEdit === 'Edit'" (blur)="onNameBlur()"/>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-      @if (nameValidationError) {
-        <p class="error">{{nameValidationError}}</p>
-      }
-      @else {
-          <p></p>
+      @if (nameValidationError()) {
+        <p class="error">{{nameValidationError()}}</p>
+      } @else {
+        <p></p>
       }
     </div>
   </div>
@@ -51,26 +50,62 @@
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-      @if (valueValidationError) {
-        <p class="error">{{valueValidationError}}</p>
-      }
-      @else {
-          <p></p>
-      }
+      <p class="error">{{valueValidationError}}</p>
     </div>
   </div>
-  @if(asset.type === null) {
+  @if(asset.type === null && !isBullion()) {
     <div>
     @for (assetComponent of asset.components; track assetComponent.assetTypeId) {
       <div class="row">
         <div class="col-md-5">
-          <label for="amount">{{assetComponent.name}}</label>
+          <label>{{assetComponent.name}}</label>
         </div>
         <div class="col-md-3">
-          <input id="percentage" type="text" [(ngModel)]="assetComponent.percentage" appPercentFormat [disabled]="!asset.isPercent"/>
+          <input name="percentage" type="text" [(ngModel)]="assetComponent.percentage" appPercentFormat [disabled]="!asset.isPercent"/>
+        </div>
+        <div class="col-md-3">
+          <input name="amount" type="text" [(ngModel)]="assetComponent.value" appCurrencyFormat [disabled]="asset.isPercent"/>
         </div>
       </div>
     }
+    <div class="row">
+      <div class="col-md-8">
+        <p class="error">{{percentValidationError}}</p>
+      </div>
+      <div class="col-md-3">
+        <p class="error">{{amountValidationError}}</p>
+      </div>
+    </div>
+  </div>
+  }
+  @if (isBullion()) {
+    <div>
+      <div class="row">
+        <div class="col-md-6 bold margin10">Metal</div>
+        <div class="col-md-6 bold marginNegative10">Number of Ounces</div>
+      </div>
+      @for (metal of asset.bullion; track metal.preciousMetalId) {
+        <div class="row">
+          <div class="col-md-6">
+            <label>{{metal.metalName}}</label>
+          </div>
+          <div class="col-md-6">
+            <input name="numOunces" type="number" [(ngModel)]="metal.numOunces" step="0.01" appNumberOfOuncesFormat/>
+          </div>
+        </div>
+      }
+      <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          <p class="error">{{numberOfOuncesValidationError}}</p>
+        </div>
+      </div>
     </div>
   }
+  <div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+      <button>OK</button>
+      <button>Cancel</button>
+    </div>
 </div>

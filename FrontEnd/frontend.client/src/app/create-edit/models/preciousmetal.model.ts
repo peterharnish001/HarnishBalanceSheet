@@ -1,6 +1,7 @@
 export class PreciousMetalModel {
   constructor(
     public preciousMetalId: number,
-    public name: string
+    public name: string,
+    public pricePerOunce: number
   ) {}
 }

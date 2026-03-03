@@ -6,6 +6,7 @@ import { AssetModel } from './models/asset.model';
 import { BalanceSheetModel } from './models/balancesheet.model';
 import { LiabilityModel } from './models/liability.model';
 import { AssetTypeModel } from './models/assettype.model';
+import { PreciousMetalModel } from './models/preciousmetal.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +16,14 @@ export class CreateEditService {
   private readonly _assets = signal<AssetModel[]>([]);
   private readonly _liabilities = signal<LiabilityModel[]>([]);
   private readonly _assetTypes = signal<AssetTypeModel[]>([]);
+  private readonly _metals = signal<PreciousMetalModel[]>([]);
 
   public readonly balanceSheet = this._balanceSheet.asReadonly();
   public readonly assets = this._assets.asReadonly();
   public readonly liabilities = this._liabilities.asReadonly();
   public readonly assetTypes = this._assetTypes.asReadonly();
   public readonly assetNames = this._assets().map(asset => asset.name);
+  public readonly metals = this._metals.asReadonly();
 
   constructor(private http: HttpClient) {}
 
@@ -49,6 +52,7 @@ export class CreateEditService {
         this._assets.set(result.assets);
         this._liabilities.set(result.liabilities);
         this._assetTypes.set(result.assetTypes);
+        this._metals.set(result.preciousMetals);
       });
   }
 }

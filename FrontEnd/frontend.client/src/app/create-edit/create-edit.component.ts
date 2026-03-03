@@ -8,6 +8,7 @@ import { CurrencyFormatDirective } from '../currency-format.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditAssetComponent } from '../add-edit-asset/add-edit-asset.component';
 import { AssetComponentModel } from './models/assetcomponent.model';
+import { MetalPositionModel } from './models/metalposition.model';
 
 @Component({
   selector: 'app-create-edit',
@@ -38,7 +39,8 @@ export class CreateEditComponent {
         assetTypes: this.service.assetTypes(),
         assetNames: this.service.assetNames,
         asset: new AddEditAssetModel('', null, false, 0,
-           this.service.assetTypes().map((type) => new AssetComponentModel(type.assetTypeId, 0, 0, type.name)))
+          this.service.assetTypes().map((type) => new AssetComponentModel(type.assetTypeId, 0, 0, type.name)),
+          this.service.metals().map((metal) => new MetalPositionModel(metal.preciousMetalId, metal.name, 0, metal.pricePerOunce, 0)))
       }
     })
   }

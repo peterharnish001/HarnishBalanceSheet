@@ -10,6 +10,8 @@ namespace HarnishBalanceSheet.DTO
         [DataMember]
         public int PreciousMetalId { get; set; }
         [DataMember]
-        public string Name { get; set; } 
+        public string Name { get; set; }
+        [DataMember]
+        public decimal PricePerOunce { get; set; }
     }
 }
