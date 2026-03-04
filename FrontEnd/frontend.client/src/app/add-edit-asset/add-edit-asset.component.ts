@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CurrencyFormatDirective } from '../currency-format.directive';
 import { PercentFormatDirective } from '../percentage-format.directive';
 import { NumberOfOuncesFormatDirective } from '../number-of-ounces-format.directive';
@@ -23,7 +23,7 @@ export class AddEditAssetComponent {
   public amountValidationError: string = '';
   public numberOfOuncesValidationError: string = '';
 
-  constructor() {}
+  constructor(private dialogRef: MatDialogRef<AddEditAssetComponent>) {}
 
   isValueDisabled(): boolean {
     return this.asset.type === null && !this.asset.isPercent;
@@ -47,7 +47,7 @@ export class AddEditAssetComponent {
 
   validateName(): boolean {
     if (this.asset.name.trim() === '') {
-      this.nameValidationError = 'Name is required.';
+      this.nameValidationError= 'Name is required.';
       return false;
     }
 
@@ -84,5 +84,74 @@ export class AddEditAssetComponent {
 
     this.percentValidationError = '';
     return true;
+  }
+
+  validatePercentSum(): boolean {
+    if (this.asset.type === null && this.asset.isPercent && !this.isBullion()) {
+      if (this.asset.components.find((component) => component.percentage === undefined)) {
+        this.percentValidationError = 'Percent must be numeric.';
+        return false;
+      } else if (this.asset.components.find((component) => component.percentage! > 100)) {
+        this.percentValidationError = 'Percent must not be greater than 100.';
+        return false;
+      } else if (this.asset.components.reduce((sum, item) => {
+          const value = Number(item.percentage);
+          return sum + (isNaN(value) ? 0 : value);
+        }, 0) !== 100) {
+          this.percentValidationError = 'Percentages must add up to 100.'
+          return false;
+      }
+    }
+
+    this.percentValidationError = '';
+    return true;
+  }
+
+  validateAmounts(): boolean {
+    if (this.asset.type === null && !this.asset.isPercent && !this.isBullion()) {
+      if (this.asset.components.reduce((sum, item) => {
+          const value = Number(item.value);
+          return sum + (isNaN(value) ? 0 : value);
+          }, 0) <= 0) {
+          this.amountValidationError = 'Sum must be > 0.'
+          return false;
+        }
+    }
+
+    this.amountValidationError = '';
+    return true;
+  }
+
+  validateNumberOfOuncesSum(): boolean {
+    if (this.isBullion()) {
+      if (this.asset.bullion.reduce((sum, item) => {
+          const value = Number(item.numOunces);
+          return sum + (isNaN(value) ? 0 : value);
+          }, 0) <= 0) {
+          this.numberOfOuncesValidationError = 'Total must be greater than 0.'
+          return false;
+        }
+    }
+
+    this.numberOfOuncesValidationError = '';
+    return true;
+  }
+
+  clickOk(): void {
+    if (this.isValid()) {
+      this.dialogRef.close(this.asset);
+    }
+  }
+
+  clickCancel(): void {
+    this.dialogRef.close(null);
+  }
+
+  isValid(): boolean {
+    return this.validatePercentSum()
+      && this.validateAmounts()
+      && this.validateNumberOfOuncesSum()
+      && this.validateName()
+      && this.validateValue();
   }
 }

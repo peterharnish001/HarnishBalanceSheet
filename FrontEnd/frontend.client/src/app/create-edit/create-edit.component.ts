@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddEditAssetComponent } from '../add-edit-asset/add-edit-asset.component';
 import { AssetComponentModel } from './models/assetcomponent.model';
 import { MetalPositionModel } from './models/metalposition.model';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-create-edit',
@@ -20,7 +21,8 @@ import { MetalPositionModel } from './models/metalposition.model';
 export class CreateEditComponent {
   private dialog = inject(MatDialog);
 
-  constructor(private service: CreateEditService
+  constructor(private service: CreateEditService,
+              private cdr: ChangeDetectorRef
       ) {
       }
 
@@ -47,6 +49,28 @@ export class CreateEditComponent {
           this.service.metals().map((metal) => new MetalPositionModel(metal.preciousMetalId, metal.name, 0, metal.pricePerOunce, 0)))
       }
     })
+    .afterClosed()
+    .subscribe((result: AddEditAssetModel | null) => {
+      if (result !== null) {
+        const model = result as AddEditAssetModel;
+        if (model.type !== null) {
+          this.service.addAsset(new AssetModel(
+            model.name,
+            model.totalValue,
+            [new AssetComponentModel(model.type, model.totalValue)],
+            undefined,
+            false));
+        } else if (model.isPercent) {
+          this.service.addAsset(new AssetModel(
+            model.name,
+            model.totalValue,
+            model.components.map((component) => new AssetComponentModel(component.assetTypeId, model.totalValue * component.percentage!, component.percentage)),
+            undefined,
+            model.isPercent));
+        }
+        this.cdr.detectChanges();
+      }
+     });
   }
 
   public getDisabled(asset: AssetModel): boolean {

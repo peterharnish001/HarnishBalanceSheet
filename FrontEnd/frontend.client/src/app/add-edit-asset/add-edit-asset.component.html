@@ -23,7 +23,7 @@
       <label for="type">Type</label>
     </div>
     <div class="col-md-6">
-      <select id="type" [(ngModel)]="asset.type">
+      <select id="type" [(ngModel)]="asset.type" [disabled]="isBullion()">
         <option [ngValue]="null">------- Type -------</option>
         @for (assetType of data.assetTypes; track assetType.assetTypeId) {
           <option [ngValue]="assetType.assetTypeId">{{assetType.name}}</option>
@@ -36,7 +36,7 @@
       <label for="isPercent">Is Percent</label>
     </div>
     <div class="col-md-6">
-      <input id="isPercent" type="checkbox" [(ngModel)]="asset.isPercent" [disabled]="asset.type !== null"/>
+      <input id="isPercent" type="checkbox" [(ngModel)]="asset.isPercent" [disabled]="asset.type !== null && !isBullion()"/>
     </div>
   </div>
   <div class="row">
@@ -109,7 +109,11 @@
       <div class="row">
         <div class="col-md-6"></div>
         <div class="col-md-6">
-          <p class="error">{{numberOfOuncesValidationError}}</p>
+           @if(numberOfOuncesValidationError) {
+            <p class="error">{{numberOfOuncesValidationError}}</p>
+           } @else {
+            <p></p>
+           }
         </div>
       </div>
     </div>
@@ -117,7 +121,7 @@
   <div class="row">
     <div class="col-md-8"></div>
     <div class="col-md-4">
-      <button>OK</button>
-      <button>Cancel</button>
+      <button (click)="clickOk()">OK</button>
+      <button (click)="clickCancel()">Cancel</button>
     </div>
 </div>

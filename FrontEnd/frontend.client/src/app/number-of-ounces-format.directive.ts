@@ -36,6 +36,6 @@ export class NumberOfOuncesFormatDirective implements AfterViewInit {
   }
 
   private parseNumber(value: string): string {
-    return value.replace(/[^\d.-]/g, '');
+    return value.replace(/[^\d.]/g, '');
   }
 }

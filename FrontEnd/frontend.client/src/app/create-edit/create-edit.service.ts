@@ -59,4 +59,8 @@ export class CreateEditService {
         this._metals.set(result.preciousMetals);
       });
   }
+
+  public addAsset(asset: AssetModel): void {
+    this._assets().push(asset);
+  }
 }
