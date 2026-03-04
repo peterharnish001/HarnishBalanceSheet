@@ -38,6 +38,6 @@ export class CurrencyFormatDirective implements AfterViewInit {
   }
 
   private parseCurrency(value: string): string {
-    return value.replace(/[^\d.-]/g, '');
+    return value.replace(/[^\d.]/g, '');
   }
 }

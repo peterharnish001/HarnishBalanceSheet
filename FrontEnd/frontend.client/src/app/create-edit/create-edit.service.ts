@@ -17,6 +17,7 @@ export class CreateEditService {
   private readonly _liabilities = signal<LiabilityModel[]>([]);
   private readonly _assetTypes = signal<AssetTypeModel[]>([]);
   private readonly _metals = signal<PreciousMetalModel[]>([]);
+  private readonly _isLoading = signal<boolean>(true);
 
   public readonly balanceSheet = this._balanceSheet.asReadonly();
   public readonly assets = this._assets.asReadonly();
@@ -24,12 +25,15 @@ export class CreateEditService {
   public readonly assetTypes = this._assetTypes.asReadonly();
   public readonly assetNames = this._assets().map(asset => asset.name);
   public readonly metals = this._metals.asReadonly();
+  public readonly isLoading = this._isLoading.asReadonly();
+
 
   constructor(private http: HttpClient) {}
 
   public getCurrent(): void {
     this.http.get<BalanceSheetModel>(environment.apiUrl + 'balance-sheet/create')
       .subscribe((result: BalanceSheetModel) => {
+        this._isLoading.set(false);
         this._balanceSheet.set(result);
         result.assets.forEach((asset) => {
           asset.totalValue = asset.assetComponents.reduce((sum, item) => {

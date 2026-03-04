@@ -1,4 +1,5 @@
 <div class="row">
+  @if (!isLoading()) {
     <div class="col-md-6">
         <div class="bold center block">Assets</div>
         @for (asset of getAssets(); track asset.name) {
@@ -30,4 +31,5 @@
           <button class="center">Add</button>
         </div>
     </div>
+  }
 </div>

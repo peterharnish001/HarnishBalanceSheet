@@ -24,6 +24,10 @@ export class CreateEditComponent {
       ) {
       }
 
+  public isLoading(): boolean {
+    return this.service.isLoading();
+  }
+
   public getAssets(): AssetModel[] {
     return this.service.assets();
   }

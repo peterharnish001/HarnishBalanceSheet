@@ -23,21 +23,27 @@ export class PercentFormatDirective implements AfterViewInit {
 
   @HostListener('focus', ['$event.target'])
   onFocus(element: any) {
-    this.renderer.setProperty(this.el.nativeElement, 'value', this.parsePercent(element.value));
+    this.renderer.setProperty(this.el.nativeElement, 'value', this.parseNumber(element.value));
   }
 
   @HostListener('blur', ['$event.target'])
   onBlur(element: any) {
-    this.formatValue(element.value);
-  }
-
-  private formatValue(value?: string) {
-    const rawValue = value ? this.parsePercent(value) : this.el.nativeElement.value;
+    const value = element.value;
+    var rawValue = value ? this.parseNumber(value) : this.el.nativeElement.value;
+    if (!isNaN(rawValue)) {
+      rawValue = Number(rawValue) / 100;
+    }
     const formattedValue = this.percentPipe.transform(rawValue);
     this.renderer.setProperty(this.el.nativeElement, 'value', formattedValue);
   }
 
-  private parsePercent(value: string): string {
-    return value.replace(/[^\d.-]/g, '');
+  private formatValue(value?: string) {
+    const rawValue = value ? this.parseNumber(value) : this.el.nativeElement.value;
+    const formattedValue = this.percentPipe.transform(rawValue);
+    this.renderer.setProperty(this.el.nativeElement, 'value', formattedValue);
+  }
+
+  private parseNumber(value: string): string {
+    return value.replace(/[^\d.]/g, '');
   }
 }

@@ -11,8 +11,8 @@
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-      @if (nameValidationError()) {
-        <p class="error">{{nameValidationError()}}</p>
+      @if (nameValidationError) {
+        <p class="error">{{nameValidationError}}</p>
       } @else {
         <p></p>
       }
@@ -44,13 +44,17 @@
       <label for="value">Value</label>
     </div>
     <div class="col-md-6">
-      <input id="value" type="text" [(ngModel)]="asset.totalValue" appCurrencyFormat  [disabled]="isValueDisabled()"/>
+      <input id="value" type="text" [(ngModel)]="asset.totalValue" appCurrencyFormat  [disabled]="isValueDisabled()" (blur)="onValueBlur()"/>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-      <p class="error">{{valueValidationError}}</p>
+      @if (valueValidationError) {
+        <p class="error">{{valueValidationError}}</p>
+      } @else {
+        <p></p>
+      }
     </div>
   </div>
   @if(asset.type === null && !isBullion()) {
@@ -61,7 +65,7 @@
           <label>{{assetComponent.name}}</label>
         </div>
         <div class="col-md-3">
-          <input name="percentage" type="text" [(ngModel)]="assetComponent.percentage" appPercentFormat [disabled]="!asset.isPercent"/>
+          <input name="percentage" type="text" [(ngModel)]="assetComponent.percentage" appPercentFormat [disabled]="!asset.isPercent" (blur)="onPercentBlur($event)"/>
         </div>
         <div class="col-md-3">
           <input name="amount" type="text" [(ngModel)]="assetComponent.value" appCurrencyFormat [disabled]="asset.isPercent"/>
@@ -70,10 +74,18 @@
     }
     <div class="row">
       <div class="col-md-8">
-        <p class="error">{{percentValidationError}}</p>
+        @if (percentValidationError) {
+          <p class="error">{{percentValidationError}}</p>
+        } @else {
+          <p></p>
+        }
       </div>
       <div class="col-md-3">
-        <p class="error">{{amountValidationError}}</p>
+        @if (amountValidationError) {
+          <p class="error">{{amountValidationError}}</p>
+        } @else {
+          <p></p>
+        }
       </div>
     </div>
   </div>

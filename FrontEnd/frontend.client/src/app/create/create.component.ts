@@ -16,6 +16,10 @@ export class CreateComponent implements OnInit {
   constructor(private service: CreateEditService
     ) {}
 
+  public isLoading(): boolean {
+    return this.service.isLoading();
+  }
+
   ngOnInit(): void {
     this.service.getCurrent();
   }

@@ -17,7 +17,7 @@ export class AddEditAssetComponent {
   public data: any = inject(MAT_DIALOG_DATA);
   public asset: AddEditAssetModel = this.data.asset;
 
-  public nameValidationError = signal('');
+  public nameValidationError: string = '';
   public valueValidationError: string = '';
   public percentValidationError: string = '';
   public amountValidationError: string = '';
@@ -37,13 +37,52 @@ export class AddEditAssetComponent {
     return this.validateName();
   }
 
+  onValueBlur(): boolean {
+    return this.validateValue();
+  }
+
+  onPercentBlur($event: any): boolean {
+    return this.validatePercent($event);
+  }
+
   validateName(): boolean {
     if (this.asset.name.trim() === '') {
-      this.nameValidationError.set('Name is required.');
+      this.nameValidationError = 'Name is required.';
       return false;
     }
 
-    this.nameValidationError.set('');
+    this.nameValidationError = '';
+    return true;
+  }
+
+  validateValue(): boolean {
+    if ((this.asset.type !== null || this.asset.isPercent) && !this.isBullion()) {
+      if (isNaN(this.asset.totalValue)) {
+        this.valueValidationError = 'Value must be numeric.';
+        return false;
+      } else if (this.asset.totalValue === 0) {
+        this.valueValidationError = 'Value must be greater than 0.';
+        return false;
+      }
+    }
+
+    this.valueValidationError = '';
+    return true;
+  }
+
+  validatePercent($event: any): boolean {
+    if (this.asset.type === null && this.asset.isPercent && !this.isBullion()) {
+      const val = $event.target.value.replace(/[^\d.]/g, '');
+      if (val === '' || isNaN(val)) {
+        this.percentValidationError = 'Percent must be numeric.';
+        return false;
+      } else if (Number(val) > 100) {
+        this.percentValidationError = 'Percent must not be greater than 100.';
+        return false;
+      }
+    }
+
+    this.percentValidationError = '';
     return true;
   }
 }
