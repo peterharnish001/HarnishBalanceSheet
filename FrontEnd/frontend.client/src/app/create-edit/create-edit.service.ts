@@ -7,6 +7,7 @@ import { BalanceSheetModel } from './models/balancesheet.model';
 import { LiabilityModel } from './models/liability.model';
 import { AssetTypeModel } from './models/assettype.model';
 import { PreciousMetalModel } from './models/preciousmetal.model';
+import { MetalPositionModel } from './models/metalposition.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class CreateEditService {
   private readonly _liabilities = signal<LiabilityModel[]>([]);
   private readonly _assetTypes = signal<AssetTypeModel[]>([]);
   private readonly _metals = signal<PreciousMetalModel[]>([]);
+  private readonly _bullion = signal<MetalPositionModel[]>([]);
   private readonly _isLoading = signal<boolean>(true);
 
   public readonly balanceSheet = this._balanceSheet.asReadonly();
@@ -25,6 +27,7 @@ export class CreateEditService {
   public readonly assetTypes = this._assetTypes.asReadonly();
   public readonly assetNames = this._assets().map(asset => asset.name);
   public readonly metals = this._metals.asReadonly();
+  public readonly bullion = this._bullion.asReadonly();
   public readonly isLoading = this._isLoading.asReadonly();
 
 
@@ -52,6 +55,7 @@ export class CreateEditService {
             }, 0),
             []
            ));
+           this._bullion.set(result.bullion);
         }
         this._assets.set(result.assets);
         this._liabilities.set(result.liabilities);
@@ -62,5 +66,9 @@ export class CreateEditService {
 
   public addAsset(asset: AssetModel): void {
     this._assets().push(asset);
+  }
+
+  public addBullion(bullion: MetalPositionModel[]): void {
+    this._bullion.set(bullion);
   }
 }

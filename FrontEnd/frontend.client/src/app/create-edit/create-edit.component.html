@@ -7,7 +7,7 @@
             <div class="col-md-5">{{asset.name}}</div>
             <div>
               <input type="text" [(ngModel)]="asset.totalValue" name="totalValue" appCurrencyFormat [disabled]="getDisabled(asset)" (blur)="onBlur($event, asset)"/>
-              <button><i class="fa fa-edit"></i></button>
+              <button (click)="editAsset(asset)"><i class="fa fa-edit"></i></button>
               <button><i class="fa fa-trash"></i></button>
             </div>
           </div>

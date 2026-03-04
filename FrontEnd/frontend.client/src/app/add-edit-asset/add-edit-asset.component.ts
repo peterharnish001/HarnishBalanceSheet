@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CurrencyFormatDirective } from '../currency-format.directive';
@@ -23,7 +23,8 @@ export class AddEditAssetComponent {
   public amountValidationError: string = '';
   public numberOfOuncesValidationError: string = '';
 
-  constructor(private dialogRef: MatDialogRef<AddEditAssetComponent>) {}
+  constructor(private dialogRef: MatDialogRef<AddEditAssetComponent>) {
+  }
 
   isValueDisabled(): boolean {
     return this.asset.type === null && !this.asset.isPercent;
@@ -95,8 +96,10 @@ export class AddEditAssetComponent {
         this.percentValidationError = 'Percent must not be greater than 100.';
         return false;
       } else if (this.asset.components.reduce((sum, item) => {
-          const value = Number(item.percentage);
-          return sum + (isNaN(value) ? 0 : value);
+          const value = item.percentage!.toString().replace(/[^\d.]/g, '');
+          const num = Number(value);
+          item.percentage = num;
+          return sum + (isNaN(num) ? 0 : num);
         }, 0) !== 100) {
           this.percentValidationError = 'Percentages must add up to 100.'
           return false;

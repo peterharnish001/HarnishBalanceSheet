@@ -53,28 +53,88 @@ export class CreateEditComponent {
     .subscribe((result: AddEditAssetModel | null) => {
       if (result !== null) {
         const model = result as AddEditAssetModel;
-        if (model.type !== null) {
+        if (model.name.trim().toLowerCase() === 'bullion') {
+          const totalValue =  model.bullion.reduce((sum, item) => {
+              const value = Number(item.numOunces);
+              return sum + (isNaN(value) ? 0 : value * item.pricePerOunce);
+            }, 0);
           this.service.addAsset(new AssetModel(
-            model.name,
+            'Bullion',
+            totalValue,
+            [new AssetComponentModel(3, totalValue, 1)],
+            undefined,
+            false
+          ));
+          this.service.addBullion(model.bullion.map((metal) => new MetalPositionModel(
+            metal.preciousMetalId,
+            metal.metalName,
+            metal.numOunces,
+            metal.pricePerOunce,
+            metal.numOunces * metal.pricePerOunce)));
+        } else if (model.type !== null) {
+          this.service.addAsset(new AssetModel(
+            model.name.trim(),
             model.totalValue,
             [new AssetComponentModel(model.type, model.totalValue)],
             undefined,
             false));
         } else if (model.isPercent) {
           this.service.addAsset(new AssetModel(
-            model.name,
+            model.name.trim(),
             model.totalValue,
-            model.components.map((component) => new AssetComponentModel(component.assetTypeId, model.totalValue * component.percentage!, component.percentage)),
+            model.components.map((component) => new AssetComponentModel(
+              component.assetTypeId,
+              model.totalValue * component.percentage! / 100,
+              component.percentage! / 100,
+              component.name)),
             undefined,
             model.isPercent));
+        } else {
+          model.totalValue =  model.components.reduce((sum, item) => {
+              const value = Number(item.value);
+              return sum + (isNaN(value) ? 0 : value);
+            }, 0)
+          this.service.addAsset(new AssetModel(
+            model.name.trim(),
+            model.totalValue,
+            model.components.map((component) => new AssetComponentModel(
+              component.assetTypeId,
+              component.value,
+              component.value / model.totalValue,
+              component.name)),
+            undefined,
+            false
+          ));
         }
         this.cdr.detectChanges();
       }
      });
   }
 
+  public editAsset(asset: AssetModel): void {
+    console.log(this.service.bullion());
+    this.dialog.open(AddEditAssetComponent, {
+      data: {
+        addOrEdit: 'Edit',
+        assetTypes: this.service.assetTypes(),
+        assetNames: this.service.assetNames,
+        asset: new AddEditAssetModel(
+          asset.name,
+          asset.assetComponents.length > 1 ? null : asset.assetComponents[0].assetTypeId,
+          asset.isPercent,
+          asset.totalValue,
+          asset.assetComponents,
+          this.isBullion(asset) ? this.service.bullion() :[])
+      }
+    })
+  }
+
   public getDisabled(asset: AssetModel): boolean {
-    return (asset.assetComponents.length > 1 && !asset.isPercent) || asset.name.toLowerCase() === 'bullion' ? true : false;
+    return (asset.assetComponents.length > 1 && !asset.isPercent) || this.isBullion(asset) ? true : false;
+  }
+
+  private isBullion(asset: AssetModel): boolean {
+    return asset.name.toLowerCase() === 'bullion';
   }
 
   public onBlur($event: any, asset: AssetModel ): void {
