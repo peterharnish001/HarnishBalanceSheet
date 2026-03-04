@@ -92,15 +92,18 @@ export class AddEditAssetComponent {
       if (this.asset.components.find((component) => component.percentage === undefined)) {
         this.percentValidationError = 'Percent must be numeric.';
         return false;
-      } else if (this.asset.components.find((component) => component.percentage! > 100)) {
+      } else if (this.asset.components.find((component) => component.percentage! > 1 && (typeof component.percentage !== 'string'))) {
         this.percentValidationError = 'Percent must not be greater than 100.';
         return false;
       } else if (this.asset.components.reduce((sum, item) => {
           const value = item.percentage!.toString().replace(/[^\d.]/g, '');
-          const num = Number(value);
+          var num = Number(value);
+          if (typeof item.percentage === 'string') {
+            num = num / 100;
+          }
           item.percentage = num;
           return sum + (isNaN(num) ? 0 : num);
-        }, 0) !== 100) {
+        }, 0) !== 1) {
           this.percentValidationError = 'Percentages must add up to 100.'
           return false;
       }

@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CurrencyFormatDirective } from '../currency-format.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditAssetComponent } from '../add-edit-asset/add-edit-asset.component';
+import { DeleteAssetComponent } from './delete-asset/delete-asset.component';
 import { AssetComponentModel } from './models/assetcomponent.model';
 import { MetalPositionModel } from './models/metalposition.model';
 import { ChangeDetectorRef } from '@angular/core';
@@ -84,8 +85,8 @@ export class CreateEditComponent {
             model.totalValue,
             model.components.map((component) => new AssetComponentModel(
               component.assetTypeId,
-              model.totalValue * component.percentage! / 100,
-              component.percentage! / 100,
+              model.totalValue * component.percentage!,
+              component.percentage!,
               component.name)),
             undefined,
             model.isPercent));
@@ -112,7 +113,6 @@ export class CreateEditComponent {
   }
 
   public editAsset(asset: AssetModel): void {
-    console.log(this.service.bullion());
     this.dialog.open(AddEditAssetComponent, {
       data: {
         addOrEdit: 'Edit',
@@ -127,6 +127,60 @@ export class CreateEditComponent {
           this.isBullion(asset) ? this.service.bullion() :[])
       }
     })
+    .afterClosed()
+    .subscribe((result: AddEditAssetModel | null) => {
+      if (result !== null) {
+        const model = result as AddEditAssetModel;
+        const asset = this.service.assets().find((item) => item.name === model.name);
+        if (asset !== undefined) {
+          if (model.name.trim().toLowerCase() === 'bullion') {
+          asset.totalValue =  model.bullion.reduce((sum, item) => {
+              const value = Number(item.numOunces);
+              return sum + (isNaN(value) ? 0 : value * item.pricePerOunce);
+            }, 0);
+          this.service.addBullion(model.bullion.map((metal) => new MetalPositionModel(
+            metal.preciousMetalId,
+            metal.metalName,
+            metal.numOunces,
+            metal.pricePerOunce,
+            metal.numOunces * metal.pricePerOunce)));
+          } else if (model.type !== null) {
+            asset.totalValue = model.totalValue;
+            asset.assetComponents = [new AssetComponentModel(model.type, model.totalValue)];
+            asset.isPercent = false;
+          } else if (model.isPercent) {
+            asset.totalValue = model.totalValue;
+            asset.assetComponents = model.components.map((component) => new AssetComponentModel(
+              component.assetTypeId,
+              model.totalValue * component.percentage!,
+              component.percentage!,
+              component.name));
+            asset.isPercent = model.isPercent;
+          } else {
+            asset.totalValue =  model.components.reduce((sum, item) => {
+              const value = Number(item.value);
+              return sum + (isNaN(value) ? 0 : value);
+            }, 0)
+            asset.assetComponents = model.components.map((component) => new AssetComponentModel(
+              component.assetTypeId,
+              component.value,
+              component.value / model.totalValue,
+              component.name));
+            asset.isPercent = false;
+          }
+          this.service.editAsset(asset);
+          this.cdr.detectChanges();
+        }
+      }
+     });
+  }
+
+  public deleteAsset(asset: AssetModel): void {
+    this.dialog.open(DeleteAssetComponent, {
+      data: {
+        name: asset.name
+      }
+    });
   }
 
   public getDisabled(asset: AssetModel): boolean {

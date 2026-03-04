@@ -8,7 +8,7 @@
             <div>
               <input type="text" [(ngModel)]="asset.totalValue" name="totalValue" appCurrencyFormat [disabled]="getDisabled(asset)" (blur)="onBlur($event, asset)"/>
               <button (click)="editAsset(asset)"><i class="fa fa-edit"></i></button>
-              <button><i class="fa fa-trash"></i></button>
+              <button (click)="deleteAsset(asset)"><i class="fa fa-trash"></i></button>
             </div>
           </div>
         }

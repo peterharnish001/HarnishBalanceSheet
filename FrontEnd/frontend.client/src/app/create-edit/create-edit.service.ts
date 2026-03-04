@@ -68,6 +68,13 @@ export class CreateEditService {
     this._assets().push(asset);
   }
 
+  public editAsset(asset: AssetModel): void {
+    const index = this._assets().findIndex(item => item.name === asset.name);
+    if (index !== -1) {
+      this._assets()[index] = asset;
+    }
+  }
+
   public addBullion(bullion: MetalPositionModel[]): void {
     this._bullion.set(bullion);
   }
