@@ -1,5 +1,7 @@
 import { Component,  OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { CreateEditComponent } from '../create-edit/create-edit.component';
 import { CreateEditService } from '../create-edit/create-edit.service';
 
@@ -13,7 +15,8 @@ import { CreateEditService } from '../create-edit/create-edit.service';
 export class CreateComponent implements OnInit {
   public today: Date = new Date();
 
-  constructor(private service: CreateEditService
+  constructor(private service: CreateEditService,
+              private router: Router
     ) {}
 
   public isLoading(): boolean {
@@ -22,5 +25,16 @@ export class CreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getCurrent();
+  }
+
+  clickSave(): void {
+    this.service.createBalanceSheet()
+      .subscribe({
+        next: (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            this.router.navigate(['/details/' + response.body.toString()]);
+          }
+        }
+      });
   }
 }

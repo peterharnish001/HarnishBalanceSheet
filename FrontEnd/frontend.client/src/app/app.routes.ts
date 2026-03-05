@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HbsIndexComponent } from './hbs-index/hbs-index.component';
-import { CreateComponent } from './create/create.component'
+import { CreateComponent } from './create/create.component';
+import { DetailsComponent } from './details/details.component';
 
 export const routes: Routes = [
   {
@@ -15,5 +16,9 @@ export const routes: Routes = [
   {
     path: 'create',
     component: CreateComponent
+  },
+  {
+    path: 'details/:id',
+    component: DetailsComponent
   }
 ]

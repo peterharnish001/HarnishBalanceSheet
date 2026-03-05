@@ -13,7 +13,7 @@
       @for (model of balanceSheetDateModels(); track model.balanceSheetId) {
       <div class="row">
         <div class="col-md-12">
-          <a href="'~/details/' + model.balanceSheetId.toString()" style="display:block;margin-left:auto;">{{model.date | date:'longDate'}}</a>
+          <a [routerLink]="'/details/' + model.balanceSheetId.toString()" class="detailsLink">{{model.date | date:'longDate'}}</a>
         </div>
       </div>
       <hr />
