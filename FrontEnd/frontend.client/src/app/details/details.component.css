@@ -1,0 +1,15 @@
+p {
+  margin: 0px;
+}
+
+p.currency {
+  text-align: right;
+}
+
+.width20 {
+  width: 20%;
+}
+
+.center {
+  text-align: center;
+}

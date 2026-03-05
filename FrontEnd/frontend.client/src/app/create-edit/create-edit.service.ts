@@ -71,7 +71,7 @@ export class CreateEditService {
 
   public createBalanceSheet(): Observable<HttpResponse<any>> {
     const balanceSheet = new BalanceSheetModel(
-      this._assets(),
+      this._assets().filter((asset) => asset.name.toLowerCase() !== 'bullion'),
       this._liabilities(),
       this._bullion()
     )

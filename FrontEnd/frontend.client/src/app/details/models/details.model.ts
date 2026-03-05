@@ -1,4 +1,4 @@
-import { AssetModel } from "../../create-edit/models/asset.model";
+import { AssetModel } from "./asset.model";
 import { LiabilityModel } from "../../create-edit/models/liability.model";
 import { AssetShareModel } from "./asset-share.model";
 import { BullionSummaryModel } from "./bullion-summary.model";

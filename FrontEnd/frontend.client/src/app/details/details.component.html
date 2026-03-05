@@ -1,4 +1,54 @@
 <div>
-  <h1>{{ detailsModel?.date | date:'longDate'}}</h1>
-
+  @if (detailsModel() !== null) {
+    <h1>{{ detailsModel()!.date | date:'longDate'}}</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="bold center block">Assets</div>
+        @for (asset of detailsModel()!.assets; track asset.name) {
+          <div class="row">
+            <div class="col-md-5">{{asset.name}}</div>
+            <div class="col-md-6">
+              <p class="currency">{{ asset.value | currency }}</p>
+            </div>
+          </div>
+        }
+        <div class="row">
+          <div class="col-md-5"><p class="bold">Total</p></div>
+          <div class="col-md-6">
+            <p class="currency bold">{{ detailsModel()!.totalAssets| currency }}</p>
+          </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+        <div class="bold center block">Liabilities</div>
+        @for (liability of detailsModel()!.liabilities; track liability.name) {
+          <div class="row">
+            <div class="col-md-5">{{liability.name}}</div>
+            <div class="col-md-6">
+              <p class="currency">{{ liability.value | currency }}</p>
+            </div>
+          </div>
+        }
+        <div class="row">
+          <div class="col-md-5"><p class="bold">Total</p></div>
+          <div class="col-md-6">
+            <p class="currency bold">{{ detailsModel()!.totalLiabilities | currency }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5"><p class="bold">Net Worth</p></div>
+          <div class="col-md-6">
+            <p class="currency bold">{{ detailsModel()!.netWorth | currency }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      @for (assetShare of detailsModel()!.assetShares; track assetShare.name) {
+        <div class="width20">
+          <p class="bold center">{{ assetShare.name }}</p>
+        </div>
+      }
+    </div>
+  }
 </div>
