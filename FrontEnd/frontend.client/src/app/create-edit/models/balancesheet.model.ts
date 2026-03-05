@@ -6,11 +6,11 @@ import { PreciousMetalModel } from "./preciousmetal.model";
 
 export class BalanceSheetModel {
   constructor(
-    public date: Date,
     public assets: AssetModel[],
     public liabilities: LiabilityModel[],
     public bullion: MetalPositionModel[],
-    public assetTypes: AssetTypeModel[],
-    public preciousMetals: PreciousMetalModel[]
+    public assetTypes: AssetTypeModel[] = [],
+    public preciousMetals: PreciousMetalModel[] = [],
+    public date?: Date
   ) {}
 }

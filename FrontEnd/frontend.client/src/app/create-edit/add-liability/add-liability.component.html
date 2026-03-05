@@ -11,11 +11,11 @@
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-      <!--@if (nameValidationError) {
+      @if (nameValidationError) {
         <p class="error">{{nameValidationError}}</p>
       } @else {
         <p></p>
-    }-->
+      }
     </div>
   </div>
   <div class="row">
@@ -29,11 +29,18 @@
   <div class="row">
     <div class="col-md-6"></div>
     <div class="col-md-6">
-      <!--@if (valueValidationError) {
+      @if (valueValidationError) {
         <p class="error">{{valueValidationError}}</p>
       } @else {
         <p></p>
-    }-->
+      }
+    </div>
+  </div>
+   <div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+      <button (click)="onClickOk()">OK</button>
+      <button (click)="onClickCancel()">Cancel</button>
     </div>
   </div>
 </div>

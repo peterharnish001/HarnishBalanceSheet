@@ -23,7 +23,7 @@
             <div class="col-md-5">{{liability.name}}</div>
             <div>
               <input type="text" [(ngModel)]="liability.value" name="value" appCurrencyFormat />
-              <button><i class="fa fa-trash"></i></button>
+              <button (click)="deleteLiability(liability)"><i class="fa fa-trash"></i></button>
             </div>
           </div>
         }

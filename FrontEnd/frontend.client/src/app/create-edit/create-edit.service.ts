@@ -21,6 +21,7 @@ export class CreateEditService {
   private readonly _bullion = signal<MetalPositionModel[]>([]);
   private readonly _isLoading = signal<boolean>(true);
   private readonly _assetNames = signal<string[]>([]);
+  private readonly _liabilityNames = signal<string[]>([]);
 
   public readonly balanceSheet = this._balanceSheet.asReadonly();
   public readonly assets = this._assets.asReadonly();
@@ -30,6 +31,7 @@ export class CreateEditService {
   public readonly metals = this._metals.asReadonly();
   public readonly bullion = this._bullion.asReadonly();
   public readonly isLoading = this._isLoading.asReadonly();
+  public readonly liabilityNames = this._liabilityNames.asReadonly();
 
 
   constructor(private http: HttpClient) {}
@@ -63,7 +65,17 @@ export class CreateEditService {
         this._liabilities.set(result.liabilities);
         this._assetTypes.set(result.assetTypes);
         this._metals.set(result.preciousMetals);
+        this._liabilityNames.set(result.liabilities.map((liability) => liability.name));
       });
+  }
+
+  public createBalanceSheet(): Observable<HttpResponse<any>> {
+    const balanceSheet = new BalanceSheetModel(
+      this._assets(),
+      this._liabilities(),
+      this._bullion()
+    )
+    return this.http.post<number>(environment.apiUrl + 'balance-sheet/create', balanceSheet, { observe: 'response' });
   }
 
   public addAsset(asset: AssetModel): void {
@@ -88,5 +100,18 @@ export class CreateEditService {
 
   public addBullion(bullion: MetalPositionModel[]): void {
     this._bullion.set(bullion);
+  }
+
+  public addLiability(liability: LiabilityModel): void {
+    this._liabilities().push(liability);
+    this._liabilityNames.set(this._liabilities().map((liability) => liability.name));
+  }
+
+  public deleteLiability(name: string): void {
+    const index = this._liabilities().findIndex(item => item.name === name);
+    if (index !== -1) {
+      this._liabilities().splice(index, 1);
+      this._liabilityNames.set(this._liabilities().map((liability) => liability.name));
+    }
   }
 }

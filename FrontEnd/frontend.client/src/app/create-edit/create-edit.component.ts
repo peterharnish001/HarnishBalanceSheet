@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddEditAssetComponent } from '../add-edit-asset/add-edit-asset.component';
 import { DeleteAssetComponent } from './delete-asset/delete-asset.component';
 import { AddLiabilityComponent } from './add-liability/add-liability.component';
+import { DeleteLiabilityComponent } from './delete-liability/delete-liability.component';
 import { AssetComponentModel } from './models/assetcomponent.model';
 import { MetalPositionModel } from './models/metalposition.model';
 import { ChangeDetectorRef } from '@angular/core';
@@ -192,7 +193,34 @@ export class CreateEditComponent {
   }
 
   public addLiability(): void {
-    this.dialog.open(AddLiabilityComponent);
+    this.dialog.open(AddLiabilityComponent, {
+        data: {
+          liabilityNames: this.service.liabilityNames()
+        }
+      })
+      .afterClosed()
+      .subscribe((result: LiabilityModel | null) => {
+      if (result !== null) {
+        const model = result as LiabilityModel;
+        this.service.addLiability(model);
+        this.cdr.detectChanges();
+      }
+     });
+  }
+
+  public deleteLiability(liability: LiabilityModel): void {
+    this.dialog.open(DeleteLiabilityComponent, {
+      data: {
+        name: liability.name
+      }
+    })
+    .afterClosed()
+    .subscribe((result: string | null) => {
+      if (result !== null) {
+        this.service.deleteLiability(result);
+        this.cdr.detectChanges();
+      }
+    });;
   }
 
   public getDisabled(asset: AssetModel): boolean {
