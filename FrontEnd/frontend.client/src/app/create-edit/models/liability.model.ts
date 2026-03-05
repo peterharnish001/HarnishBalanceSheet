@@ -1,7 +1,7 @@
 export class LiabilityModel {
   constructor(
-    public liabilityId: number,
-    public name: string,
-    public value: number
+    public name: string = '',
+    public value: number = 0,
+    public liabilityId?: number
   ) {}
 }

@@ -10,11 +10,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class DeleteAssetComponent {
   public data: any = inject(MAT_DIALOG_DATA);
 
-  public clickOk(): void {
+  constructor(private dialogRef: MatDialogRef<DeleteAssetComponent>) {
+  }
 
+  public clickOk(): void {
+    this.dialogRef.close(this.data.name);
   }
 
   public clickCancel(): void {
-
+    this.dialogRef.close(null);
   }
 }

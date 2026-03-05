@@ -48,8 +48,11 @@ export class AddEditAssetComponent {
 
   validateName(): boolean {
     if (this.asset.name.trim() === '') {
-      this.nameValidationError= 'Name is required.';
+      this.nameValidationError = 'Name is required.';
       return false;
+    } else if (this.data.assetNames.find((name : string) => name.toLowerCase() === this.asset.name.trim().toLowerCase())) {
+       this.nameValidationError = 'Name must be unique.';
+       return false;
     }
 
     this.nameValidationError = '';

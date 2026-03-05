@@ -20,12 +20,13 @@ export class CreateEditService {
   private readonly _metals = signal<PreciousMetalModel[]>([]);
   private readonly _bullion = signal<MetalPositionModel[]>([]);
   private readonly _isLoading = signal<boolean>(true);
+  private readonly _assetNames = signal<string[]>([]);
 
   public readonly balanceSheet = this._balanceSheet.asReadonly();
   public readonly assets = this._assets.asReadonly();
   public readonly liabilities = this._liabilities.asReadonly();
   public readonly assetTypes = this._assetTypes.asReadonly();
-  public readonly assetNames = this._assets().map(asset => asset.name);
+  public readonly assetNames = this._assetNames.asReadonly();
   public readonly metals = this._metals.asReadonly();
   public readonly bullion = this._bullion.asReadonly();
   public readonly isLoading = this._isLoading.asReadonly();
@@ -58,6 +59,7 @@ export class CreateEditService {
            this._bullion.set(result.bullion);
         }
         this._assets.set(result.assets);
+        this._assetNames.set(result.assets.map((asset) => asset.name));
         this._liabilities.set(result.liabilities);
         this._assetTypes.set(result.assetTypes);
         this._metals.set(result.preciousMetals);
@@ -66,6 +68,15 @@ export class CreateEditService {
 
   public addAsset(asset: AssetModel): void {
     this._assets().push(asset);
+    this._assetNames.set(this._assets().map((asset) => asset.name));
+  }
+
+  public deleteAsset(name: string): void {
+    const index = this._assets().findIndex(item => item.name === name);
+    if (index !== -1) {
+      this._assets().splice(index, 1);
+      this._assetNames.set(this._assets().map((asset) => asset.name));
+    }
   }
 
   public editAsset(asset: AssetModel): void {

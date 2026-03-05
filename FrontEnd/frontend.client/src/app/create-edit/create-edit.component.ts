@@ -8,6 +8,7 @@ import { CurrencyFormatDirective } from '../currency-format.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditAssetComponent } from '../add-edit-asset/add-edit-asset.component';
 import { DeleteAssetComponent } from './delete-asset/delete-asset.component';
+import { AddLiabilityComponent } from './add-liability/add-liability.component';
 import { AssetComponentModel } from './models/assetcomponent.model';
 import { MetalPositionModel } from './models/metalposition.model';
 import { ChangeDetectorRef } from '@angular/core';
@@ -44,7 +45,7 @@ export class CreateEditComponent {
       data: {
         addOrEdit: 'Add',
         assetTypes: this.service.assetTypes(),
-        assetNames: this.service.assetNames,
+        assetNames: this.service.assetNames(),
         asset: new AddEditAssetModel('', null, false, 0,
           this.service.assetTypes().map((type) => new AssetComponentModel(type.assetTypeId, 0, 0, type.name)),
           this.service.metals().map((metal) => new MetalPositionModel(metal.preciousMetalId, metal.name, 0, metal.pricePerOunce, 0)))
@@ -180,7 +181,18 @@ export class CreateEditComponent {
       data: {
         name: asset.name
       }
+    })
+    .afterClosed()
+    .subscribe((result: string | null) => {
+      if (result !== null) {
+        this.service.deleteAsset(result);
+        this.cdr.detectChanges();
+      }
     });
+  }
+
+  public addLiability(): void {
+    this.dialog.open(AddLiabilityComponent);
   }
 
   public getDisabled(asset: AssetModel): boolean {
