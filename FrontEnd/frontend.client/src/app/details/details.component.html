@@ -130,7 +130,7 @@
           </div>
         </div>
         @for (target of detailsModel()!.targetComparisons; track target.name) {
-          <div class="row">
+          <div [ngClass]="[isMinimum(target) ? 'row red' : 'row']">
             <div class="col-md-4">
               <p>{{ target.name }}</p>
             </div>
@@ -145,6 +145,36 @@
             </div>
           </div>
         }
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <jqxChart
+          [width]="'100%'"
+          [height]="400"
+          [source]="chartSettings1().source"
+          [title]="chartSettings1().title"
+          [description]="chartSettings1().description"
+          [enableAnimations]="chartSettings1().enableAnimations"
+          [showLegend]="chartSettings1().showLegend"
+          [padding]="chartSettings1().padding"
+          [titlePadding]="chartSettings1().titlePadding"
+          [seriesGroups]="chartSettings1().seriesGroups">
+        </jqxChart>
+      </div>
+      <div class="col-md-6">
+        <jqxChart
+          [width]="'100%'"
+          [height]="400"
+          [source]="chartSettings2().source"
+          [title]="chartSettings2().title"
+          [description]="chartSettings2().description"
+          [enableAnimations]="chartSettings2().enableAnimations"
+          [showLegend]="chartSettings2().showLegend"
+          [padding]="chartSettings2().padding"
+          [titlePadding]="chartSettings2().titlePadding"
+          [seriesGroups]="chartSettings2().seriesGroups">
+        </jqxChart>
       </div>
     </div>
   }

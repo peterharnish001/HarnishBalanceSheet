@@ -29,3 +29,7 @@ p.currency {
 p.numeric {
   text-align: right;
 }
+
+.red {
+  color: red;
+}
