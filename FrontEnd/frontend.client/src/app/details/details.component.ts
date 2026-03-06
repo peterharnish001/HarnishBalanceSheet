@@ -5,13 +5,14 @@ import { DetailsModel } from './models/details.model';
 import { DetailsService } from './details.service';
 import { TargetComparisonModel } from './models/target-comparison.model';
 import { jqxChartModule } from 'jqwidgets-ng/jqxchart';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-details.component',
   standalone: true,
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
-  imports: [CurrencyPipe, DatePipe, PercentPipe, NgClass, jqxChartModule ]
+  imports: [CurrencyPipe, DatePipe, PercentPipe, NgClass, jqxChartModule, RouterLink ]
 })
 export class DetailsComponent implements OnInit {
   balanceSheetId?: number | null;

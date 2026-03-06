@@ -8,6 +8,7 @@ import { LiabilityModel } from './models/liability.model';
 import { AssetTypeModel } from './models/assettype.model';
 import { PreciousMetalModel } from './models/preciousmetal.model';
 import { MetalPositionModel } from './models/metalposition.model';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class CreateEditService {
   private readonly _isLoading = signal<boolean>(true);
   private readonly _assetNames = signal<string[]>([]);
   private readonly _liabilityNames = signal<string[]>([]);
+  private readonly _date = signal<Date | undefined>(undefined);
 
   public readonly balanceSheet = this._balanceSheet.asReadonly();
   public readonly assets = this._assets.asReadonly();
@@ -32,6 +34,7 @@ export class CreateEditService {
   public readonly bullion = this._bullion.asReadonly();
   public readonly isLoading = this._isLoading.asReadonly();
   public readonly liabilityNames = this._liabilityNames.asReadonly();
+  public readonly date = this._date.asReadonly();
 
 
   constructor(private http: HttpClient) {}
@@ -39,33 +42,15 @@ export class CreateEditService {
   public getCurrent(): void {
     this.http.get<BalanceSheetModel>(environment.apiUrl + 'balance-sheet/create')
       .subscribe((result: BalanceSheetModel) => {
-        this._isLoading.set(false);
-        this._balanceSheet.set(result);
-        result.assets.forEach((asset) => {
-          asset.totalValue = asset.assetComponents.reduce((sum, item) => {
-            const value = Number(item.value);
-            return sum + (isNaN(value) ? 0 : value);
-          }, 0);
-          asset.assetComponents.forEach((component) => {
-            component.percentage = component.value / asset.totalValue;
-          });
-        });
-        if (result.bullion.length > 0) {
-           result.assets.push(new AssetModel(
-            'Bullion',
-            result.bullion.reduce((sum, item) => {
-                return sum + (item.numOunces * item.pricePerOunce);
-            }, 0),
-            []
-           ));
-           this._bullion.set(result.bullion);
-        }
-        this._assets.set(result.assets);
-        this._assetNames.set(result.assets.map((asset) => asset.name));
-        this._liabilities.set(result.liabilities);
-        this._assetTypes.set(result.assetTypes);
-        this._metals.set(result.preciousMetals);
-        this._liabilityNames.set(result.liabilities.map((liability) => liability.name));
+        this.setBalanceSheet(result);
+      });
+  }
+
+  public getBalanceSheet(balanceSheetId: number): void {
+    this.http.get<BalanceSheetModel>(environment.apiUrl + 'balance-sheet/edit/' + balanceSheetId.toString())
+      .subscribe((result: BalanceSheetModel) => {
+        this._date.set(result.date);
+        this.setBalanceSheet(result);
       });
   }
 
@@ -113,5 +98,35 @@ export class CreateEditService {
       this._liabilities().splice(index, 1);
       this._liabilityNames.set(this._liabilities().map((liability) => liability.name));
     }
+  }
+
+  private setBalanceSheet(result: BalanceSheetModel): void {
+    this._isLoading.set(false);
+    this._balanceSheet.set(result);
+    result.assets.forEach((asset) => {
+      asset.totalValue = asset.assetComponents.reduce((sum, item) => {
+        const value = Number(item.value);
+        return sum + (isNaN(value) ? 0 : value);
+      }, 0);
+      asset.assetComponents.forEach((component) => {
+        component.percentage = component.value / asset.totalValue;
+      });
+     });
+    if (result.bullion.length > 0) {
+      result.assets.push(new AssetModel(
+        'Bullion',
+        result.bullion.reduce((sum, item) => {
+           return sum + (item.numOunces * item.pricePerOunce);
+         }, 0),
+         []
+        ));
+      this._bullion.set(result.bullion);
+     }
+    this._assets.set(result.assets);
+    this._assetNames.set(result.assets.map((asset) => asset.name));
+    this._liabilities.set(result.liabilities);
+    this._assetTypes.set(result.assetTypes);
+    this._metals.set(result.preciousMetals);
+    this._liabilityNames.set(result.liabilities.map((liability) => liability.name));
   }
 }

@@ -33,3 +33,7 @@ p.numeric {
 .red {
   color: red;
 }
+
+a {
+  margin-right: 10px;
+}

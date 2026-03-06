@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { HbsIndexComponent } from './hbs-index/hbs-index.component';
 import { CreateComponent } from './create/create.component';
 import { DetailsComponent } from './details/details.component';
+import { EditComponent } from './edit/edit.component';
 
 export const routes: Routes = [
   {
@@ -20,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'details/:id',
     component: DetailsComponent
+  },
+  {
+    path: 'edit/:id',
+    component: EditComponent
   }
 ]

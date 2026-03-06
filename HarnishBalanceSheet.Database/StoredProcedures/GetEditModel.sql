@@ -12,6 +12,7 @@ AS
 		,AP.AssetPortionId
 		,AP.[Value]
 		,AP.AssetCategoryId
+		,A.IsPercent
 	FROM AssetCategory AC
 	INNER JOIN AssetPortion AP ON AC.AssetCategoryId = AP.AssetCategoryId
 	INNER JOIN Asset A ON AP.AssetId = A.AssetId
