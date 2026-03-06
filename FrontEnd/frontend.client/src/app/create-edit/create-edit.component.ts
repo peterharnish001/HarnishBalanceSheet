@@ -122,7 +122,7 @@ export class CreateEditComponent {
         assetNames: this.service.assetNames,
         asset: new AddEditAssetModel(
           asset.name,
-          asset.assetComponents.length > 1 ? null : asset.assetComponents[0].assetTypeId,
+          this.isBullion(asset) ? 3 : asset.assetComponents.length > 1 ? null : asset.assetComponents[0].assetTypeId,
           asset.isPercent,
           asset.totalValue,
           asset.assetComponents,

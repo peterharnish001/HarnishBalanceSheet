@@ -1,4 +1,5 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { CreateEditComponent } from '../create-edit/create-edit.component';
@@ -30,5 +31,16 @@ export class EditComponent implements OnInit{
 
   public isLoading(): boolean {
     return this.service.isLoading();
+  }
+
+   clickSave(): void {
+    this.service.editBalanceSheet(this.balanceSheetId!)
+      .subscribe({
+        next: (response: HttpResponse<any>) => {
+          if (response.status === 200) {
+            this.router.navigate(['/details/' + this.balanceSheetId!.toString()]);
+          }
+        }
+      });
   }
 }

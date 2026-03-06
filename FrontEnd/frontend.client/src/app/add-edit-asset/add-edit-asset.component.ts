@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CurrencyFormatDirective } from '../currency-format.directive';
@@ -13,7 +13,7 @@ import { AddEditAssetModel } from '../create-edit/models/addeditasset.model';
   styleUrl: './add-edit-asset.component.css',
   imports: [FormsModule, ReactiveFormsModule, CurrencyFormatDirective, PercentFormatDirective, NumberOfOuncesFormatDirective]
 })
-export class AddEditAssetComponent {
+export class AddEditAssetComponent implements OnInit{
   public data: any = inject(MAT_DIALOG_DATA);
   public asset: AddEditAssetModel = this.data.asset;
 
@@ -24,6 +24,10 @@ export class AddEditAssetComponent {
   public numberOfOuncesValidationError: string = '';
 
   constructor(private dialogRef: MatDialogRef<AddEditAssetComponent>) {
+  }
+
+  ngOnInit(): void {
+    //console.log(this.asset);
   }
 
   isValueDisabled(): boolean {

@@ -63,6 +63,16 @@ export class CreateEditService {
     return this.http.post<number>(environment.apiUrl + 'balance-sheet/create', balanceSheet, { observe: 'response' });
   }
 
+  public editBalanceSheet(balanceSheetId: number): Observable<HttpResponse<any>> {
+    const balanceSheet = new BalanceSheetModel(
+      this._assets().filter((asset) => asset.name.toLowerCase() !== 'bullion'),
+      this._liabilities(),
+      this._bullion()
+    )
+    return this.http.put<number>(environment.apiUrl + 'balance-sheet/edit/' + balanceSheetId.toString(), balanceSheet,
+     { observe: 'response' });
+  }
+
   public addAsset(asset: AssetModel): void {
     this._assets().push(asset);
     this._assetNames.set(this._assets().map((asset) => asset.name));

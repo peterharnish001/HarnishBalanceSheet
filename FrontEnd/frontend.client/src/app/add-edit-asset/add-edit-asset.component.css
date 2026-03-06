@@ -24,7 +24,6 @@ input[name='percentage'] {
 }
 
 input[name='amount'] {
-  margin-left: 10px;
   width: 150px;
 }
 

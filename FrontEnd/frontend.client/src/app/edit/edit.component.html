@@ -3,7 +3,7 @@
     <h1>{{ date() | date:'longDate' }}</h1>
     <app-create-edit></app-create-edit>
     <div class="row">
-      <button class="center">Save</button>
+      <button class="center" (click)="clickSave()">Save</button>
     </div>
   }
 </div>

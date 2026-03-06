@@ -13,7 +13,8 @@ namespace HarnishBalanceSheet.BusinessLogic
                 .ForMember(dest => dest.AssetCategory, opt => opt.MapFrom(src => src.AssetCategoryName));
             CreateMap<AssetPortion, AssetComponentSaveDto>()
                 .ForMember(dest => dest.AssetComponentId, opt => opt.MapFrom(src => src.AssetPortionId))
-                .ForMember(dest => dest.AssetTypeId, opt => opt.MapFrom(src => src.AssetCategoryId));
+                .ForMember(dest => dest.AssetTypeId, opt => opt.MapFrom(src => src.AssetCategoryId))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.AssetCategoryName));
             CreateMap<Asset, AssetDto>();
             CreateMap<Asset, AssetSaveDto>()
                 .ForMember(dest => dest.AssetComponents, opt => opt.MapFrom(src => src.AssetPortions));

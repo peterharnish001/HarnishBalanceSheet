@@ -13,5 +13,7 @@ namespace HarnishBalanceSheet.DTO
         public int AssetTypeId { get; set; }
         [DataMember]
         public decimal Value { get; set; }
+        [DataMember]
+        public string? Name { get; set; }
     }
 }

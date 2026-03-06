@@ -24,9 +24,9 @@
     </div>
     <div class="col-md-6">
       <select id="type" [(ngModel)]="asset.type" [disabled]="isBullion()">
-        <option [ngValue]="null">------- Type -------</option>
+        <option [value]="null">------- Type -------</option>
         @for (assetType of data.assetTypes; track assetType.assetTypeId) {
-          <option [ngValue]="assetType.assetTypeId">{{assetType.name}}</option>
+          <option [value]="assetType.assetTypeId">{{assetType.name}}</option>
         }
       </select>
     </div>
