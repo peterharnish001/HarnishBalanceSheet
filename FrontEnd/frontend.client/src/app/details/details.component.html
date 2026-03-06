@@ -43,12 +43,109 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row font1">
       @for (assetShare of detailsModel()!.assetShares; track assetShare.name) {
         <div class="width20">
-          <p class="bold center">{{ assetShare.name }}</p>
+          <div class="row">
+            <p class="bold center">{{ assetShare.name }}</p>
+          </div>
+          @for (assetComponent of assetShare.assetComponents; track assetComponent.assetName) {
+            <div class="row">
+              <div class="col-md-6">
+                <p>{{ assetComponent.assetName }}</p>
+              </div>
+              <div class="col-md-6">
+                <p class="currency">{{ assetComponent.value | currency }}</p>
+              </div>
+            </div>
+          }
+          <div class="row">
+            <div class="col-md-6">
+              <p class="bold">Total</p>
+            </div>
+            <div class="col-md-6">
+              <p class="bold currency">{{ assetShare.total | currency }}</p>
+            </div>
+          </div>
         </div>
       }
+    </div>
+    <div class="row font1">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-3">
+            <p class="bold">Metal</p>
+          </div>
+          <div class="col-md-3">
+            <p class="bold numeric">Num Ounces</p>
+          </div>
+          <div class="col-md-3">
+            <p class="bold numeric">Price per Ounce</p>
+          </div>
+          <div class="col-md-3">
+            <p class="bold numeric">Total Price</p>
+          </div>
+        </div>
+        @for (metal of detailsModel()!.bullionSummary.bullion; track metal.metalName) {
+          <div class="row">
+            <div class="col-md-3">
+              <p>{{ metal.metalName }}</p>
+            </div>
+            <div class="col-md-3">
+              <p class="numeric">{{ metal.numOunces.toFixed(2) }}</p>
+            </div>
+            <div class="col-md-3">
+              <p class="currency">{{ metal.pricePerOunce | currency }}</p>
+            </div>
+            <div class="col-md-3">
+              <p class="currency">{{ metal.totalPrice| currency }}</p>
+            </div>
+          </div>
+        }
+        <div class="row">
+          <div class="col-md-3">
+            <p class="bold">Total</p>
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <p class=" bold currency">{{ detailsModel()!.bullionSummary.total | currency }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-4">
+            <p class="bold">Asset</p>
+          </div>
+          <div class="col-md-2">
+            <p class="bold numeric">Target</p>
+          </div>
+          <div class="col-md-2">
+            <p class="bold numeric">Actual</p>
+          </div>
+          <div class="col-md-3">
+            <p class="bold numeric">Difference</p>
+          </div>
+        </div>
+        @for (target of detailsModel()!.targetComparisons; track target.name) {
+          <div class="row">
+            <div class="col-md-4">
+              <p>{{ target.name }}</p>
+            </div>
+            <div class="col-md-2">
+              <p class="numeric">{{ target.target | percent }}</p>
+            </div>
+            <div class="col-md-2">
+              <p class="numeric">{{ target.actual| percent : '1.2-2' }}</p>
+            </div>
+            <div class="col-md-3">
+              <p class="numeric">{{ target.difference| percent : '1.2-2' }}</p>
+            </div>
+          </div>
+        }
+      </div>
     </div>
   }
 </div>

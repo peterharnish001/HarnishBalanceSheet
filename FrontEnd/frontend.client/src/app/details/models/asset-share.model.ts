@@ -1,4 +1,4 @@
-import { AssetComponentModel } from "../../create-edit/models/assetcomponent.model";
+import { AssetComponentModel } from "./asset-component.model";
 
 export class AssetShareModel {
   constructor(

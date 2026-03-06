@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, PercentPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { DetailsModel } from './models/details.model';
 import { DetailsService } from './details.service';
@@ -9,7 +9,7 @@ import { DetailsService } from './details.service';
   standalone: true,
   templateUrl: './details.component.html',
   styleUrl: './details.component.css',
-  imports: [ CurrencyPipe, DatePipe ]
+  imports: [CurrencyPipe, DatePipe, PercentPipe]
 })
 export class DetailsComponent implements OnInit {
   balanceSheetId?: number | null;
