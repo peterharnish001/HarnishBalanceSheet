@@ -119,7 +119,7 @@ export class CreateEditComponent {
       data: {
         addOrEdit: 'Edit',
         assetTypes: this.service.assetTypes(),
-        assetNames: this.service.assetNames,
+        assetNames: this.service.assetNames(),
         asset: new AddEditAssetModel(
           asset.name,
           this.isBullion(asset) ? 3 : asset.assetComponents.length > 1 ? null : asset.assetComponents[0].assetTypeId,
@@ -232,9 +232,8 @@ export class CreateEditComponent {
   }
 
   public onBlur($event: any, asset: AssetModel ): void {
-    const val = Number($event.target.value);
     asset.assetComponents.forEach((component) => {
-      component.value = val * component.percentage!;
+      component.value = asset.totalValue * component.percentage!;
     });
   }
 }

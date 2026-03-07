@@ -1,4 +1,4 @@
-import { Component, inject, OnInit} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CurrencyFormatDirective } from '../currency-format.directive';
@@ -13,7 +13,7 @@ import { AddEditAssetModel } from '../create-edit/models/addeditasset.model';
   styleUrl: './add-edit-asset.component.css',
   imports: [FormsModule, ReactiveFormsModule, CurrencyFormatDirective, PercentFormatDirective, NumberOfOuncesFormatDirective]
 })
-export class AddEditAssetComponent implements OnInit{
+export class AddEditAssetComponent {
   public data: any = inject(MAT_DIALOG_DATA);
   public asset: AddEditAssetModel = this.data.asset;
 
@@ -24,10 +24,6 @@ export class AddEditAssetComponent implements OnInit{
   public numberOfOuncesValidationError: string = '';
 
   constructor(private dialogRef: MatDialogRef<AddEditAssetComponent>) {
-  }
-
-  ngOnInit(): void {
-    //console.log(this.asset);
   }
 
   isValueDisabled(): boolean {
@@ -54,7 +50,7 @@ export class AddEditAssetComponent implements OnInit{
     if (this.asset.name.trim() === '') {
       this.nameValidationError = 'Name is required.';
       return false;
-    } else if (this.data.assetNames.find((name : string) => name.toLowerCase() === this.asset.name.trim().toLowerCase())) {
+    } else if (this.data.addOrEdit === 'Add' && this.data.assetNames.find((name : string) => name.toLowerCase() === this.asset.name.trim().toLowerCase())) {
        this.nameValidationError = 'Name must be unique.';
        return false;
     }
