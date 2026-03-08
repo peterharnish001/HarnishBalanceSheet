@@ -16,6 +16,6 @@ namespace HarnishBalanceSheet.DataAccess
         Task<EditModel> GetLatestAsync(int userId);
         Task<int> CreateBalanceSheetAsync(int userId, BalanceSheet balanceSheet);
         Task<int> EditBalanceSheetAsync(int userId, int balanceSheetId, BalanceSheet balanceSheet);
-
+        User GetUser(string email);
     }
 }

@@ -46,7 +46,8 @@ namespace HarnishBalanceSheet.BusinessLogic
                 .ForPath(dest => dest.Liabilities, opt => opt.MapFrom(src => src.BalanceSheet.Liabilities))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.BalanceSheet.Date));
             CreateMap<LiabilityChartItem, LiabilityChartDto>();
-            CreateMap<NetWorthChartModel, NetWorthChartDto>();                        
+            CreateMap<NetWorthChartModel, NetWorthChartDto>();  
+            CreateMap<User, UserDto>();
 
             CreateMap<SetTargetDto, Target>();
             CreateMap<AssetComponentSaveDto, AssetPortion>()

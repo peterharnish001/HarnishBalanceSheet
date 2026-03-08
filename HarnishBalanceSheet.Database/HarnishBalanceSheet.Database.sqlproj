@@ -81,6 +81,7 @@
     <Build Include="StoredProcedures\HasTargets.sql" />
     <Build Include="StoredProcedures\SetTargets.sql" />
     <Build Include="StoredProcedures\GetEditModel.sql" />
+    <Build Include="StoredProcedures\GetUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="HarnishBalanceSheet.Database.refactorlog" />

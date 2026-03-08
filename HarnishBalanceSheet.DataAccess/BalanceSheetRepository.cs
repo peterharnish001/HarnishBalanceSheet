@@ -568,6 +568,13 @@ namespace HarnishBalanceSheet.DataAccess
             return editModel;
         }
 
+        public User GetUser(string email)
+        {
+            return _context.Users
+                .FromSqlInterpolated($"EXEC dbo.GetUser {email}")
+                .FirstOrDefault();
+        }
+
         private DataTable CreateTargetDataTable(int userId, IEnumerable<Target> targets)
         {
             var table = new DataTable();

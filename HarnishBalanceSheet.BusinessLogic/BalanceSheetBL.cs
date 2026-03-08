@@ -104,6 +104,12 @@ namespace HarnishBalanceSheet.BusinessLogic
             return await _balanceSheetContext.SetTargetsAsync(userId, targetModels);
         }
 
+        public UserDto GetUser(string email)
+        {
+            var user = _balanceSheetContext.GetUser(email);
+            return _mapper.Map<UserDto>(user);
+        }
+
         private decimal CalculateNetWorth(DetailsDto details, List<AssetPortion> assetPortions)
         {            
             details.Assets.ForEach(x => x.Value = assetPortions.Where(y => y.AssetName == x.Name).Select(z => z.Value).Sum());
