@@ -1,10 +1,13 @@
 ﻿<div class="container">
-  <button (click)="loginRedirect()">
-    Login with Microsoft
-  </button>
-   <button (click)="logoutRedirect()">
-    Logout
-  </button>
-  <router-outlet></router-outlet>
-  <ngx-spinner type="ball-beat"><p>Loading...</p></ngx-spinner>
+  @if (!isLoggedIn()) {
+    <button (click)="loginRedirect()">
+      Login with Microsoft
+    </button>
+  } @else {
+    <button (click)="logoutRedirect()">
+      Logout
+    </button>
+    <router-outlet></router-outlet>
+    <ngx-spinner type="ball-beat"><p>Loading...</p></ngx-spinner>
+  }
 </div>

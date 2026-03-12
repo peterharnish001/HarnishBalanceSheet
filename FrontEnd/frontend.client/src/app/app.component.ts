@@ -24,4 +24,8 @@ export class AppComponent implements OnInit {
   logoutRedirect() {
     this.authService.logoutRedirect();
   }
+
+  isLoggedIn(): boolean {
+    return this.authService.instance.getAllAccounts().length > 0;
+  }
 }
