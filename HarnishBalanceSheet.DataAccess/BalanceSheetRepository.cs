@@ -572,6 +572,7 @@ namespace HarnishBalanceSheet.DataAccess
         {
             return _context.Users
                 .FromSqlInterpolated($"EXEC dbo.GetUser {email}")
+                .ToList()
                 .FirstOrDefault();
         }
 

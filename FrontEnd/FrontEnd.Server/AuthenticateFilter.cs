@@ -26,7 +26,7 @@ namespace HarnishBalanceSheet.Server
 
             if (user?.Identity?.IsAuthenticated == true)
             {
-                string email = user?.FindFirstValue(ClaimTypes.Email);
+                string email = user?.FindFirstValue("preferred_username");
 
                 if (email != null)
                 { 

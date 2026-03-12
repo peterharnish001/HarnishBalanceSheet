@@ -3,8 +3,13 @@ import { HbsIndexComponent } from './hbs-index/hbs-index.component';
 import { CreateComponent } from './create/create.component';
 import { DetailsComponent } from './details/details.component';
 import { EditComponent } from './edit/edit.component';
+import { MsalRedirectComponent } from '@azure/msal-angular';
 
 export const routes: Routes = [
+  {
+    path: 'auth',
+    component: MsalRedirectComponent
+  },
   {
     path: '',
     redirectTo: '/index',

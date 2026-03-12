@@ -1,9 +1,11 @@
 using HarnishBalanceSheet.BusinessLogic;
 using HarnishBalanceSheet.DataAccess;
 using HarnishBalanceSheet.PreciousMetalsService;
+using HarnishBalanceSheet.Server;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,7 @@ builder.Services.AddDbContext<BalanceSheetContext>(options =>
 builder.Services.AddScoped<IBalanceSheetRepository, BalanceSheetRepository>();
 builder.Services.AddScoped<IPreciousMetalsService, PreciousMetalsService>();
 builder.Services.AddScoped<IBalanceSheetBL, BalanceSheetBL>();
+builder.Services.AddScoped<AuthenticateFilter>();
 builder.Services.AddAutoMapper(config => config.AddProfile<MappingProfile>());
 
 builder.Services.AddCors(options =>
@@ -40,15 +43,36 @@ builder.Services.AddCors(options =>
     
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 
-/*builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
+builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.Authority = builder.Configuration["AzureAd:Instance"];
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.Authority = $"https://login.microsoftonline.com/{builder.Configuration["AzureAd:TenantId"]}/v2.0";
-        options.Audience = builder.Configuration["AzureAd:ClientId"];
-    });*/
+        ValidateIssuer = true, 
+        ValidIssuer = builder.Configuration["AzureAd:Instance"], 
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["AzureAd:Audience"],
+        ValidateIssuerSigningKey = false
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            // Log the exception for detailed error information
+            Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            // Log details about why the challenge is occurring
+            Console.WriteLine($"OnChallenge: {context}, {context.Request.Path}");
+            return Task.CompletedTask;
+        }
+    };
+});
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
@@ -71,13 +95,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.UseStaticFiles();
 app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

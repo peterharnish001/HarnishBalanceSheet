@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgxSpinnerComponent } from 'ngx-spinner';
 import { MsalService } from '@azure/msal-angular';
@@ -10,14 +10,18 @@ import { MsalService } from '@azure/msal-angular';
   styleUrl: './app.component.css',
   imports: [RouterOutlet, NgxSpinnerComponent]
 })
-export class AppComponent {
-  constructor(private msalService: MsalService) {}
+export class AppComponent implements OnInit {
+  constructor(private authService: MsalService) {}
 
-  login() {
-    this.msalService.loginRedirect();
+  ngOnInit(): void {
+    this.authService.handleRedirectObservable().subscribe();
   }
 
-  logout() {
-    this.msalService.logoutRedirect();
+  loginRedirect() {
+    this.authService.loginRedirect();
+  }
+
+  logoutRedirect() {
+    this.authService.logoutRedirect();
   }
 }
