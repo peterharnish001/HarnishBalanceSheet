@@ -22,7 +22,9 @@ namespace HarnishBalanceSheet.Server
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            var user = context.HttpContext.User;            
+            context.HttpContext.Items["CurrentUserId"] = 1;
+
+            /*var user = context.HttpContext.User;            
 
             if (user?.Identity?.IsAuthenticated == true)
             {
@@ -44,7 +46,7 @@ namespace HarnishBalanceSheet.Server
                     error = "Unauthorized user",
                     timestamp = DateTime.UtcNow
                 });
-            }            
+            }  */
         }
     }
 }

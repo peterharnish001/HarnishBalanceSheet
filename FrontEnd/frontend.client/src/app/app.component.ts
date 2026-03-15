@@ -11,21 +11,23 @@ import { MsalService } from '@azure/msal-angular';
   imports: [RouterOutlet, NgxSpinnerComponent]
 })
 export class AppComponent implements OnInit {
-  constructor(private authService: MsalService) {}
+  //constructor(private authService: MsalService) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.authService.handleRedirectObservable().subscribe();
+    //this.authService.handleRedirectObservable().subscribe();
   }
 
   loginRedirect() {
-    this.authService.loginRedirect();
+    //this.authService.loginRedirect();
   }
 
   logoutRedirect() {
-    this.authService.logoutRedirect();
+    //this.authService.logoutRedirect();
   }
 
   isLoggedIn(): boolean {
-    return this.authService.instance.getAllAccounts().length > 0;
+    return true;
+   // return this.authService.instance.getAllAccounts().length > 0;
   }
 }

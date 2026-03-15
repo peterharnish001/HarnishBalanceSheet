@@ -7,7 +7,7 @@ namespace HarnishBalanceSheet.Server.Controllers
 {   
     [ApiController]
     [Route("api/index/")]
-    [Authorize]
+    //[Authorize]
     [ServiceFilter(typeof(AuthenticateFilter))]
     public class IndexController : ControllerBase
     {

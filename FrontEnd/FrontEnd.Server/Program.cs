@@ -35,6 +35,11 @@ builder.Services.AddCors(options =>
                     return true;
                 }
 
+                if (origin.Contains("harnishbalancesheet1-a9h3bvfngdc8bach.westus2-01.azurewebsites.net"))
+                {
+                    return true;
+                }
+
                 return false;
             })
             .AllowAnyHeader()
@@ -43,7 +48,7 @@ builder.Services.AddCors(options =>
     
 });
 
-builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+/*builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 
 builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
 {
@@ -72,7 +77,7 @@ builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSch
             return Task.CompletedTask;
         }
     };
-});
+});*/
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
@@ -89,10 +94,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseStaticFiles();

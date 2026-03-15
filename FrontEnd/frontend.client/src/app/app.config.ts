@@ -27,18 +27,18 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([loadingInterceptor]),
       withInterceptorsFromDi()
     ),
-    { provide: MSAL_INSTANCE, useFactory: MSALInstanceFactory },
-    MsalService,
-    MsalGuard,
-    MsalBroadcastService,
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: msalInterceptorConfigFactory
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true
-    }
+    //{ provide: MSAL_INSTANCE, useFactory: MSALInstanceFactory },
+    //MsalService,
+    //MsalGuard,
+    //MsalBroadcastService,
+    //{
+     // provide: MSAL_INTERCEPTOR_CONFIG,
+     // useFactory: msalInterceptorConfigFactory
+    //},
+    //{
+    //  provide: HTTP_INTERCEPTORS,
+    //  useClass: MsalInterceptor,
+    //  multi: true
+   // }
   ]
 }

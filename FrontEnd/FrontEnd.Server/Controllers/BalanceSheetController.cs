@@ -6,7 +6,7 @@ using HarnishBalanceSheet.DTO;
 namespace HarnishBalanceSheet.Server.Controllers
 {   
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ServiceFilter(typeof(AuthenticateFilter))]
     [Route("api/balance-sheet/")]
     public class BalanceSheetController : ControllerBase
