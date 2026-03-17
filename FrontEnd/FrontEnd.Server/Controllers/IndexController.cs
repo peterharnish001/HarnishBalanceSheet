@@ -6,20 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace HarnishBalanceSheet.Server.Controllers
 {   
     [ApiController]
+    [Authorize]
     [Route("api/index/")]
-    //[Authorize]
-    [ServiceFilter(typeof(AuthenticateFilter))]
-    public class IndexController : ControllerBase
+    public class IndexController : BaseController
     {
         private readonly IBalanceSheetBL _balanceSheetBL;
-
-        private int? UserId
-        {
-            get
-            {
-                return (int?)HttpContext.Items["CurrentUserId"];
-            }
-        }
 
         public IndexController(IBalanceSheetBL balanceSheetBL)
         {

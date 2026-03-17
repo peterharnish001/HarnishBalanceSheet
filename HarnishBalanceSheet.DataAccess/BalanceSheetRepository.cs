@@ -568,12 +568,41 @@ namespace HarnishBalanceSheet.DataAccess
             return editModel;
         }
 
-        public User GetUser(string email)
+        public async Task<User> GetUserAsync(string email)
         {
-            return _context.Users
-                .FromSqlInterpolated($"EXEC dbo.GetUser {email}")
-                .ToList()
-                .FirstOrDefault();
+            User user = null;
+
+            using (var conn = _context.Database.GetDbConnection())
+            {
+                await conn.OpenAsync();
+
+                using (var cmd = conn.CreateCommand())
+                {
+
+                    cmd.CommandText = "GetUser";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    DbParameter param1 = cmd.CreateParameter();
+                    param1.ParameterName = "email";
+                    param1.DbType = DbType.String;
+                    param1.Value = email;
+                    cmd.Parameters.Add(param1);
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        user = new User();
+
+                        while (await reader.ReadAsync())
+                        {
+                            user.UserId = reader.GetInt32("UserId");
+                            user.Name = reader.GetString("Name");
+                            user.Email = reader.GetString("Email");
+                            user.HashedPassword = reader.GetString("PasswordHash");
+                        }
+                    }
+                }
+            }
+            return user;
         }
 
         private DataTable CreateTargetDataTable(int userId, IEnumerable<Target> targets)

@@ -5,5 +5,6 @@ AS
 		UserId
 		,[Name]
 		,Email
+		,PasswordHash
 	FROM dbo.[User]
 	WHERE Email = @email;

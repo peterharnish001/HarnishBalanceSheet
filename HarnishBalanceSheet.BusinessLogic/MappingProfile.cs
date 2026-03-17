@@ -60,6 +60,7 @@ namespace HarnishBalanceSheet.BusinessLogic
                 .ForMember(dest => dest.Assets, opt => opt.MapFrom(src => src.Assets))
                 .ForMember(dest => dest.Liabilities, opt => opt.MapFrom(src => src.Liabilities))
                 .ForMember(dest => dest.Bullion, opt => opt.MapFrom(src => src.Bullion));
+            CreateMap<UserDto, User>();
         }
     }
 }

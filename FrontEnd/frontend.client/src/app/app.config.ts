@@ -7,8 +7,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { provideToastr } from 'ngx-toastr';
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { loadingInterceptor } from './loading.interceptor';
-import { MsalService, MsalGuard, MsalInterceptor, MSAL_INSTANCE, MsalBroadcastService, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
-import { MSALInstanceFactory, msalInterceptorConfigFactory } from './msal.config';
+import { authInterceptor } from "./auth.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers : [
@@ -24,21 +23,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     importProvidersFrom(BrowserAnimationsModule),
     provideHttpClient(
-      withInterceptors([loadingInterceptor]),
+      withInterceptors([loadingInterceptor, authInterceptor]),
       withInterceptorsFromDi()
     ),
-    //{ provide: MSAL_INSTANCE, useFactory: MSALInstanceFactory },
-    //MsalService,
-    //MsalGuard,
-    //MsalBroadcastService,
-    //{
-     // provide: MSAL_INTERCEPTOR_CONFIG,
-     // useFactory: msalInterceptorConfigFactory
-    //},
-    //{
-    //  provide: HTTP_INTERCEPTORS,
-    //  useClass: MsalInterceptor,
-    //  multi: true
-   // }
   ]
 }

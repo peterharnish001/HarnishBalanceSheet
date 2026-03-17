@@ -104,9 +104,9 @@ namespace HarnishBalanceSheet.BusinessLogic
             return await _balanceSheetContext.SetTargetsAsync(userId, targetModels);
         }
 
-        public UserDto GetUser(string email)
+        public async Task<UserDto> GetUserAsync(string email)
         {
-            var user = _balanceSheetContext.GetUser(email);
+            var user = await _balanceSheetContext.GetUserAsync(email);
             return _mapper.Map<UserDto>(user);
         }
 

@@ -1,0 +1,21 @@
+<div>
+  <div class="row">
+    <div class="col-md-2">
+    <label>Email:</label>
+    </div>
+    <div class="col-md-2">
+    <input type="text" id="txtEmail" [(ngModel)]="request.email"/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+    <label>Password:</label>
+    </div>
+    <div class="col-md-2">
+    <input type="password" id="txtPassword" [(ngModel)]="request.password"/>
+    </div>
+  </div>
+  <div class="row">
+    <button (click)="clickLogin()">Login</button>
+  </div>
+</div>

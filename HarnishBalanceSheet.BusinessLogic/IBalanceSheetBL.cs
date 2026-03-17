@@ -16,6 +16,6 @@ namespace HarnishBalanceSheet.BusinessLogic
         Task<BalanceSheetEditDto> GetBalanceSheetForCreating(int userId);
         Task<int> CreateBalanceSheet(int userId, BalanceSheetSaveDto balanceSheet);
         Task<int> EditBalanceSheet(int userId, int balanceSheetId, BalanceSheetSaveDto balanceSheet);
-        UserDto GetUser(string email);
+        Task<UserDto> GetUserAsync(string email);
     }
 }

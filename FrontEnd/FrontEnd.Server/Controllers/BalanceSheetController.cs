@@ -1,25 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using HarnishBalanceSheet.BusinessLogic;
+﻿using HarnishBalanceSheet.BusinessLogic;
 using HarnishBalanceSheet.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HarnishBalanceSheet.Server.Controllers
 {   
     [ApiController]
-    //[Authorize]
-    [ServiceFilter(typeof(AuthenticateFilter))]
+    [Authorize]
     [Route("api/balance-sheet/")]
-    public class BalanceSheetController : ControllerBase
+    public class BalanceSheetController : BaseController
     {
-        private readonly IBalanceSheetBL _balanceSheetBL;
-
-        private int? UserId
-        {
-            get
-            {
-                return (int?)HttpContext.Items["CurrentUserId"];
-            }
-        }
+        private readonly IBalanceSheetBL _balanceSheetBL;        
 
         public BalanceSheetController(IBalanceSheetBL balanceSheetBL)
         {
