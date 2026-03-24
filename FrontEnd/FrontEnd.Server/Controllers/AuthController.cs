@@ -8,7 +8,7 @@ using System.Text;
 
 namespace HarnishBalanceSheet.Server.Controllers
 {
-    [Route("api/auth")]
+    [Route("api/auth/")]
     [ApiController]
     public class AuthController : ControllerBase
     {
